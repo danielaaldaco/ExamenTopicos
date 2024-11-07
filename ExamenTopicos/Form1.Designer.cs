@@ -28,12 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            btnHola = new Button();
+            SuspendLayout();
+            // 
+            // btnHola
+            // 
+            btnHola.Location = new Point(59, 45);
+            btnHola.Name = "btnHola";
+            btnHola.Size = new Size(75, 23);
+            btnHola.TabIndex = 0;
+            btnHola.Text = "Hola";
+            btnHola.UseVisualStyleBackColor = true;
+            btnHola.Click += btnHola_Click;
+            // 
+            // Form1
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(btnHola);
+            Name = "Form1";
+            Text = "Form1";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Button btnHola;
     }
 }
