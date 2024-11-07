@@ -4,6 +4,7 @@ namespace ExamenTopicos
     {
         public Form1()
         {
+            //Hola
             InitializeComponent();
         }
     }
