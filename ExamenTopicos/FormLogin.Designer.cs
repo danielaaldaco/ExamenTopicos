@@ -28,53 +28,70 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblUsuario = new System.Windows.Forms.Label();
-            this.lblContrasena = new System.Windows.Forms.Label();
-            this.txtUsuario = new System.Windows.Forms.TextBox();
-            this.txtContrasena = new System.Windows.Forms.TextBox();
-            this.btnLogin = new System.Windows.Forms.Button();
-
+            lblUsuario = new Label();
+            lblContrasena = new Label();
+            txtUsuario = new TextBox();
+            txtContrasena = new TextBox();
+            btnLogin = new Button();
+            SuspendLayout();
+            // 
             // lblUsuario
-            this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(50, 50);
-            this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Text = "Usuario:";
-
-            // txtUsuario
-            this.txtUsuario.Location = new System.Drawing.Point(150, 45);
-            this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(200, 22);
-
+            // 
+            lblUsuario.AutoSize = true;
+            lblUsuario.Location = new Point(41, 42);
+            lblUsuario.Name = "lblUsuario";
+            lblUsuario.Size = new Size(62, 20);
+            lblUsuario.TabIndex = 0;
+            lblUsuario.Text = "Usuario:";
+            // 
             // lblContrasena
-            this.lblContrasena.AutoSize = true;
-            this.lblContrasena.Location = new System.Drawing.Point(50, 100);
-            this.lblContrasena.Name = "lblContrasena";
-            this.lblContrasena.Text = "Contraseña:";
-
+            // 
+            lblContrasena.AutoSize = true;
+            lblContrasena.Location = new Point(41, 92);
+            lblContrasena.Name = "lblContrasena";
+            lblContrasena.Size = new Size(86, 20);
+            lblContrasena.TabIndex = 2;
+            lblContrasena.Text = "Contraseña:";
+            // 
+            // txtUsuario
+            // 
+            txtUsuario.Location = new Point(141, 37);
+            txtUsuario.Name = "txtUsuario";
+            txtUsuario.Size = new Size(200, 27);
+            txtUsuario.TabIndex = 1;
+            // 
             // txtContrasena
-            this.txtContrasena.Location = new System.Drawing.Point(150, 95);
-            this.txtContrasena.Name = "txtContrasena";
-            this.txtContrasena.Size = new System.Drawing.Size(200, 22);
-            this.txtContrasena.PasswordChar = '*';
-
+            // 
+            txtContrasena.Location = new Point(141, 87);
+            txtContrasena.Name = "txtContrasena";
+            txtContrasena.PasswordChar = '*';
+            txtContrasena.Size = new Size(200, 27);
+            txtContrasena.TabIndex = 3;
+            // 
             // btnLogin
-            this.btnLogin.Location = new System.Drawing.Point(150, 150);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Text = "Iniciar Sesión";
-            this.btnLogin.Size = new System.Drawing.Size(200, 30);
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
-
+            // 
+            btnLogin.Location = new Point(141, 142);
+            btnLogin.Name = "btnLogin";
+            btnLogin.Size = new Size(200, 30);
+            btnLogin.TabIndex = 4;
+            btnLogin.Text = "Iniciar Sesión";
+            btnLogin.Click += btnLogin_Click;
+            // 
             // FormLogin
-            this.ClientSize = new System.Drawing.Size(400, 250);
-            this.Controls.Add(this.lblUsuario);
-            this.Controls.Add(this.txtUsuario);
-            this.Controls.Add(this.lblContrasena);
-            this.Controls.Add(this.txtContrasena);
-            this.Controls.Add(this.btnLogin);
-            this.Text = "Inicio de Sesión";
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.MaximizeBox = false;
+            // 
+            ClientSize = new Size(400, 212);
+            Controls.Add(lblUsuario);
+            Controls.Add(txtUsuario);
+            Controls.Add(lblContrasena);
+            Controls.Add(txtContrasena);
+            Controls.Add(btnLogin);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            Name = "FormLogin";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Inicio de Sesión";
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }
