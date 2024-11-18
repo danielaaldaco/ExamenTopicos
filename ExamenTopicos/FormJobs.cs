@@ -108,9 +108,9 @@ namespace ExamenTopicos
             {
                 isUpdatingGrid = true;
 
-                ds = datos.consulta("SELECT * FROM jobs WHERE job_id LIKE '"
-                    + txtBuscar.Text + "%' OR job_desc LIKE '"
-                    + txtBuscar.Text + "%'");
+                string searchValue = txtBuscar.Text;
+
+                ds = datos.consulta("SELECT * FROM jobs WHERE CAST(job_id AS VARCHAR) LIKE '%" + searchValue + "%' OR UPPER(job_desc) LIKE UPPER('%" + searchValue + "%')");
 
                 if (ds != null)
                 {
@@ -283,7 +283,8 @@ namespace ExamenTopicos
 
                     if (confirmResult == DialogResult.Yes)
                     {
-                        string safeDescripcion = newDescripcion.Replace("'", "''");
+                        // Convertir a mayúsculas antes de guardar
+                        string safeDescripcion = newDescripcion.Replace("'", "''").ToUpper();
 
                         string consulta = $"UPDATE jobs SET job_desc = '{safeDescripcion}', min_lvl = {newMinLvl}, max_lvl = {newMaxLvl} WHERE job_id = {id}";
                         bool resultado = datos.ejecutarABC(consulta);
