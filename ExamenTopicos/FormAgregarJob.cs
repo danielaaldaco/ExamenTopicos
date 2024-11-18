@@ -25,15 +25,7 @@ namespace ExamenTopicos
 
         }
 
-        private void maskedTextBox1_Validating(object sender, CancelEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(mskID.Text))
-            { errorProvider1.SetError(mskID, "Por favor, ingresa un valor"); }
-            else
-            {
-                errorProvider1.SetError(mskID, string.Empty);
-            }
-        }
+
 
         private void txtDescripcion_Validating(object sender, CancelEventArgs e)
         {
@@ -53,8 +45,7 @@ namespace ExamenTopicos
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(errorProvider1.GetError(mskID)) &&
-                string.IsNullOrEmpty(errorProvider2.GetError(txtDescripcion)))
+            if (string.IsNullOrEmpty(errorProvider2.GetError(txtDescripcion)))
             {
                 if (MessageBox.Show("¿Los datos son correctos?", "Sistema"
                 , MessageBoxButtons.OKCancel,
@@ -68,7 +59,6 @@ namespace ExamenTopicos
                         MessageBox.Show("Datos Agregados Correctamente", "Sistema",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Information);
-                        mskID.Clear();
                         txtDescripcion.Clear();
                         nudMin.Value = 10;
                         nudMax.Value = 15;

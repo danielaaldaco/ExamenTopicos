@@ -15,10 +15,49 @@ namespace ExamenTopicos
     public partial class FormJobs : Form
     {
         DataSet ds;
+        int rol;
         public FormJobs()
         {
             InitializeComponent();
         }
+
+        public FormJobs(int rol)
+        {
+            InitializeComponent();
+            this.rol = rol;
+            ConfigurarAccesoPorRol(rol);
+        }
+
+        private void ConfigurarAccesoPorRol(int rol)
+        {
+            switch (rol)
+            {
+                case 1:
+                    btnAgregar.Visible = false;
+                    contextMenuStrip1.Items["eliminarPuestoToolStripMenuItem"].Visible = false;
+                    dgvPuestos.ReadOnly = true;
+                    break;
+
+                case 2:
+                    contextMenuStrip1.Items["eliminarPuestoToolStripMenuItem"].Visible = false;
+                    dgvPuestos.ReadOnly = true;
+                    break;
+
+                case 3:
+                    contextMenuStrip1.Items["eliminarPuestoToolStripMenuItem"].Visible = false;
+                    break;
+
+                case 4:
+                    break;
+
+
+                default:
+                    MessageBox.Show("Rol no reconocido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                    break;
+            }
+        }
+
 
         Datos datos = new Datos();
 
@@ -75,6 +114,89 @@ namespace ExamenTopicos
         {
             FormAgregarJob agregar = new FormAgregarJob();
             agregar.Show();
+            agregar.FormClosed += (s, args) => ActualizarGrid();
+        }
+
+        private void eliminarPuestoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int x = Convert.ToInt32(dgvPuestos[0,
+                dgvPuestos.SelectedRows[0].Index].Value.ToString());
+            if (MessageBox.Show("Deseas eliminar a " +
+                dgvPuestos[1, dgvPuestos.SelectedRows[0].Index].Value.ToString(),
+                "Sistema",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                bool s = datos.ejecutarABC("Delete from jobs Where job_id=" + x);
+                if (s)
+                {
+                    MessageBox.Show("Registro eliminado", "Sistema", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    ActualizarGrid();
+
+                }
+                else
+                    MessageBox.Show("Error", "Sistema", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void dgvPuestos_RowValidated(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgvPuestos.SelectedRows.Count > 0)
+                {
+                    var row = dgvPuestos.Rows[e.RowIndex];
+
+                    int id = Convert.ToInt32(row.Cells[0].Value); // Columna de ID
+                    string descripcion = row.Cells[1].Value?.ToString();
+                    int minLvl = Convert.ToInt32(row.Cells[2].Value);
+                    int maxLvl = Convert.ToInt32(row.Cells[3].Value);
+
+                    // Mostrar mensaje de confirmación
+                    var confirmResult = MessageBox.Show(
+                        "¿Deseas guardar los siguientes cambios?\n" +
+                        "- Descripción: {descripcion}\n" +
+                        "- Nivel mínimo: {minLvl}\n" +
+                        "- Nivel máximo: {maxLvl}",
+                        "Confirmar Cambios",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        string consulta = $"UPDATE jobs SET job_desc = '{descripcion}', min_lvl = {minLvl}, max_lvl = {maxLvl} WHERE job_id = {id}";
+                        bool resultado = datos.ejecutarABC(consulta);
+
+                        if (resultado)
+                        {
+                            MessageBox.Show("Registro actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al actualizar el registro.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    else
+                    {
+                        ActualizarGrid();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar un registro para editar.", "Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }

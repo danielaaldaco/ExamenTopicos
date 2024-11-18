@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             txtBuscar = new TextBox();
             dgvPuestos = new DataGridView();
-            columnaEliminar = new DataGridViewImageColumn();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            eliminarPuestoToolStripMenuItem = new ToolStripMenuItem();
             btnAgregar = new Button();
             label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvPuestos).BeginInit();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // txtBuscar
@@ -41,7 +44,7 @@
             txtBuscar.CharacterCasing = CharacterCasing.Upper;
             txtBuscar.Location = new Point(144, 51);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(378, 23);
+            txtBuscar.Size = new Size(449, 23);
             txtBuscar.TabIndex = 0;
             txtBuscar.TextChanged += textBox1_TextChanged;
             // 
@@ -51,23 +54,28 @@
             dgvPuestos.AllowUserToDeleteRows = false;
             dgvPuestos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvPuestos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPuestos.Columns.AddRange(new DataGridViewColumn[] { columnaEliminar });
+            dgvPuestos.ContextMenuStrip = contextMenuStrip1;
+            dgvPuestos.GridColor = SystemColors.MenuBar;
             dgvPuestos.Location = new Point(36, 112);
             dgvPuestos.Name = "dgvPuestos";
-            dgvPuestos.ReadOnly = true;
             dgvPuestos.Size = new Size(557, 235);
             dgvPuestos.TabIndex = 2;
             dgvPuestos.CellContentClick += dataGridView1_CellContentClick;
+            dgvPuestos.RowValidated += dgvPuestos_RowValidated;
             // 
-            // columnaEliminar
+            // contextMenuStrip1
             // 
-            columnaEliminar.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            columnaEliminar.HeaderText = "Eliminar";
-            columnaEliminar.Image = Properties.Resources.eliminar;
-            columnaEliminar.Name = "columnaEliminar";
-            columnaEliminar.ReadOnly = true;
-            columnaEliminar.Resizable = DataGridViewTriState.False;
-            columnaEliminar.Width = 56;
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarPuestoToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(157, 26);
+            contextMenuStrip1.Opening += contextMenuStrip1_Opening;
+            // 
+            // eliminarPuestoToolStripMenuItem
+            // 
+            eliminarPuestoToolStripMenuItem.Name = "eliminarPuestoToolStripMenuItem";
+            eliminarPuestoToolStripMenuItem.Size = new Size(156, 22);
+            eliminarPuestoToolStripMenuItem.Text = "Eliminar puesto";
+            eliminarPuestoToolStripMenuItem.Click += eliminarPuestoToolStripMenuItem_Click;
             // 
             // btnAgregar
             // 
@@ -101,6 +109,7 @@
             Text = "Puestos";
             Load += FormJobs_Load;
             ((System.ComponentModel.ISupportInitialize)dgvPuestos).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -111,6 +120,7 @@
         private DataGridView dgvPuestos;
         private Button btnAgregar;
         private Label label1;
-        private DataGridViewImageColumn columnaEliminar;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem eliminarPuestoToolStripMenuItem;
     }
 }
