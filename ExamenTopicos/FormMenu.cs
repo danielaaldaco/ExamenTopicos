@@ -19,7 +19,7 @@ namespace ExamenTopicos
 
         private void btnPuestos_Click(object sender, EventArgs e)
         {
-            FormJobs puestos = new FormJobs(4);
+            FormJobs puestos = new FormJobs(UserRole.Administrador);
             puestos.Show();
         }
     }
