@@ -7,13 +7,6 @@ using System.Windows.Forms;
 
 namespace ExamenTopicos
 {
-    public class OriginalRowData
-    {
-        public string JobDesc { get; set; }
-        public int MinLvl { get; set; }
-        public int MaxLvl { get; set; }
-    }
-
     public partial class FormJobs : Form
     {
         DataSet ds;
@@ -275,10 +268,11 @@ namespace ExamenTopicos
 
                     if (confirmResult == DialogResult.Yes)
                     {
-                        // Convertir a mayúsculas antes de guardar
-                        string safeDescripcion = newDescripcion.Replace("'", "''").ToUpper();
+                        // Escapar caracteres especiales
+                        string safeDescripcion = newDescripcion.Replace("'", "''");
 
-                        string consulta = $"UPDATE jobs SET job_desc = '{safeDescripcion}', min_lvl = {newMinLvl}, max_lvl = {newMaxLvl} WHERE job_id = {id}";
+                        // Convertir a mayúsculas en la consulta SQL
+                        string consulta = $"UPDATE jobs SET job_desc = UPPER('{safeDescripcion}'), min_lvl = {newMinLvl}, max_lvl = {newMaxLvl} WHERE job_id = {id}";
                         bool resultado = datos.ejecutarABC(consulta);
 
                         if (resultado)
@@ -334,5 +328,12 @@ namespace ExamenTopicos
         {
             txtBuscar_TextChanged(sender, e);
         }
+    }
+
+    public class OriginalRowData
+    {
+        public string JobDesc { get; set; }
+        public int MinLvl { get; set; }
+        public int MaxLvl { get; set; }
     }
 }

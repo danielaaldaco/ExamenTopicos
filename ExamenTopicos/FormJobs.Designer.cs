@@ -27,91 +27,94 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.txtBuscar = new System.Windows.Forms.TextBox();
-            this.dgvPuestos = new System.Windows.Forms.DataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.eliminarPuestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnAgregar = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPuestos)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            txtBuscar = new TextBox();
+            dgvPuestos = new DataGridView();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            eliminarPuestoToolStripMenuItem = new ToolStripMenuItem();
+            btnAgregar = new Button();
+            label1 = new Label();
+            ((System.ComponentModel.ISupportInitialize)dgvPuestos).BeginInit();
+            contextMenuStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // txtBuscar
             // 
-            this.txtBuscar.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtBuscar.Location = new System.Drawing.Point(144, 51);
-            this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(449, 23);
-            this.txtBuscar.TabIndex = 0;
-            this.txtBuscar.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            txtBuscar.Location = new Point(165, 68);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(513, 27);
+            txtBuscar.TabIndex = 0;
+            txtBuscar.TextChanged += textBox1_TextChanged;
             // 
             // dgvPuestos
             // 
-            this.dgvPuestos.AllowUserToAddRows = false;
-            this.dgvPuestos.AllowUserToDeleteRows = false;
-            this.dgvPuestos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvPuestos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPuestos.ContextMenuStrip = this.contextMenuStrip1;
-            this.dgvPuestos.GridColor = System.Drawing.SystemColors.MenuBar;
-            this.dgvPuestos.Location = new System.Drawing.Point(36, 112);
-            this.dgvPuestos.Name = "dgvPuestos";
-            this.dgvPuestos.Size = new System.Drawing.Size(557, 235);
-            this.dgvPuestos.TabIndex = 2;
-            this.dgvPuestos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            dgvPuestos.AllowUserToAddRows = false;
+            dgvPuestos.AllowUserToDeleteRows = false;
+            dgvPuestos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvPuestos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPuestos.ContextMenuStrip = contextMenuStrip1;
+            dgvPuestos.GridColor = SystemColors.MenuBar;
+            dgvPuestos.Location = new Point(41, 149);
+            dgvPuestos.Margin = new Padding(3, 4, 3, 4);
+            dgvPuestos.Name = "dgvPuestos";
+            dgvPuestos.RowHeadersWidth = 51;
+            dgvPuestos.Size = new Size(637, 313);
+            dgvPuestos.TabIndex = 2;
+            dgvPuestos.CellContentClick += dataGridView1_CellContentClick;
             // 
             // contextMenuStrip1
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.eliminarPuestoToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(157, 26);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarPuestoToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(182, 28);
+            contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             // 
             // eliminarPuestoToolStripMenuItem
             // 
-            this.eliminarPuestoToolStripMenuItem.Name = "eliminarPuestoToolStripMenuItem";
-            this.eliminarPuestoToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
-            this.eliminarPuestoToolStripMenuItem.Text = "Eliminar puesto";
-            this.eliminarPuestoToolStripMenuItem.Click += new System.EventHandler(this.eliminarPuestoToolStripMenuItem_Click);
+            eliminarPuestoToolStripMenuItem.Name = "eliminarPuestoToolStripMenuItem";
+            eliminarPuestoToolStripMenuItem.Size = new Size(181, 24);
+            eliminarPuestoToolStripMenuItem.Text = "Eliminar puesto";
+            eliminarPuestoToolStripMenuItem.Click += eliminarPuestoToolStripMenuItem_Click;
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(518, 389);
-            this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(75, 23);
-            this.btnAgregar.TabIndex = 3;
-            this.btnAgregar.Text = "Agregar";
-            this.btnAgregar.UseVisualStyleBackColor = true;
-            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+            btnAgregar.Location = new Point(592, 519);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(86, 31);
+            btnAgregar.TabIndex = 3;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 54);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Buscar puesto";
+            label1.AutoSize = true;
+            label1.Location = new Point(41, 72);
+            label1.Name = "label1";
+            label1.Size = new Size(101, 20);
+            label1.TabIndex = 4;
+            label1.Text = "Buscar puesto";
             // 
             // FormJobs
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(648, 450);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnAgregar);
-            this.Controls.Add(this.dgvPuestos);
-            this.Controls.Add(this.txtBuscar);
-            this.Name = "FormJobs";
-            this.Text = "Puestos";
-            this.Load += new System.EventHandler(this.FormJobs_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPuestos)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(741, 600);
+            Controls.Add(label1);
+            Controls.Add(btnAgregar);
+            Controls.Add(dgvPuestos);
+            Controls.Add(txtBuscar);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "FormJobs";
+            Text = "Puestos";
+            Load += FormJobs_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvPuestos).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
