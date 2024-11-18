@@ -28,66 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            button1 = new Button();
+            txtBuscar = new TextBox();
             dgvPuestos = new DataGridView();
-            button2 = new Button();
-            Column1 = new DataGridViewImageColumn();
+            columnaEliminar = new DataGridViewImageColumn();
+            btnAgregar = new Button();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvPuestos).BeginInit();
             SuspendLayout();
             // 
-            // textBox1
+            // txtBuscar
             // 
-            textBox1.Location = new Point(36, 51);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(356, 23);
-            textBox1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(447, 51);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 1;
-            button1.Text = "Buscar";
-            button1.UseVisualStyleBackColor = true;
+            txtBuscar.CharacterCasing = CharacterCasing.Upper;
+            txtBuscar.Location = new Point(144, 51);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(378, 23);
+            txtBuscar.TabIndex = 0;
+            txtBuscar.TextChanged += textBox1_TextChanged;
             // 
             // dgvPuestos
             // 
+            dgvPuestos.AllowUserToAddRows = false;
+            dgvPuestos.AllowUserToDeleteRows = false;
+            dgvPuestos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvPuestos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPuestos.Columns.AddRange(new DataGridViewColumn[] { Column1 });
+            dgvPuestos.Columns.AddRange(new DataGridViewColumn[] { columnaEliminar });
             dgvPuestos.Location = new Point(36, 112);
             dgvPuestos.Name = "dgvPuestos";
-            dgvPuestos.Size = new Size(486, 235);
+            dgvPuestos.ReadOnly = true;
+            dgvPuestos.Size = new Size(557, 235);
             dgvPuestos.TabIndex = 2;
             dgvPuestos.CellContentClick += dataGridView1_CellContentClick;
             // 
-            // button2
+            // columnaEliminar
             // 
-            button2.Location = new Point(437, 403);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 3;
-            button2.Text = "Agregar";
-            button2.UseVisualStyleBackColor = true;
+            columnaEliminar.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            columnaEliminar.HeaderText = "Eliminar";
+            columnaEliminar.Image = Properties.Resources.eliminar;
+            columnaEliminar.Name = "columnaEliminar";
+            columnaEliminar.ReadOnly = true;
+            columnaEliminar.Resizable = DataGridViewTriState.False;
+            columnaEliminar.Width = 56;
             // 
-            // Column1
+            // btnAgregar
             // 
-            Column1.HeaderText = "Column1";
-            Column1.Image = Properties.Resources.eliminar;
-            Column1.Name = "Column1";
+            btnAgregar.Location = new Point(518, 389);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.TabIndex = 3;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(36, 54);
+            label1.Name = "label1";
+            label1.Size = new Size(81, 15);
+            label1.TabIndex = 4;
+            label1.Text = "Buscar puesto";
             // 
             // FormJobs
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(604, 450);
-            Controls.Add(button2);
+            ClientSize = new Size(648, 450);
+            Controls.Add(label1);
+            Controls.Add(btnAgregar);
             Controls.Add(dgvPuestos);
-            Controls.Add(button1);
-            Controls.Add(textBox1);
+            Controls.Add(txtBuscar);
             Name = "FormJobs";
             Text = "Puestos";
+            Load += FormJobs_Load;
             ((System.ComponentModel.ISupportInitialize)dgvPuestos).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -95,10 +107,10 @@
 
         #endregion
 
-        private TextBox textBox1;
-        private Button button1;
+        private TextBox txtBuscar;
         private DataGridView dgvPuestos;
-        private Button button2;
-        private DataGridViewImageColumn Column1;
+        private Button btnAgregar;
+        private Label label1;
+        private DataGridViewImageColumn columnaEliminar;
     }
 }
