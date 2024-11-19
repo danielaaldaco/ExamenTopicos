@@ -12,8 +12,7 @@ namespace ExamenTopicos
 {
     internal class Datos
     {
-        //hola
-        String cadenaConexion = @"Data Source=DESKTOP-VR4NTPA;
+        String cadenaConexion = @"Data Source=ALFREDO\SQLEXPRESS;
                 Integrated Security=true;initial catalog=pubs";
 
         SqlConnection conexion;

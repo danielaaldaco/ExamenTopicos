@@ -28,60 +28,60 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            txtBuscar = new TextBox();
-            dgvPuestos = new DataGridView();
-            contextMenuStrip1 = new ContextMenuStrip(components);
-            eliminarPuestoToolStripMenuItem = new ToolStripMenuItem();
-            btnAgregar = new Button();
-            label1 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvPuestos).BeginInit();
+            txtBuscar = new System.Windows.Forms.TextBox();
+            dgvPuestos = new System.Windows.Forms.DataGridView();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            eliminarPuestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            btnAgregar = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(dgvPuestos)).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(165, 68);
-            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Location = new System.Drawing.Point(165, 68);
+            txtBuscar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(513, 27);
+            txtBuscar.Size = new System.Drawing.Size(513, 27);
             txtBuscar.TabIndex = 0;
-            txtBuscar.TextChanged += textBox1_TextChanged;
+            txtBuscar.TextChanged += txtBuscar_TextChanged; // Conectado al manejador principal
             // 
             // dgvPuestos
             // 
             dgvPuestos.AllowUserToAddRows = false;
             dgvPuestos.AllowUserToDeleteRows = false;
-            dgvPuestos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvPuestos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPuestos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dgvPuestos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPuestos.ContextMenuStrip = contextMenuStrip1;
-            dgvPuestos.GridColor = SystemColors.MenuBar;
-            dgvPuestos.Location = new Point(41, 149);
-            dgvPuestos.Margin = new Padding(3, 4, 3, 4);
+            dgvPuestos.GridColor = System.Drawing.SystemColors.MenuBar;
+            dgvPuestos.Location = new System.Drawing.Point(41, 149);
+            dgvPuestos.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             dgvPuestos.Name = "dgvPuestos";
             dgvPuestos.RowHeadersWidth = 51;
-            dgvPuestos.Size = new Size(637, 313);
+            dgvPuestos.Size = new System.Drawing.Size(637, 313);
             dgvPuestos.TabIndex = 2;
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarPuestoToolStripMenuItem });
+            contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { eliminarPuestoToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(182, 28);
+            contextMenuStrip1.Size = new System.Drawing.Size(182, 28);
             // 
             // eliminarPuestoToolStripMenuItem
             // 
             eliminarPuestoToolStripMenuItem.Name = "eliminarPuestoToolStripMenuItem";
-            eliminarPuestoToolStripMenuItem.Size = new Size(181, 24);
+            eliminarPuestoToolStripMenuItem.Size = new System.Drawing.Size(181, 24);
             eliminarPuestoToolStripMenuItem.Text = "Eliminar puesto";
             eliminarPuestoToolStripMenuItem.Click += eliminarPuestoToolStripMenuItem_Click;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(592, 519);
-            btnAgregar.Margin = new Padding(3, 4, 3, 4);
+            btnAgregar.Location = new System.Drawing.Point(592, 519);
+            btnAgregar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(86, 31);
+            btnAgregar.Size = new System.Drawing.Size(86, 31);
             btnAgregar.TabIndex = 3;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -90,26 +90,26 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(41, 72);
+            label1.Location = new System.Drawing.Point(41, 72);
             label1.Name = "label1";
-            label1.Size = new Size(101, 20);
+            label1.Size = new System.Drawing.Size(101, 20);
             label1.TabIndex = 4;
             label1.Text = "Buscar puesto";
             // 
             // FormJobs
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(741, 600);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(741, 600);
             Controls.Add(label1);
             Controls.Add(btnAgregar);
             Controls.Add(dgvPuestos);
             Controls.Add(txtBuscar);
-            Margin = new Padding(3, 4, 3, 4);
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "FormJobs";
             Text = "Puestos";
             Load += FormJobs_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvPuestos).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(dgvPuestos)).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
