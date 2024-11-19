@@ -389,15 +389,6 @@ namespace ExamenTopicos
                 }));
             }
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-        }
-
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             txtBuscar_TextChanged(sender, e);
