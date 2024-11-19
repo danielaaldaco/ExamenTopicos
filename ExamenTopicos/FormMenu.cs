@@ -15,8 +15,20 @@ namespace ExamenTopicos
 
         private void btnPuestos_Click(object sender, EventArgs e)
         {
-            FormJobs formAgregarJob = new FormJobs();
-            formAgregarJob.Show();
+            if (user.Rol == UserRole.GerenteVentas || user.Rol == UserRole.Administrador)
+            {
+                FormJobs formAgregarJob = new FormJobs();
+                formAgregarJob.Show();
+            }
+            else
+            {
+                mostrarNoAcceso("Gerente o administrador");
+            }
+        }
+
+        private void mostrarNoAcceso(string puestos)
+        {
+            MessageBox.Show("Solamente se puede accedeor como " + puestos);
         }
     }
 }
