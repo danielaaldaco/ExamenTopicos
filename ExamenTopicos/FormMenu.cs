@@ -23,7 +23,7 @@ namespace ExamenTopicos
         {
             Form mensajeForm = new Form
             {
-                Width = 400,
+                Width = 400, 
                 Height = 200,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 StartPosition = FormStartPosition.CenterScreen,
