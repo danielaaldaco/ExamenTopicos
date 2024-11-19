@@ -61,7 +61,6 @@
             dgvPuestos.RowHeadersWidth = 51;
             dgvPuestos.Size = new Size(637, 313);
             dgvPuestos.TabIndex = 2;
-            dgvPuestos.CellContentClick += dataGridView1_CellContentClick;
             // 
             // contextMenuStrip1
             // 
@@ -69,7 +68,6 @@
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarPuestoToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(182, 28);
-            contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             // 
             // eliminarPuestoToolStripMenuItem
             // 
