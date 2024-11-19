@@ -37,5 +37,23 @@ namespace ExamenTopicos
             formEditorial.Show();
 
         }
+
+        private void btnAutoresLibros_Click(object sender, EventArgs e)
+        {
+            FormAutorTitulo formAutorTitulo = new FormAutorTitulo();
+            formAutorTitulo.Show();
+        }
+
+        private void btnDescuentos_Click(object sender, EventArgs e)
+        {
+            FormDescuentos descuentos = new FormDescuentos();
+            descuentos.Show();
+        }
+
+        private void btnVentas_Click(object sender, EventArgs e)
+        {
+            FormVentas formVentas = new FormVentas();
+            formVentas.Show();
+        }
     }
 }

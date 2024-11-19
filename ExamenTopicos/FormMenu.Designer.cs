@@ -76,6 +76,7 @@
             btnDescuentos.Text = "Descuentos";
             btnDescuentos.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnDescuentos.UseVisualStyleBackColor = true;
+            btnDescuentos.Click += btnDescuentos_Click;
             // 
             // btnTiendas
             // 
@@ -100,6 +101,7 @@
             btnVentas.TextAlign = ContentAlignment.BottomCenter;
             btnVentas.TextImageRelation = TextImageRelation.ImageAboveText;
             btnVentas.UseVisualStyleBackColor = true;
+            btnVentas.Click += btnVentas_Click;
             // 
             // btnEmpleados
             // 
@@ -172,6 +174,7 @@
             btnAutoresLibros.TextAlign = ContentAlignment.BottomCenter;
             btnAutoresLibros.TextImageRelation = TextImageRelation.ImageAboveText;
             btnAutoresLibros.UseVisualStyleBackColor = true;
+            btnAutoresLibros.Click += btnAutoresLibros_Click;
             // 
             // FormMenu
             // 

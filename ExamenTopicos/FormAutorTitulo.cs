@@ -25,5 +25,17 @@ namespace ExamenTopicos
         {
 
         }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            FormAgregarAT formAgregarAT = new FormAgregarAT();
+            formAgregarAT.Show();
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            FormEditarAT formEditarAT = new FormEditarAT();
+            formEditarAT.Show();
+        }
     }
 }
