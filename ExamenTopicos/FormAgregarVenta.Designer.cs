@@ -35,14 +35,14 @@
             label4 = new Label();
             label2 = new Label();
             label1 = new Label();
-            this.cmbIdTienda = new ComboBox();
-            cmbTitulos = new ComboBox();
             label7 = new Label();
-            this.dtpFechaOrden = new DateTimePicker();
             label8 = new Label();
             txtOrden = new TextBox();
             txtCantidad = new TextBox();
             cmbPago = new ComboBox();
+            cmbTienda = new ComboBox();
+            cmbTitulo = new ComboBox();
+            dtpFecha = new DateTimePicker();
             SuspendLayout();
             // 
             // btnCancelar
@@ -110,22 +110,6 @@
             label1.TabIndex = 21;
             label1.Text = "ID Tienda";
             // 
-            // cmbIdTienda
-            // 
-            this.cmbIdTienda.FormattingEnabled = true;
-            this.cmbIdTienda.Location = new Point(173, 82);
-            this.cmbIdTienda.Name = "cmbIdTienda";
-            this.cmbIdTienda.Size = new Size(121, 23);
-            this.cmbIdTienda.TabIndex = 1;
-            // 
-            // cmbTitulos
-            // 
-            cmbTitulos.FormattingEnabled = true;
-            cmbTitulos.Location = new Point(174, 308);
-            cmbTitulos.Name = "cmbTitulos";
-            cmbTitulos.Size = new Size(121, 23);
-            cmbTitulos.TabIndex = 6;
-            // 
             // label7
             // 
             label7.AutoSize = true;
@@ -135,15 +119,6 @@
             label7.Size = new Size(88, 15);
             label7.TabIndex = 30;
             label7.Text = "Fecha de orden";
-            // 
-            // dtpFechaOrden
-            // 
-            this.dtpFechaOrden.Format = DateTimePickerFormat.Short;
-            this.dtpFechaOrden.Location = new Point(174, 168);
-            this.dtpFechaOrden.Name = "dtpFechaOrden";
-            this.dtpFechaOrden.Size = new Size(121, 23);
-            this.dtpFechaOrden.TabIndex = 3;
-            this.dtpFechaOrden.ValueChanged += this.dateTimePicker1_ValueChanged;
             // 
             // label8
             // 
@@ -176,16 +151,42 @@
             cmbPago.Size = new Size(121, 23);
             cmbPago.TabIndex = 5;
             // 
+            // cmbTienda
+            // 
+            cmbTienda.FormattingEnabled = true;
+            cmbTienda.Location = new Point(174, 82);
+            cmbTienda.Name = "cmbTienda";
+            cmbTienda.Size = new Size(121, 23);
+            cmbTienda.TabIndex = 34;
+            // 
+            // cmbTitulo
+            // 
+            cmbTitulo.FormattingEnabled = true;
+            cmbTitulo.Location = new Point(174, 308);
+            cmbTitulo.Name = "cmbTitulo";
+            cmbTitulo.Size = new Size(121, 23);
+            cmbTitulo.TabIndex = 35;
+            // 
+            // dtpFecha
+            // 
+            dtpFecha.Format = DateTimePickerFormat.Short;
+            dtpFecha.Location = new Point(173, 169);
+            dtpFecha.Name = "dtpFecha";
+            dtpFecha.Size = new Size(122, 23);
+            dtpFecha.TabIndex = 36;
+            // 
             // FormAgregarVenta
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(465, 426);
+            Controls.Add(dtpFecha);
+            Controls.Add(cmbTitulo);
+            Controls.Add(cmbTienda);
             Controls.Add(cmbPago);
             Controls.Add(txtCantidad);
             Controls.Add(txtOrden);
             Controls.Add(label8);
-            Controls.Add(this.dtpFechaOrden);
             Controls.Add(label7);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
@@ -194,8 +195,6 @@
             Controls.Add(label4);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(this.cmbIdTienda);
-            Controls.Add(cmbTitulos);
             Name = "FormAgregarVenta";
             Text = "FormAgregarVenta";
             ResumeLayout(false);
@@ -213,7 +212,6 @@
         private Label label1;
         private NumericUpDown numericUpDown1;
         private ComboBox comboBox2;
-        private ComboBox cmbTitulos;
         private Label label7;
         private DateTimePicker dateTimePicker1;
         private Label label8;
@@ -221,5 +219,8 @@
         private TextBox txtOrden;
         private TextBox txtCantidad;
         private ComboBox cmbPago;
+        private ComboBox cmbTienda;
+        private ComboBox cmbTitulo;
+        private DateTimePicker dtpFecha;
     }
 }

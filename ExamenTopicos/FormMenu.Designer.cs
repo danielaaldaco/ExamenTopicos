@@ -150,6 +150,7 @@
             btnAutores.TextAlign = ContentAlignment.BottomCenter;
             btnAutores.TextImageRelation = TextImageRelation.ImageAboveText;
             btnAutores.UseVisualStyleBackColor = true;
+            btnAutores.Click += btnAutores_Click;
             // 
             // btnInfoEditorial
             // 
