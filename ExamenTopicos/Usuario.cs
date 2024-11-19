@@ -2,16 +2,9 @@
 
 namespace ExamenTopicos
 {
-    public enum UserRole
-    {
-        Cliente = 1,
-        Empleado = 2,
-        GerenteVentas = 3,
-        Administrador = 4
-    }
 
     public class Usuario
-    {
+    {       
         public string NombreUsuario { get; set; }
         public UserRole Rol { get; set; }
         public string NombrePersona { get; set; }
@@ -23,5 +16,13 @@ namespace ExamenTopicos
             Rol = rol;
             NombrePersona = nombrePersona;
         }
+    }
+
+    public enum UserRole
+    {
+        Cliente,
+        Empleado,
+        GerenteVentas,
+        Administrador
     }
 }

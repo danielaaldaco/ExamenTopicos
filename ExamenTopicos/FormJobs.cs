@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Text;
-using System.Windows.Forms;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace ExamenTopicos
 {
@@ -17,11 +17,6 @@ namespace ExamenTopicos
 
         private Dictionary<int, OriginalRowData> originalRows = new Dictionary<int, OriginalRowData>();
         private bool isUpdatingGrid = false;
-
-        public FormJobs()
-        {
-            InitializeComponent();
-        }
 
         public FormJobs(UserRole role)
         {
@@ -39,16 +34,24 @@ namespace ExamenTopicos
             switch (userRole)
             {
                 case UserRole.Cliente:
+                    // Cliente solo puede ver los puestos.
+                    dgvPuestos.ReadOnly = true;
                     break;
 
                 case UserRole.Empleado:
+                    // Empleado puede ver y agregar.
+                    dgvPuestos.ReadOnly = true;
+                    btnAgregar.Visible = true;
                     break;
 
                 case UserRole.GerenteVentas:
+                    // Gerente de ventas puede editar y agregar, pero no eliminar.
                     dgvPuestos.ReadOnly = false;
+                    btnAgregar.Visible = true;
                     break;
 
                 case UserRole.Administrador:
+                    // Administrador tiene permisos completos.
                     btnAgregar.Visible = true;
                     contextMenuStrip1.Items["eliminarPuestoToolStripMenuItem"].Visible = true;
                     dgvPuestos.ReadOnly = false;
@@ -200,6 +203,12 @@ namespace ExamenTopicos
 
         private void eliminarPuestoToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (userRole != UserRole.Administrador)
+            {
+                MessageBox.Show("Solo un administrador puede eliminar puestos.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 if (dgvPuestos.SelectedRows.Count > 0)
@@ -388,10 +397,6 @@ namespace ExamenTopicos
                     ActualizarGrid();
                 }));
             }
-        }
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            txtBuscar_TextChanged(sender, e);
         }
     }
 

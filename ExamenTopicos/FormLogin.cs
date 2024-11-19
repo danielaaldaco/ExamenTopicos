@@ -39,7 +39,10 @@ namespace ExamenTopicos
                 string nombreRol = resultado.Tables[0].Rows[0]["NombreRol"].ToString();
                 string usuario = resultado.Tables[0].Rows[0]["Usuario"].ToString();
 
-                if (Enum.TryParse(nombreRol, out UserRole userRole))
+                // Normalizar el nombre del rol antes de intentar mapearlo
+                nombreRol = NormalizarRol(nombreRol);
+
+                if (Enum.TryParse(nombreRol, true, out UserRole userRole)) // Ignora mayúsculas y minúsculas
                 {
                     UsuarioLogueado = new Usuario(usuario, userRole, nombrePersona);
 
@@ -50,13 +53,24 @@ namespace ExamenTopicos
                 }
                 else
                 {
-                    MessageBox.Show("Rol no reconocido. Contacte al administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Rol desconocido: {nombreRol}. Contacte al administrador.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
             {
                 MessageBox.Show("Usuario o contraseña incorrectos. Inténtelo de nuevo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        /// <summary>
+        /// Normaliza el nombre del rol para que coincida con los valores del enumerado.
+        /// </summary>
+        /// <param name="rol">Nombre del rol desde la base de datos.</param>
+        /// <returns>Nombre del rol normalizado.</returns>
+        private string NormalizarRol(string rol)
+        {
+            // Convertir el nombre del rol a un formato estándar
+            return rol.Replace(" ", "").Replace("-", "").Replace("_", "");
         }
     }
 }
