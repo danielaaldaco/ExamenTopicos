@@ -39,11 +39,13 @@
             label4 = new Label();
             txtPais = new TextBox();
             label5 = new Label();
+            label6 = new Label();
+            mskIdEditorial = new MaskedTextBox();
             SuspendLayout();
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(342, 301);
+            btnCancelar.Location = new Point(342, 334);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(98, 23);
             btnCancelar.TabIndex = 15;
@@ -52,7 +54,7 @@
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(224, 301);
+            btnAceptar.Location = new Point(224, 334);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(97, 23);
             btnAceptar.TabIndex = 13;
@@ -61,7 +63,7 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(120, 88);
+            txtNombre.Location = new Point(122, 117);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(255, 23);
             txtNombre.TabIndex = 9;
@@ -69,7 +71,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(33, 41);
+            label3.Location = new Point(33, 32);
             label3.Name = "label3";
             label3.Size = new Size(407, 15);
             label3.TabIndex = 14;
@@ -78,7 +80,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(29, 96);
+            label2.Location = new Point(31, 125);
             label2.Name = "label2";
             label2.Size = new Size(51, 15);
             label2.TabIndex = 11;
@@ -86,7 +88,7 @@
             // 
             // txtEstado
             // 
-            txtEstado.Location = new Point(120, 181);
+            txtEstado.Location = new Point(122, 210);
             txtEstado.Name = "txtEstado";
             txtEstado.Size = new Size(255, 23);
             txtEstado.TabIndex = 16;
@@ -94,7 +96,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(29, 189);
+            label1.Location = new Point(31, 218);
             label1.Name = "label1";
             label1.Size = new Size(42, 15);
             label1.TabIndex = 17;
@@ -102,7 +104,7 @@
             // 
             // txtCiudad
             // 
-            txtCiudad.Location = new Point(120, 135);
+            txtCiudad.Location = new Point(122, 164);
             txtCiudad.Name = "txtCiudad";
             txtCiudad.Size = new Size(255, 23);
             txtCiudad.TabIndex = 18;
@@ -110,7 +112,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(29, 143);
+            label4.Location = new Point(31, 172);
             label4.Name = "label4";
             label4.Size = new Size(45, 15);
             label4.TabIndex = 19;
@@ -118,7 +120,7 @@
             // 
             // txtPais
             // 
-            txtPais.Location = new Point(120, 229);
+            txtPais.Location = new Point(122, 258);
             txtPais.Name = "txtPais";
             txtPais.Size = new Size(255, 23);
             txtPais.TabIndex = 20;
@@ -126,17 +128,36 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(29, 237);
+            label5.Location = new Point(31, 266);
             label5.Name = "label5";
             label5.Size = new Size(28, 15);
             label5.TabIndex = 21;
             label5.Text = "Pais";
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(31, 84);
+            label6.Name = "label6";
+            label6.Size = new Size(64, 15);
+            label6.TabIndex = 23;
+            label6.Text = "ID Editorial";
+            // 
+            // mskIdEditorial
+            // 
+            mskIdEditorial.Location = new Point(122, 76);
+            mskIdEditorial.Mask = "0000";
+            mskIdEditorial.Name = "mskIdEditorial";
+            mskIdEditorial.Size = new Size(179, 23);
+            mskIdEditorial.TabIndex = 24;
+            // 
             // FormAgregarPub
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(468, 362);
+            ClientSize = new Size(468, 412);
+            Controls.Add(mskIdEditorial);
+            Controls.Add(label6);
             Controls.Add(txtPais);
             Controls.Add(label5);
             Controls.Add(txtCiudad);
@@ -167,5 +188,7 @@
         private Label label4;
         private TextBox txtPais;
         private Label label5;
+        private Label label6;
+        private MaskedTextBox mskIdEditorial;
     }
 }

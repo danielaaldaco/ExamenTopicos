@@ -55,5 +55,11 @@ namespace ExamenTopicos
             FormVentas formVentas = new FormVentas();
             formVentas.Show();
         }
+
+        private void btnAutores_Click(object sender, EventArgs e)
+        {
+            FormAutores formAutores = new FormAutores();    
+            formAutores.Show();
+        }
     }
 }
