@@ -1,26 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExamenTopicos
 {
     public partial class FormMenu : Form
     {
-        public FormMenu()
+        private Usuario user;
+
+        public FormMenu(Usuario user)
         {
             InitializeComponent();
+            this.user = user;
         }
 
         private void btnPuestos_Click(object sender, EventArgs e)
         {
-            FormJobs puestos = new FormJobs(4);
-            puestos.Show();
+            if (user.Rol == UserRole.GerenteVentas || user.Rol == UserRole.Administrador)
+            {
+                FormJobs formAgregarJob = new FormJobs();
+                formAgregarJob.Show();
+            }
+            else
+            {
+                mostrarNoAcceso("Gerente o administrador");
+            }
+        }
+
+        private void mostrarNoAcceso(string puestos)
+        {
+            MessageBox.Show("Solamente se puede accedeor como " + puestos);
         }
     }
 }
