@@ -16,7 +16,7 @@ namespace ExamenTopicos
 
         private void ConfigurarMenu()
         {
-            // Todos los botones son visibles, pero las restricciones se manejan en los eventos.
+            // Configuración inicial del menú, si es necesario.
         }
 
         private void MostrarMensajeAccesoDenegado(string mensaje)
@@ -79,31 +79,21 @@ namespace ExamenTopicos
             {
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
                 return;
-            }
+            } 
 
             MessageBox.Show("Bienvenido a la sección de Regalías.", "Regalías", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
-            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
-            {
-                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
-                return;
-            }
-
-            MessageBox.Show("Bienvenido a la sección de Ventas.", "Ventas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormVentas formVentas = new FormVentas();
+            formVentas.Show();
         }
 
         private void btnEmpleados_Click(object sender, EventArgs e)
         {
-            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
-            {
-                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
-                return;
-            }
-
-            MessageBox.Show("Bienvenido a la sección de Empleados.", "Empleados", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormEmpleados formEmpleados = new FormEmpleados();
+            formEmpleados.Show();
         }
 
         private void btnTitulos_Click(object sender, EventArgs e)
@@ -114,7 +104,8 @@ namespace ExamenTopicos
 
         private void btnDescuentos_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Descuentos.", "Descuentos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormDescuentos formDescuentos = new FormDescuentos();
+            formDescuentos.Show();
         }
 
         private void btnTiendas_Click(object sender, EventArgs e)
@@ -135,7 +126,8 @@ namespace ExamenTopicos
 
         private void btnAutores_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Autores.", "Autores", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormAutores formAutores = new FormAutores();
+            formAutores.Show();
         }
 
         private void btnAgregarEditorial_Click(object sender, EventArgs e)
