@@ -16,7 +16,7 @@ namespace ExamenTopicos
 
         private void ConfigurarMenu()
         {
-            // Configuración inicial del menú, si es necesario.
+            // Todos los botones son visibles, pero las restricciones se manejan en los eventos.
         }
 
         private void MostrarMensajeAccesoDenegado(string mensaje)
@@ -79,7 +79,7 @@ namespace ExamenTopicos
             {
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
                 return;
-            } 
+            }
 
             MessageBox.Show("Bienvenido a la sección de Regalías.", "Regalías", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
