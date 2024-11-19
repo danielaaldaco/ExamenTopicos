@@ -12,6 +12,7 @@ namespace ExamenTopicos
 {
     internal class Datos
     {
+        //hola
         String cadenaConexion = @"Data Source=DESKTOP-VR4NTPA;
                 Integrated Security=true;initial catalog=pubs";
 
