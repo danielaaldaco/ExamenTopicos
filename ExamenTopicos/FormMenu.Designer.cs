@@ -64,6 +64,7 @@
             btnEditoriales.Text = "Editoriales";
             btnEditoriales.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnEditoriales.UseVisualStyleBackColor = true;
+            btnEditoriales.Click += btnEditoriales_Click;
             // 
             // btnDescuentos
             // 

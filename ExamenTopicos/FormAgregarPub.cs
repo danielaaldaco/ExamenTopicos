@@ -10,17 +10,11 @@ using System.Windows.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormPublisher : Form
+    public partial class FormAgregarPub : Form
     {
-        public FormPublisher()
+        public FormAgregarPub()
         {
             InitializeComponent();
-        }
-
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            FormAgregarPub pub = new FormAgregarPub();
-            pub.Show();
         }
     }
 }

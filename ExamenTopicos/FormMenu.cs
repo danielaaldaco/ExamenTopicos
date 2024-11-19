@@ -30,5 +30,12 @@ namespace ExamenTopicos
         {
             MessageBox.Show("Solamente se puede accedeor como " + puestos);
         }
+
+        private void btnEditoriales_Click(object sender, EventArgs e)
+        {
+            FormPublisher formEditorial = new FormPublisher();
+            formEditorial.Show();
+
+        }
     }
 }
