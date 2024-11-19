@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ExamenTopicos
+
 {
     internal class Datos
     {
-        String cadenaConexion = @"Data Source=ALFREDO\SQLEXPRESS;
+        String cadenaConexion = @"Data Source=DESKTOP-VR4NTPA;
                 Integrated Security=true;initial catalog=pubs";
 
         SqlConnection conexion;
