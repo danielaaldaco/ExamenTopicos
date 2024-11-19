@@ -77,8 +77,8 @@ namespace ExamenTopicos
         {
             if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
             {
-                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
-                return;
+                FormRegalias formRegalias = new FormRegalias();
+                formRegalias.Show();
             }
 
             MessageBox.Show("Bienvenido a la sección de Regalías.", "Regalías", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -110,12 +110,14 @@ namespace ExamenTopicos
 
         private void btnTiendas_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Tiendas.", "Tiendas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormTiendas formTiendas=new FormTiendas();
+            formTiendas.Show();
         }
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Detalle de Editoriales.", "Detalle Editorial", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormInfoEditorial formInfoEditorial = new FormInfoEditorial();
+            formInfoEditorial.Show();
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)

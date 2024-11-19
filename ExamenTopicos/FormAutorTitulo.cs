@@ -29,7 +29,6 @@ namespace ExamenTopicos
             dgvAutoresTitulos.EditingControlShowing += dgvAutoresTitulos_EditingControlShowing;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             btnAgregar.Click += btnAgregar_Click;
-            eliminarRegistroToolStripMenuItem.Click += eliminarRegistroToolStripMenuItem_Click;
         }
 
         /// <summary>
