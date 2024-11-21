@@ -360,8 +360,4 @@ namespace ExamenTopicos
 
         #endregion
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

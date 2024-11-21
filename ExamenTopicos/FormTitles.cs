@@ -91,8 +91,4 @@ namespace ExamenTopicos
             }
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master

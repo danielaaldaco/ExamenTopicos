@@ -96,11 +96,7 @@ namespace ExamenTopicos
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
                 return;
             }
-<<<<<<< HEAD
-            FormEmpleados formEmpleados = new FormEmpleados();
-=======
             FormEmpleados formEmpleados = new FormEmpleados(user.Rol);
->>>>>>> master
             formEmpleados.Show();
         }
 

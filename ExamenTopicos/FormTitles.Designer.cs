@@ -91,8 +91,4 @@
             PerformLayout();
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> master
