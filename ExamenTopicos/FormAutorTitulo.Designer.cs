@@ -13,8 +13,6 @@ namespace ExamenTopicos
         private DataGridView dgvAutoresTitulos;
         private TextBox txtBuscar;
         private Button btnAgregar;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem eliminarRegistroToolStripMenuItem;
         private Label lblBuscar;
 
         /// <summary>
@@ -38,93 +36,72 @@ namespace ExamenTopicos
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.dgvAutoresTitulos = new DataGridView();
-            this.txtBuscar = new TextBox();
-            this.btnAgregar = new Button();
-            this.menuStrip1 = new MenuStrip();
-            this.eliminarRegistroToolStripMenuItem = new ToolStripMenuItem();
-            this.lblBuscar = new Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAutoresTitulos)).BeginInit();
-            this.menuStrip1.SuspendLayout();
-            this.SuspendLayout();
+            dgvAutoresTitulos = new DataGridView();
+            txtBuscar = new TextBox();
+            btnAgregar = new Button();
+            lblBuscar = new Label();
+            ((System.ComponentModel.ISupportInitialize)dgvAutoresTitulos).BeginInit();
+            SuspendLayout();
             // 
             // dgvAutoresTitulos
             // 
-            this.dgvAutoresTitulos.AllowUserToAddRows = false;
-            this.dgvAutoresTitulos.AllowUserToDeleteRows = false;
-            this.dgvAutoresTitulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAutoresTitulos.Location = new System.Drawing.Point(12, 90);
-            this.dgvAutoresTitulos.MultiSelect = false;
-            this.dgvAutoresTitulos.Name = "dgvAutoresTitulos";
-            this.dgvAutoresTitulos.ReadOnly = true;
-            this.dgvAutoresTitulos.RowHeadersWidth = 51;
-            this.dgvAutoresTitulos.RowTemplate.Height = 29;
-            this.dgvAutoresTitulos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAutoresTitulos.Size = new System.Drawing.Size(760, 350);
-            this.dgvAutoresTitulos.TabIndex = 0;
+            dgvAutoresTitulos.AllowUserToAddRows = false;
+            dgvAutoresTitulos.AllowUserToDeleteRows = false;
+            dgvAutoresTitulos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvAutoresTitulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvAutoresTitulos.Location = new Point(12, 77);
+            dgvAutoresTitulos.Margin = new Padding(3, 2, 3, 2);
+            dgvAutoresTitulos.MultiSelect = false;
+            dgvAutoresTitulos.Name = "dgvAutoresTitulos";
+            dgvAutoresTitulos.ReadOnly = true;
+            dgvAutoresTitulos.RowHeadersWidth = 51;
+            dgvAutoresTitulos.RowTemplate.Height = 29;
+            dgvAutoresTitulos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvAutoresTitulos.Size = new Size(519, 262);
+            dgvAutoresTitulos.TabIndex = 0;
             // 
             // txtBuscar
             // 
-            this.txtBuscar.Location = new System.Drawing.Point(90, 50);
-            this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(300, 27);
-            this.txtBuscar.TabIndex = 1;
-            // 
-            // lblBuscar
-            // 
-            this.lblBuscar.AutoSize = true;
-            this.lblBuscar.Location = new System.Drawing.Point(12, 53);
-            this.lblBuscar.Name = "lblBuscar";
-            this.lblBuscar.Size = new System.Drawing.Size(52, 20);
-            this.lblBuscar.TabIndex = 4;
-            this.lblBuscar.Text = "Buscar:";
+            txtBuscar.Location = new Point(79, 38);
+            txtBuscar.Margin = new Padding(3, 2, 3, 2);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(263, 23);
+            txtBuscar.TabIndex = 1;
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(672, 50);
-            this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(100, 30);
-            this.btnAgregar.TabIndex = 2;
-            this.btnAgregar.Text = "Agregar";
-            this.btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Location = new Point(443, 32);
+            btnAgregar.Margin = new Padding(3, 2, 3, 2);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(88, 33);
+            btnAgregar.TabIndex = 2;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = true;
             // 
-            // menuStrip1
+            // lblBuscar
             // 
-            this.menuStrip1.Items.AddRange(new ToolStripItem[] {
-            this.eliminarRegistroToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(784, 28);
-            this.menuStrip1.TabIndex = 3;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // eliminarRegistroToolStripMenuItem
-            // 
-            this.eliminarRegistroToolStripMenuItem.Name = "eliminarRegistroToolStripMenuItem";
-            this.eliminarRegistroToolStripMenuItem.Size = new System.Drawing.Size(137, 24);
-            this.eliminarRegistroToolStripMenuItem.Text = "Eliminar Registro";
+            lblBuscar.AutoSize = true;
+            lblBuscar.Location = new Point(10, 40);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(45, 15);
+            lblBuscar.TabIndex = 4;
+            lblBuscar.Text = "Buscar:";
             // 
             // FormAutorTitulo
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 461);
-            this.Controls.Add(this.lblBuscar);
-            this.Controls.Add(this.btnAgregar);
-            this.Controls.Add(this.txtBuscar);
-            this.Controls.Add(this.dgvAutoresTitulos);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "FormAutorTitulo";
-            this.Text = "Autores y Títulos";
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAutoresTitulos)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
-            // Nota: Los manejadores de eventos ya están asignados en el archivo principal FormAutorTitulo.cs
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(565, 365);
+            Controls.Add(lblBuscar);
+            Controls.Add(btnAgregar);
+            Controls.Add(txtBuscar);
+            Controls.Add(dgvAutoresTitulos);
+            Margin = new Padding(3, 2, 3, 2);
+            Name = "FormAutorTitulo";
+            Text = "Autores y Títulos";
+            ((System.ComponentModel.ISupportInitialize)dgvAutoresTitulos).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

@@ -34,13 +34,13 @@
             nudMax = new NumericUpDown();
             label5 = new Label();
             label4 = new Label();
-            txtDescripcion = new TextBox();
             label3 = new Label();
-            label2 = new Label();
             label1 = new Label();
             comboBox2 = new ComboBox();
             numericUpDown1 = new NumericUpDown();
             label6 = new Label();
+            label2 = new Label();
+            txtDescripcion = new TextBox();
             ((System.ComponentModel.ISupportInitialize)nudMin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMax).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -102,14 +102,6 @@
             label4.TabIndex = 16;
             label4.Text = "Cantidad minima";
             // 
-            // txtDescripcion
-            // 
-            txtDescripcion.Location = new Point(147, 93);
-            txtDescripcion.Name = "txtDescripcion";
-            txtDescripcion.Size = new Size(255, 23);
-            txtDescripcion.TabIndex = 1;
-            txtDescripcion.TextAlign = HorizontalAlignment.Right;
-            // 
             // label3
             // 
             label3.AutoSize = true;
@@ -118,16 +110,6 @@
             label3.Size = new Size(426, 15);
             label3.TabIndex = 14;
             label3.Text = "Favor de rellenar los campos correspondientes para agregar el nuevo descuento";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(34, 101);
-            label2.Name = "label2";
-            label2.Size = new Size(30, 15);
-            label2.TabIndex = 11;
-            label2.Text = "Tipo";
-            label2.Click += label2_Click;
             // 
             // label1
             // 
@@ -165,6 +147,24 @@
             label6.TabIndex = 21;
             label6.Text = "% Descuento";
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(34, 101);
+            label2.Name = "label2";
+            label2.Size = new Size(30, 15);
+            label2.TabIndex = 11;
+            label2.Text = "Tipo";
+            label2.Click += label2_Click;
+            // 
+            // txtDescripcion
+            // 
+            txtDescripcion.Location = new Point(147, 93);
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(255, 23);
+            txtDescripcion.TabIndex = 1;
+            txtDescripcion.TextAlign = HorizontalAlignment.Right;
+            // 
             // FormAgregarDescuentos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -200,12 +200,12 @@
         private NumericUpDown nudMax;
         private Label label5;
         private Label label4;
-        private TextBox txtDescripcion;
         private Label label3;
-        private Label label2;
         private Label label1;
         private ComboBox comboBox2;
         private NumericUpDown numericUpDown1;
         private Label label6;
+        private Label label2;
+        private TextBox txtDescripcion;
     }
 }
