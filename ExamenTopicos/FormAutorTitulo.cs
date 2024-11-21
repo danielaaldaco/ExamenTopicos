@@ -320,7 +320,7 @@ namespace ExamenTopicos
         /// </summary>
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            FormAgregarAutorTitulo agregar = new FormAgregarAutorTitulo();
+            FormTitles agregar = new FormTitles(userRole);
             agregar.Show();
             agregar.FormClosed += (s, args) => ActualizarGrid();
         }
