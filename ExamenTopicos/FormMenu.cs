@@ -92,7 +92,7 @@ namespace ExamenTopicos
 
         private void btnEmpleados_Click(object sender, EventArgs e)
         {
-            FormEmpleados formEmpleados = new FormEmpleados();
+            FormEmpleados formEmpleados = new FormEmpleados(user.Rol);
             formEmpleados.Show();
         }
 

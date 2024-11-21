@@ -127,5 +127,10 @@ namespace ExamenTopicos
         {
             this.Close();
         }
+
+        private void FormAgregarJob_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

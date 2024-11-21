@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             btnAgregar = new Button();
             label1 = new Label();
             txtBuscar = new TextBox();
             dgvEmpleados = new DataGridView();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            eliminarToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).BeginInit();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // btnAgregar
@@ -43,6 +47,7 @@
             btnAgregar.TabIndex = 11;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // label1
             // 
@@ -62,12 +67,28 @@
             // 
             // dgvEmpleados
             // 
+            dgvEmpleados.AllowUserToAddRows = false;
+            dgvEmpleados.AllowUserToDeleteRows = false;
             dgvEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvEmpleados.ContextMenuStrip = contextMenuStrip1;
             dgvEmpleados.Location = new Point(44, 84);
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.Size = new Size(577, 253);
             dgvEmpleados.TabIndex = 8;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(118, 26);
+            // 
+            // eliminarToolStripMenuItem
+            // 
+            eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
+            eliminarToolStripMenuItem.Size = new Size(117, 22);
+            eliminarToolStripMenuItem.Text = "Eliminar";
+            eliminarToolStripMenuItem.Click += eliminarToolStripMenuItem_Click;
             // 
             // FormEmpleados
             // 
@@ -80,7 +101,9 @@
             Controls.Add(dgvEmpleados);
             Name = "FormEmpleados";
             Text = "FormEmpleados";
+            Load += FormEmpleados_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -91,5 +114,7 @@
         private Label label1;
         private TextBox txtBuscar;
         private DataGridView dgvEmpleados;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem eliminarToolStripMenuItem;
     }
 }
