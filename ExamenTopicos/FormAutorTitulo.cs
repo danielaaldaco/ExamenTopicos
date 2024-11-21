@@ -326,7 +326,7 @@ namespace ExamenTopicos
         }
 
         /// <summary>
-        /// Método dedicado exclusivamente a la eliminación de registros.
+        /// Método dedicado exclusivamente a la eliminación de registros. 
         /// </summary>
         private void eliminarRegistroToolStripMenuItem_Click(object sender, EventArgs e)
         {
