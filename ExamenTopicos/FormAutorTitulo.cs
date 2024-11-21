@@ -29,7 +29,6 @@ namespace ExamenTopicos
             dgvAutoresTitulos.EditingControlShowing += dgvAutoresTitulos_EditingControlShowing;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             btnAgregar.Click += btnAgregar_Click;
-            eliminarRegistroToolStripMenuItem.Click += eliminarRegistroToolStripMenuItem_Click;
         }
 
         /// <summary>
@@ -321,13 +320,13 @@ namespace ExamenTopicos
         /// </summary>
         private void btnAgregar_Click(object sender, EventArgs e)  
         {
-            FormAgregarAutorTitulo agregar = new FormAgregarAutorTitulo();
+            FormTitles agregar = new FormTitles(userRole);
             agregar.Show();
             agregar.FormClosed += (s, args) => ActualizarGrid();
         }
          
         /// <summary>
-        /// Método dedicado exclusivamente a la eliminación de registros.
+        /// Método dedicado exclusivamente a la eliminación de registros. 
         /// </summary>
         private void eliminarRegistroToolStripMenuItem_Click(object sender, EventArgs e)
         {

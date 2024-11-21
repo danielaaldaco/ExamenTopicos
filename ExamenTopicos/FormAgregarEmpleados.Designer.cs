@@ -117,7 +117,6 @@
             mskIdEmpleado.Name = "mskIdEmpleado";
             mskIdEmpleado.Size = new Size(153, 23);
             mskIdEmpleado.TabIndex = 1;
-            mskIdEmpleado.MaskInputRejected += mskIdAutor_MaskInputRejected;
             // 
             // mskInicialSNombre
             // 
@@ -216,6 +215,7 @@
             btnAceptar.TabIndex = 9;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.Click += btnAceptar_Click;
             // 
             // FormAgregarEmpleados
             // 
@@ -243,6 +243,7 @@
             Controls.Add(label1);
             Name = "FormAgregarEmpleados";
             Text = "FormAgregarEmpleados";
+            Load += FormAgregarEmpleados_Load;
             ((System.ComponentModel.ISupportInitialize)nudNivel).EndInit();
             ResumeLayout(false);
             PerformLayout();

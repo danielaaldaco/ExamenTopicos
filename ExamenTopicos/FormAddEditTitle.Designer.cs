@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 ﻿namespace ExamenTopicos
+=======
+﻿using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Forms;
+using System.Xml.Linq;
+
+namespace ExamenTopicos
+>>>>>>> master
 {
     partial class FormAddEditTitle
     {
@@ -269,4 +277,8 @@
             PerformLayout();
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master
