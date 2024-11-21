@@ -11,19 +11,13 @@ namespace ExamenTopicos
         {
             InitializeComponent();
             this.user = user;
-            ConfigurarMenu();
-        }
-
-        private void ConfigurarMenu()
-        {
-            // Todos los botones son visibles, pero las restricciones se manejan en los eventos.
         }
 
         private void MostrarMensajeAccesoDenegado(string mensaje)
         {
             Form mensajeForm = new Form
             {
-                Width = 400,
+                Width = 400, 
                 Height = 200,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 StartPosition = FormStartPosition.CenterScreen,
@@ -77,8 +71,8 @@ namespace ExamenTopicos
         {
             if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
             {
-                FormRegalias formRegalias = new FormRegalias();
-                formRegalias.Show();
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
             }
 
             MessageBox.Show("Bienvenido a la sección de Regalías.", "Regalías", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -86,20 +80,30 @@ namespace ExamenTopicos
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormVentas formVentas = new FormVentas();
             formVentas.Show();
         }
 
         private void btnEmpleados_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormEmpleados formEmpleados = new FormEmpleados(user.Rol);
             formEmpleados.Show();
         }
 
         private void btnTitulos_Click(object sender, EventArgs e)
         {
-            FormAutorTitulo formAutorTitulo = new FormAutorTitulo(user.Rol);
-            formAutorTitulo.Show();
+            FormTitles formTitles = new FormTitles(user.Rol);
+            formTitles.Show();
         }
 
         private void btnDescuentos_Click(object sender, EventArgs e)
@@ -110,14 +114,12 @@ namespace ExamenTopicos
 
         private void btnTiendas_Click(object sender, EventArgs e)
         {
-            FormTiendas formTiendas=new FormTiendas();
-            formTiendas.Show();
+            MessageBox.Show("Bienvenido a la sección de Tiendas.", "Tiendas", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            FormInfoEditorial formInfoEditorial = new FormInfoEditorial();
-            formInfoEditorial.Show();
+            MessageBox.Show("Bienvenido a la sección de Detalle de Editoriales.", "Detalle Editorial", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)

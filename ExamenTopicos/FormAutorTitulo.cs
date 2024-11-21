@@ -318,15 +318,15 @@ namespace ExamenTopicos
         /// <summary>
         /// Abre el formulario para agregar un nuevo registro.
         /// </summary>
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private void btnAgregar_Click(object sender, EventArgs e)  
         {
-            FormAgregarAutorTitulo agregar = new FormAgregarAutorTitulo();
+            FormTitles agregar = new FormTitles(userRole);
             agregar.Show();
             agregar.FormClosed += (s, args) => ActualizarGrid();
         }
-
+         
         /// <summary>
-        /// Método dedicado exclusivamente a la eliminación de registros.
+        /// Método dedicado exclusivamente a la eliminación de registros. 
         /// </summary>
         private void eliminarRegistroToolStripMenuItem_Click(object sender, EventArgs e)
         {

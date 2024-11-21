@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExamenTopicos
-
 {
     internal class Datos
     {
-        String cadenaConexion = @"Data Source=DESKTOP-VR4NTPA;
+        String cadenaConexion = @"Data Source=ALFREDO\SQLEXPRESS;
                 Integrated Security=true;initial catalog=pubs";
 
         SqlConnection conexion;
@@ -23,7 +19,6 @@ namespace ExamenTopicos
             {
                 conexion = new SqlConnection(cadenaConexion);
                 conexion.Open();
-
                 return conexion;
             }
             catch (Exception ex)
@@ -32,6 +27,7 @@ namespace ExamenTopicos
                 return null;
             }
         }
+
         private void cerrarConexion()
         {
             try
@@ -45,8 +41,8 @@ namespace ExamenTopicos
             {
                 Debug.WriteLine(ex);
             }
-
         }
+
         public bool ejecutarABC(String comando)
         {
             try
@@ -62,6 +58,7 @@ namespace ExamenTopicos
                 return false;
             }
         }
+
         public DataSet consulta(String comando)
         {
             try
@@ -79,6 +76,48 @@ namespace ExamenTopicos
             }
         }
 
-    }
+        public bool ejecutarABC(String comando, SqlParameter[] parametros)
+        {
+            try
+            {
+                SqlConnection conn = abrirConexion();
+                if (conn == null)
+                    return false;
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                if (parametros != null)
+                    cmd.Parameters.AddRange(parametros);
+                cmd.ExecuteNonQuery();
+                cerrarConexion();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+        }
 
+        public DataSet consulta(String comando, SqlParameter[] parametros)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                SqlConnection conn = abrirConexion();
+                if (conn == null)
+                    return ds;
+                SqlCommand cmd = new SqlCommand(comando, conn);
+                if (parametros != null)
+                    cmd.Parameters.AddRange(parametros);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(ds);
+                cerrarConexion();
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
+        }
+    }
 }

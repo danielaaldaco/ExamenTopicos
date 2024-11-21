@@ -14,7 +14,6 @@ namespace ExamenTopicos
         DataSet ds;
         UserRole userRole;
         Datos datos = new Datos();
-
         private Dictionary<int, OriginalRowData> originalRows = new Dictionary<int, OriginalRowData>();
         private bool isUpdatingGrid = false;
 
@@ -28,32 +27,25 @@ namespace ExamenTopicos
         private void ConfigurarAccesoPorRol()
         {
             btnAgregar.Visible = false;
-            contextMenuStrip1.Items["eliminarPuestoToolStripMenuItem"].Visible = false;
             dgvPuestos.ReadOnly = true;
 
             switch (userRole)
             {
                 case UserRole.Cliente:
-                    // Cliente solo puede ver los puestos.
-                    dgvPuestos.ReadOnly = true;
                     break;
 
                 case UserRole.Empleado:
-                    // Empleado puede ver y agregar.
                     dgvPuestos.ReadOnly = true;
                     btnAgregar.Visible = true;
                     break;
 
                 case UserRole.GerenteVentas:
-                    // Gerente de ventas puede editar y agregar, pero no eliminar.
                     dgvPuestos.ReadOnly = false;
                     btnAgregar.Visible = true;
                     break;
 
                 case UserRole.Administrador:
-                    // Administrador tiene permisos completos.
                     btnAgregar.Visible = true;
-                    contextMenuStrip1.Items["eliminarPuestoToolStripMenuItem"].Visible = true;
                     dgvPuestos.ReadOnly = false;
                     break;
 
@@ -75,12 +67,10 @@ namespace ExamenTopicos
                 if (ds != null)
                 {
                     dgvPuestos.DataSource = ds.Tables[0];
-
                     dgvPuestos.Columns["job_id"].HeaderText = "ID Puesto";
                     dgvPuestos.Columns["job_desc"].HeaderText = "Descripción";
                     dgvPuestos.Columns["min_lvl"].HeaderText = "Nivel Mínimo";
                     dgvPuestos.Columns["max_lvl"].HeaderText = "Nivel Máximo";
-
                     dgvPuestos.Columns["job_id"].ReadOnly = true;
                 }
 
@@ -199,49 +189,6 @@ namespace ExamenTopicos
             FormAgregarJob agregar = new FormAgregarJob();
             agregar.Show();
             agregar.FormClosed += (s, args) => ActualizarGrid();
-        }
-
-        private void eliminarPuestoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (userRole != UserRole.Administrador)
-            {
-                MessageBox.Show("Solo un administrador puede eliminar puestos.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                if (dgvPuestos.SelectedRows.Count > 0)
-                {
-                    int id = Convert.ToInt32(dgvPuestos.SelectedRows[0].Cells["job_id"].Value);
-                    string descripcion = dgvPuestos.SelectedRows[0].Cells["job_desc"].Value.ToString();
-
-                    if (MessageBox.Show($"¿Deseas eliminar el puesto '{descripcion}'?",
-                        "Confirmar Eliminación",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        bool resultado = datos.ejecutarABC("DELETE FROM jobs WHERE job_id=" + id);
-
-                        if (resultado)
-                        {
-                            MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ActualizarGrid();
-                        }
-                        else
-                        {
-                            MessageBox.Show("No se pudo eliminar el registro. Verifique que no esté siendo utilizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Seleccione un registro para eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Ocurrió un error al intentar eliminar el registro.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void dgvPuestos_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
