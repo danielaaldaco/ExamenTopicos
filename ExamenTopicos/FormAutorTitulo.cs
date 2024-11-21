@@ -319,7 +319,7 @@ namespace ExamenTopicos
         /// <summary>
         /// Abre el formulario para agregar un nuevo registro.
         /// </summary>
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private void btnAgregar_Click(object sender, EventArgs e)  
         {
             FormAgregarAutorTitulo agregar = new FormAgregarAutorTitulo();
             agregar.Show();
