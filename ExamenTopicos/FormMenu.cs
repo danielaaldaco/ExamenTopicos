@@ -11,12 +11,6 @@ namespace ExamenTopicos
         {
             InitializeComponent();
             this.user = user;
-            ConfigurarMenu();
-        }
-
-        private void ConfigurarMenu()
-        {
-            // Todos los botones son visibles, pero las restricciones se manejan en los eventos.
         }
 
         private void MostrarMensajeAccesoDenegado(string mensaje)
@@ -86,20 +80,30 @@ namespace ExamenTopicos
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormVentas formVentas = new FormVentas();
             formVentas.Show();
         }
 
         private void btnEmpleados_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormEmpleados formEmpleados = new FormEmpleados();
             formEmpleados.Show();
         }
 
         private void btnTitulos_Click(object sender, EventArgs e)
         {
-            FormAutorTitulo formAutorTitulo = new FormAutorTitulo(user.Rol);
-            formAutorTitulo.Show();
+            FormTitles formTitles = new FormTitles(user.Rol);
+            formTitles.Show();
         }
 
         private void btnDescuentos_Click(object sender, EventArgs e)

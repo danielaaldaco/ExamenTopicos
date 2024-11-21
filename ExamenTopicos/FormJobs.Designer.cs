@@ -68,13 +68,7 @@
             contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { eliminarPuestoToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new System.Drawing.Size(182, 28);
-            // 
-            // eliminarPuestoToolStripMenuItem
-            // 
-            eliminarPuestoToolStripMenuItem.Name = "eliminarPuestoToolStripMenuItem";
-            eliminarPuestoToolStripMenuItem.Size = new System.Drawing.Size(181, 24);
-            eliminarPuestoToolStripMenuItem.Text = "Eliminar puesto";
-            eliminarPuestoToolStripMenuItem.Click += eliminarPuestoToolStripMenuItem_Click;
+
             // 
             // btnAgregar
             // 
