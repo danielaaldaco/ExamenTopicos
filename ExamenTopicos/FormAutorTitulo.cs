@@ -325,7 +325,7 @@ namespace ExamenTopicos
             agregar.Show();
             agregar.FormClosed += (s, args) => ActualizarGrid();
         }
-
+         
         /// <summary>
         /// Método dedicado exclusivamente a la eliminación de registros.
         /// </summary>
