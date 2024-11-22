@@ -1,4 +1,4 @@
-﻿namespace ExamenTopicos
+namespace ExamenTopicos
 {
     partial class FormEmpleados
     {
