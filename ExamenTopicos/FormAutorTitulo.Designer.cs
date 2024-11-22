@@ -22,7 +22,7 @@ namespace ExamenTopicos
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(664, 12);
+            btnAgregar.Location = new Point(572, 12);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(75, 30);
             btnAgregar.TabIndex = 1;
@@ -39,12 +39,15 @@ namespace ExamenTopicos
             // 
             // dgvAutoresTitulos
             // 
+            dgvAutoresTitulos.AllowUserToAddRows = false;
+            dgvAutoresTitulos.AllowUserToDeleteRows = false;
             dgvAutoresTitulos.AllowUserToResizeRows = false;
             dgvAutoresTitulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvAutoresTitulos.Location = new Point(12, 62);
             dgvAutoresTitulos.Name = "dgvAutoresTitulos";
+            dgvAutoresTitulos.ReadOnly = true;
             dgvAutoresTitulos.RowHeadersWidth = 51;
-            dgvAutoresTitulos.Size = new Size(727, 350);
+            dgvAutoresTitulos.Size = new Size(635, 350);
             dgvAutoresTitulos.TabIndex = 3;
             dgvAutoresTitulos.CellContentClick += dgvAutoresTitulos_CellContentClick;
             // 
@@ -52,7 +55,7 @@ namespace ExamenTopicos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(751, 424);
+            ClientSize = new Size(656, 424);
             Controls.Add(dgvAutoresTitulos);
             Controls.Add(txtBuscar);
             Controls.Add(btnAgregar);

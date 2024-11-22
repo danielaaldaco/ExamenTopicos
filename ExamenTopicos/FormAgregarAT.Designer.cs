@@ -130,6 +130,7 @@
             // 
             // btnAceptar
             // 
+            btnAceptar.Image = Properties.Resources.pencil2;
             btnAceptar.Location = new Point(54, 295);
             btnAceptar.Margin = new Padding(3, 4, 3, 4);
             btnAceptar.Name = "btnAceptar";

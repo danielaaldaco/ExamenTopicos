@@ -57,5 +57,11 @@ namespace ExamenTopicos
                 columnas.Append($", {ColumnaEliminar}");
             }
         }
+
+        public enum Operacion
+        {
+            Agregar,
+            Editar
+        }
     }
 }

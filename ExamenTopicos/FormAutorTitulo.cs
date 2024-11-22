@@ -1,8 +1,10 @@
-﻿using System;
+﻿// FormAutorTitulo.cs
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace ExamenTopicos
 {
@@ -82,26 +84,32 @@ namespace ExamenTopicos
                     if (dgvAutoresTitulos.Columns.Contains("title_id"))
                         dgvAutoresTitulos.Columns["title_id"].Visible = false;
 
-                    // Agregar la columna "Editar" si no existe
+                    // Agregar la columna "Editar" con ícono de lápiz si no existe
                     if (!dgvAutoresTitulos.Columns.Contains("Editar"))
                     {
-                        DataGridViewButtonColumn editarColumn = new DataGridViewButtonColumn();
-                        editarColumn.Name = "Editar";
-                        editarColumn.HeaderText = "Editar";
-                        editarColumn.Text = "Editar";
-                        editarColumn.UseColumnTextForButtonValue = true;
-                        dgvAutoresTitulos.Columns.Add(editarColumn);
+                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Editar",
+                            HeaderText = "", // Sin encabezado para mantenerlo pequeño
+                            Image = Properties.Resources.pencil2, // Asegúrate de haber agregado el ícono edit.png en recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30 // Tamaño ajustado de la columna
+                        };
+                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn); // Insertar en la primera posición
                     }
 
-                    // Agregar la columna "Eliminar" si no existe
+                    // Agregar la columna "Eliminar" con ícono de basura si no existe
                     if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
                     {
-                        DataGridViewButtonColumn eliminarColumn = new DataGridViewButtonColumn();
-                        eliminarColumn.Name = "Eliminar";
-                        eliminarColumn.HeaderText = "Eliminar";
-                        eliminarColumn.Text = "Eliminar";
-                        eliminarColumn.UseColumnTextForButtonValue = true;
-                        dgvAutoresTitulos.Columns.Add(eliminarColumn);
+                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Eliminar",
+                            HeaderText = "", // Sin encabezado para mantenerlo pequeño
+                            Image = Properties.Resources.garbage, // Asegúrate de haber agregado el ícono garbage.png en recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30 // Tamaño ajustado de la columna
+                        };
+                        dgvAutoresTitulos.Columns.Add(eliminarColumn); // Agregar la columna de basura
                     }
                 }
                 else
@@ -121,6 +129,9 @@ namespace ExamenTopicos
             }
         }
 
+        /// <summary>
+        /// Configura los encabezados de las columnas del DataGridView.
+        /// </summary>
         private void ConfigurarColumnasGrid()
         {
             if (dgvAutoresTitulos.Columns.Contains("Nombre Autor"))
@@ -136,6 +147,10 @@ namespace ExamenTopicos
                 dgvAutoresTitulos.Columns["Regalía (%)"].HeaderText = "Regalía (%)";
         }
 
+        /// <summary>
+        /// Evento que se dispara cuando cambia el texto en el cuadro de búsqueda.
+        /// Filtra los datos mostrados en el DataGridView.
+        /// </summary>
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             try
@@ -173,7 +188,6 @@ namespace ExamenTopicos
                         WHERE 
                             a.au_lname + ' ' + a.au_fname LIKE '%{searchValue}%' 
                             OR t.title LIKE '%{searchValue}%'";
-
                 ds = datos.consulta(query);
                 if (ds != null && ds.Tables.Count > 0)
                 {
@@ -190,22 +204,28 @@ namespace ExamenTopicos
                     // Asegurar que la columna "Editar" esté presente
                     if (!dgvAutoresTitulos.Columns.Contains("Editar"))
                     {
-                        DataGridViewButtonColumn editarColumn = new DataGridViewButtonColumn();
-                        editarColumn.Name = "Editar";
-                        editarColumn.HeaderText = "Editar";
-                        editarColumn.Text = "Editar";
-                        editarColumn.UseColumnTextForButtonValue = true;
-                        dgvAutoresTitulos.Columns.Add(editarColumn);
+                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Editar",
+                            HeaderText = "", // Sin encabezado
+                            Image = Properties.Resources.pencil2, // Asegúrate de que edit.png esté en tus recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30
+                        };
+                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
                     }
 
                     // Asegurar que la columna "Eliminar" esté presente
                     if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
                     {
-                        DataGridViewButtonColumn eliminarColumn = new DataGridViewButtonColumn();
-                        eliminarColumn.Name = "Eliminar";
-                        eliminarColumn.HeaderText = "Eliminar";
-                        eliminarColumn.Text = "Eliminar";
-                        eliminarColumn.UseColumnTextForButtonValue = true;
+                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Eliminar",
+                            HeaderText = "", // Sin encabezado
+                            Image = Properties.Resources.garbage, // Asegúrate de que garbage.png esté en tus recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30
+                        };
                         dgvAutoresTitulos.Columns.Add(eliminarColumn);
                     }
                 }
@@ -220,15 +240,23 @@ namespace ExamenTopicos
             }
         }
 
+        /// <summary>
+        /// Evento que se dispara al hacer clic en el botón "Agregar".
+        /// Abre el formulario para agregar un nuevo registro.
+        /// </summary>
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            using (var agregar = new FormAgregarAT("Agregar"))
+            using (var agregar = new FormAgregarAT(Utils.Operacion.Agregar))
             {
                 agregar.ShowDialog();
             }
             ActualizarGrid();
         }
 
+        /// <summary>
+        /// Evento que se dispara al hacer clic en una celda del DataGridView.
+        /// Maneja la eliminación y edición de registros cuando se hace clic en los botones correspondientes.
+        /// </summary>
         private void dgvAutoresTitulos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Verifica que la fila y columna sean válidas
@@ -267,8 +295,7 @@ namespace ExamenTopicos
                                 WHERE au_id = @auId AND title_id = @titleId";
 
                             // Crear parámetros para la consulta
-                            SqlParameter[] parametros = new SqlParameter[]
-                            {
+                            SqlParameter[] parametros = new SqlParameter[] {
                                 new SqlParameter("@auId", auId),
                                 new SqlParameter("@titleId", titleId)
                             };
@@ -305,7 +332,7 @@ namespace ExamenTopicos
                     }
 
                     // Abrir el formulario de edición, pasando los IDs
-                    using (var editarForm = new FormAgregarAT("Editar", auId, titleId))
+                    using (var editarForm = new FormAgregarAT(Utils.Operacion.Editar, auId, titleId))
                     {
                         editarForm.ShowDialog();
                     }
