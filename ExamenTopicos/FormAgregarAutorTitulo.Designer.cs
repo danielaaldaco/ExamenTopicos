@@ -27,6 +27,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAgregarAutorTitulo));
             labelAutorId = new Label();
             labelTituloId = new Label();
             labelOrden = new Label();
@@ -46,76 +47,81 @@
             // labelAutorId
             // 
             labelAutorId.AutoSize = true;
-            labelAutorId.Location = new Point(30, 40);
+            labelAutorId.Location = new Point(26, 30);
             labelAutorId.Name = "labelAutorId";
-            labelAutorId.Size = new Size(93, 20);
+            labelAutorId.Size = new Size(73, 15);
             labelAutorId.TabIndex = 0;
             labelAutorId.Text = "ID del Autor:";
             // 
             // labelTituloId
             // 
             labelTituloId.AutoSize = true;
-            labelTituloId.Location = new Point(30, 100);
+            labelTituloId.Location = new Point(26, 75);
             labelTituloId.Name = "labelTituloId";
-            labelTituloId.Size = new Size(94, 20);
+            labelTituloId.Size = new Size(73, 15);
             labelTituloId.TabIndex = 1;
             labelTituloId.Text = "ID del Título:";
             // 
             // labelOrden
             // 
             labelOrden.AutoSize = true;
-            labelOrden.Location = new Point(30, 160);
+            labelOrden.Location = new Point(26, 120);
             labelOrden.Name = "labelOrden";
-            labelOrden.Size = new Size(119, 20);
+            labelOrden.Size = new Size(95, 15);
             labelOrden.TabIndex = 2;
             labelOrden.Text = "Orden del Autor:";
             // 
             // labelRegalia
             // 
             labelRegalia.AutoSize = true;
-            labelRegalia.Location = new Point(30, 220);
+            labelRegalia.Location = new Point(26, 165);
             labelRegalia.Name = "labelRegalia";
-            labelRegalia.Size = new Size(152, 20);
+            labelRegalia.Size = new Size(119, 15);
             labelRegalia.TabIndex = 3;
             labelRegalia.Text = "Regalía (% del título):";
             // 
             // txtAutorId
             // 
-            txtAutorId.Location = new Point(170, 37);
+            txtAutorId.Location = new Point(149, 28);
+            txtAutorId.Margin = new Padding(3, 2, 3, 2);
             txtAutorId.Name = "txtAutorId";
-            txtAutorId.Size = new Size(250, 27);
+            txtAutorId.Size = new Size(219, 23);
             txtAutorId.TabIndex = 4;
             // 
             // txtTituloId
             // 
-            txtTituloId.Location = new Point(170, 97);
+            txtTituloId.Location = new Point(149, 73);
+            txtTituloId.Margin = new Padding(3, 2, 3, 2);
             txtTituloId.Name = "txtTituloId";
-            txtTituloId.Size = new Size(250, 27);
+            txtTituloId.Size = new Size(219, 23);
             txtTituloId.TabIndex = 5;
             // 
             // nudOrden
             // 
-            nudOrden.Location = new Point(170, 157);
+            nudOrden.Location = new Point(149, 118);
+            nudOrden.Margin = new Padding(3, 2, 3, 2);
             nudOrden.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             nudOrden.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudOrden.Name = "nudOrden";
-            nudOrden.Size = new Size(120, 27);
+            nudOrden.Size = new Size(105, 23);
             nudOrden.TabIndex = 6;
             nudOrden.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // nudRegalia
             // 
-            nudRegalia.Location = new Point(170, 217);
+            nudRegalia.Location = new Point(149, 163);
+            nudRegalia.Margin = new Padding(3, 2, 3, 2);
             nudRegalia.Name = "nudRegalia";
-            nudRegalia.Size = new Size(120, 27);
+            nudRegalia.Size = new Size(105, 23);
             nudRegalia.TabIndex = 7;
             nudRegalia.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(220, 280);
+            btnAceptar.Location = new Point(192, 210);
+            btnAceptar.Margin = new Padding(3, 2, 3, 2);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(100, 30);
+            btnAceptar.Size = new Size(88, 22);
             btnAceptar.TabIndex = 8;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
@@ -123,9 +129,10 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(340, 280);
+            btnCancelar.Location = new Point(298, 210);
+            btnCancelar.Margin = new Padding(3, 2, 3, 2);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(100, 30);
+            btnCancelar.Size = new Size(88, 22);
             btnCancelar.TabIndex = 9;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
@@ -137,9 +144,9 @@
             // 
             // FormAgregarAutorTitulo
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(500, 350);
+            ClientSize = new Size(438, 262);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(nudRegalia);
@@ -150,6 +157,8 @@
             Controls.Add(labelOrden);
             Controls.Add(labelTituloId);
             Controls.Add(labelAutorId);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 2, 3, 2);
             Name = "FormAgregarAutorTitulo";
             Text = "Agregar Autor y Título";
             ((System.ComponentModel.ISupportInitialize)nudOrden).EndInit();

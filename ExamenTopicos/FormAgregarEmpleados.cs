@@ -16,6 +16,7 @@ namespace ExamenTopicos
         private const int ID_MIN_LENGTH = 8;
         private const int ID_MAX_LENGTH = 10;
 
+
         public FormAgregarEmpleados(Operacion operacion, string empId = null)
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace ExamenTopicos
             CargarDatosComboBox();
             ConfigurarFormulario();
             this.Shown += FormAgregarEmpleados_Shown;
+            cmbPuesto.SelectedIndexChanged += cmbPuesto_SelectedIndexChanged;
         }
 
         private void ConfigurarFormulario()
@@ -58,6 +60,16 @@ namespace ExamenTopicos
             {
                 cmbPuesto.BeginInvoke((Action)(() => cmbPuesto.Focus()));
             }
+
+            if (cmbPuesto.SelectedIndex >= 0)
+            {
+                ActualizarRangoNivelPorPuesto();
+            }
+        }
+
+        private void FormAgregarEmpleados_Shown_1(object sender, EventArgs e)
+        {
+
         }
 
         private void ConfigurarCamposEdicion()
@@ -88,16 +100,27 @@ namespace ExamenTopicos
 
         private void GenerarIdAlfanumerico()
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const string letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string numeros = "0123456789";
+            const string genero = "FM";
             Random random = new Random();
-            int length = random.Next(ID_MIN_LENGTH, ID_MAX_LENGTH + 1);
 
-            string nuevoId = new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
+            string letrasIniciales = new string(Enumerable.Repeat(letras, 3)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            string numeroInicial = (random.Next(1, 10)).ToString();
+
+            string numerosMedios = new string(Enumerable.Repeat(numeros, 4)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            string letraFinal = genero[random.Next(genero.Length)].ToString();
+
+            string nuevoId = letrasIniciales + numeroInicial + numerosMedios + letraFinal;
 
             mskIdEmpleado.Text = nuevoId;
             mskIdEmpleado.ReadOnly = true;
         }
+
 
         private void ConfigurarRangoNivel()
         {
@@ -130,6 +153,7 @@ namespace ExamenTopicos
         {
             try
             {
+                // Cargar los puestos
                 string queryPuestos = "SELECT job_id, job_desc FROM jobs";
                 DataSet dsPuestos = datos.consulta(queryPuestos);
                 if (dsPuestos != null && dsPuestos.Tables.Count > 0)
@@ -137,9 +161,10 @@ namespace ExamenTopicos
                     cmbPuesto.DataSource = dsPuestos.Tables[0];
                     cmbPuesto.DisplayMember = "job_desc";
                     cmbPuesto.ValueMember = "job_id";
-                    cmbPuesto.SelectedIndex = -1;
+                    cmbPuesto.SelectedIndex = -1; // Sin selección inicial
                 }
 
+                // Cargar las editoriales
                 string queryEditoriales = "SELECT pub_id, pub_name FROM publishers";
                 DataSet dsEditoriales = datos.consulta(queryEditoriales);
                 if (dsEditoriales != null && dsEditoriales.Tables.Count > 0)
@@ -147,7 +172,7 @@ namespace ExamenTopicos
                     cmbEditorial.DataSource = dsEditoriales.Tables[0];
                     cmbEditorial.DisplayMember = "pub_name";
                     cmbEditorial.ValueMember = "pub_id";
-                    cmbEditorial.SelectedIndex = -1;
+                    cmbEditorial.SelectedIndex = -1; // Sin selección inicial
                 }
             }
             catch (Exception ex)
@@ -271,23 +296,94 @@ namespace ExamenTopicos
         private SqlParameter[] ObtenerParametros(bool incluirId)
         {
             var parametros = new List<SqlParameter>
-            {
-                new SqlParameter("@jobId", cmbPuesto.SelectedValue),
-                new SqlParameter("@jobLvl", (int)nudNivel.Value),
-                new SqlParameter("@pubId", cmbEditorial.SelectedValue)
-            };
+    {
+        new SqlParameter("@fname", txtNombre.Text.Trim()),
+        new SqlParameter("@minit", string.IsNullOrWhiteSpace(mskInicialSNombre.Text) ? (object)DBNull.Value : mskInicialSNombre.Text.Trim()),
+        new SqlParameter("@lname", txtApellido.Text.Trim()),
+        new SqlParameter("@jobId", cmbPuesto.SelectedValue ?? (object)DBNull.Value),
+        new SqlParameter("@jobLvl", (int)nudNivel.Value),
+        new SqlParameter("@pubId", cmbEditorial.SelectedValue ?? (object)DBNull.Value),
+        new SqlParameter("@hireDate", dtpFecha.Value)
+    };
 
             if (incluirId || operacion == Operacion.Agregar)
             {
-                parametros.Insert(0, new SqlParameter("@empId", mskIdEmpleado.Text));
+                parametros.Insert(0, new SqlParameter("@empId", mskIdEmpleado.Text.Trim()));
             }
 
             return parametros.ToArray();
         }
 
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void ActualizarRangoNivelPorPuesto()
+        {
+            try
+            {
+                // Verificar si el ComboBox tiene un valor seleccionado válido
+                if (cmbPuesto.SelectedValue != null)
+                {
+                    // Convertir el valor seleccionado a un entero (job_id)
+                    int jobId;
+                    if (int.TryParse(cmbPuesto.SelectedValue.ToString(), out jobId))
+                    {
+                        // Consulta para obtener el nivel mínimo y máximo del puesto seleccionado
+                        string query = @"
+                    SELECT min_lvl, max_lvl 
+                    FROM jobs 
+                    WHERE job_id = @jobId";
+
+                        SqlParameter[] parametros = new SqlParameter[]
+                        {
+                    new SqlParameter("@jobId", jobId)
+                        };
+
+                        DataSet ds = datos.consulta(query, parametros);
+
+                        if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                        {
+                            var row = ds.Tables[0].Rows[0];
+                            int minLevel = Convert.ToInt32(row["min_lvl"]);
+                            int maxLevel = Convert.ToInt32(row["max_lvl"]);
+
+                            // Asignar el rango al NumericUpDown
+                            nudNivel.Minimum = minLevel;
+                            nudNivel.Maximum = maxLevel;
+
+                            // Establecer un valor por defecto dentro del rango
+                            if (nudNivel.Value < minLevel || nudNivel.Value > maxLevel)
+                                nudNivel.Value = minLevel;
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se encontraron niveles para el puesto seleccionado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar el rango de nivel: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
+        private void cmbPuesto_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbPuesto_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ActualizarRangoNivelPorPuesto();
+        }
+
+ 
+
     }
 }

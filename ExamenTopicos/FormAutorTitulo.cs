@@ -328,99 +328,108 @@ namespace ExamenTopicos
         /// Filtra los datos mostrados en el DataGridView.
         /// </summary>
         private void txtBuscar_TextChanged(object sender, EventArgs e)
+{
+    try
+    {
+        string searchValue = System.Text.RegularExpressions.Regex.Replace(txtBuscar.Text.Trim(), @"\s+", " ");
+        string query = string.IsNullOrWhiteSpace(searchValue)
+                    ? @"
+                SELECT 
+                    a.au_id AS 'ID Autor',
+                    a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                    t.title_id AS 'ID Título',
+                    t.title AS 'Título',
+                    ta.au_ord AS 'Orden',
+                    ta.royaltyper AS 'Regalía (%)'
+                FROM 
+                    titleauthor ta
+                INNER JOIN 
+                    authors a ON ta.au_id = a.au_id
+                INNER JOIN 
+                    titles t ON ta.title_id = t.title_id"
+                    : @"
+                SELECT 
+                    a.au_id AS 'ID Autor',
+                    a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                    t.title_id AS 'ID Título',
+                    t.title AS 'Título',
+                    ta.au_ord AS 'Orden',
+                    ta.royaltyper AS 'Regalía (%)'
+                FROM 
+                    titleauthor ta
+                INNER JOIN 
+                    authors a ON ta.au_id = a.au_id
+                INNER JOIN 
+                    titles t ON ta.title_id = t.title_id
+                WHERE 
+                    a.au_lname + ' ' + a.au_fname LIKE @searchValue 
+                    OR t.title LIKE @searchValue";
+
+        SqlParameter[] parametros = new SqlParameter[]
         {
-            try
-            {
-                string searchValue = System.Text.RegularExpressions.Regex.Replace(txtBuscar.Text.Trim(), @"\s+", " ");
-                string query = string.IsNullOrWhiteSpace(searchValue)
-                            ? @"
-                        SELECT 
-                            a.au_id AS 'ID Autor',
-                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
-                            t.title_id AS 'ID Título',
-                            t.title AS 'Título',
-                            ta.au_ord AS 'Orden',
-                            ta.royaltyper AS 'Regalía (%)'
-                        FROM 
-                            titleauthor ta
-                        INNER JOIN 
-                            authors a ON ta.au_id = a.au_id
-                        INNER JOIN 
-                            titles t ON ta.title_id = t.title_id"
-                            : @"
-                        SELECT 
-                            a.au_id AS 'ID Autor',
-                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
-                            t.title_id AS 'ID Título',
-                            t.title AS 'Título',
-                            ta.au_ord AS 'Orden',
-                            ta.royaltyper AS 'Regalía (%)'
-                        FROM 
-                            titleauthor ta
-                        INNER JOIN 
-                            authors a ON ta.au_id = a.au_id
-                        INNER JOIN 
-                            titles t ON ta.title_id = t.title_id
-                        WHERE 
-                            a.au_lname + ' ' + a.au_fname LIKE @searchValue 
-                            OR t.title LIKE @searchValue";
+            new SqlParameter("@searchValue", $"%{searchValue}%")
+        };
 
-                SqlParameter[] parametros = new SqlParameter[]
+        ds = datos.consulta(query, parametros);
+
+        if (ds != null && ds.Tables.Count > 0)
+        {
+            dgvAutoresTitulos.DataSource = ds.Tables[0];
+
+            // Configurar columnas después de asignar el DataSource
+            ConfigurarColumnasGrid();
+
+            // Asegurar que las columnas personalizadas siempre existan
+            AgregarColumnasPersonalizadas();
+        }
+        else
+        {
+            dgvAutoresTitulos.DataSource = null;
+        }
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Error en la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
+
+
+        private void FormAutorTitulo_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AgregarColumnasPersonalizadas()
+        {
+            // Asegurar que la columna "Editar" esté presente
+            if (!dgvAutoresTitulos.Columns.Contains("Editar"))
+            {
+                DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
                 {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
+                    Name = "Editar",
+                    HeaderText = "", // Sin encabezado
+                    Image = Properties.Resources.lapiz, // Icono del lápiz
+                    ImageLayout = DataGridViewImageCellLayout.Zoom,
+                    Width = 30
                 };
-
-                ds = datos.consulta(query, parametros);
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvAutoresTitulos.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-                    ConfigurarColumnas();
-
-                    // Ocultar las columnas de IDs
-                    if (dgvAutoresTitulos.Columns.Contains("ID Autor"))
-                        dgvAutoresTitulos.Columns["ID Autor"].Visible = false;
-
-                    if (dgvAutoresTitulos.Columns.Contains("ID Título"))
-                        dgvAutoresTitulos.Columns["ID Título"].Visible = false;
-
-                    // Asegurar que la columna "Editar" esté presente
-                    if (!dgvAutoresTitulos.Columns.Contains("Editar"))
-                    {
-                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
-                        {
-                            Name = "Editar",
-                            HeaderText = "", // Sin encabezado
-                            Image = Properties.Resources.lapiz, // Asegúrate de que pencil2.png esté en tus recursos
-                            ImageLayout = DataGridViewImageCellLayout.Zoom,
-                            Width = 30
-                        };
-                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
-                    }
-
-                    // Asegurar que la columna "Eliminar" esté presente
-                    if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
-                    {
-                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
-                        {
-                            Name = "Eliminar",
-                            HeaderText = "", // Sin encabezado
-                            Image = Properties.Resources.mdi__garbage, // Asegúrate de que garbage.png esté en tus recursos
-                            ImageLayout = DataGridViewImageCellLayout.Zoom,
-                            Width = 30
-                        };
-                        dgvAutoresTitulos.Columns.Add(eliminarColumn);
-                    }
-                }
-                else
-                {
-                    dgvAutoresTitulos.DataSource = null;
-                }
+                dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
             }
-            catch
+
+            // Asegurar que la columna "Eliminar" esté presente
+            if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
             {
-                MessageBox.Show("Error en la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
+                {
+                    Name = "Eliminar",
+                    HeaderText = "", // Sin encabezado
+                    Image = Properties.Resources.mdi__garbage, // Icono de basura
+                    ImageLayout = DataGridViewImageCellLayout.Zoom,
+                    Width = 30
+                };
+                dgvAutoresTitulos.Columns.Add(eliminarColumn);
             }
         }
+
     }
 }
