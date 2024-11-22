@@ -21,6 +21,13 @@ namespace ExamenTopicos
             ConfigurarFormulario();
             CargarDatosComboBox();
             this.Shown += FormAddEditTitle_Shown;
+
+            this.txtRoyalty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRoyalty_KeyPress);
+            this.txtRoyalty.TextChanged += new System.EventHandler(this.txtRoyalty_TextChanged);
+
+            this.txtYtdSales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYtdSales_KeyPress);
+            this.txtYtdSales.TextChanged += new System.EventHandler(this.txtYtdSales_TextChanged);
+
         }
 
         private void ConfigurarFormulario()
@@ -80,27 +87,30 @@ namespace ExamenTopicos
         {
             try
             {
+                // Asegúrate de que la longitud del ID sea consistente con la columna title_id
+                int maxIdLength = 6; // Ajusta según la longitud de la columna "title_id"
+
                 string query = "SELECT MAX(title_id) AS MaxId FROM titles";
                 DataSet ds = datos.consulta(query);
 
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    string maxId = ds.Tables[0].Rows[0]["MaxId"].ToString();
+                    string maxId = ds.Tables[0].Rows[0]["MaxId"]?.ToString();
 
-                    if (!string.IsNullOrEmpty(maxId) && maxId.Length >= 4)
+                    if (!string.IsNullOrEmpty(maxId) && maxId.Length == maxIdLength)
                     {
-                        string prefix = maxId.Substring(0, 3);
-                        int number = int.Parse(maxId.Substring(3)) + 1;
-                        txtTitleId.Text = $"{prefix}{number:D4}";
+                        string prefix = maxId.Substring(0, 2); // Por ejemplo, "TC"
+                        int number = int.Parse(maxId.Substring(2)) + 1;
+                        txtTitleId.Text = $"{prefix}{number:D4}"; // Genera un ID con 2 letras y 4 números
                     }
                     else
                     {
-                        txtTitleId.Text = "T0001";
+                        txtTitleId.Text = "TC0001"; // Valor inicial si no hay registros
                     }
                 }
                 else
                 {
-                    txtTitleId.Text = "T0001";
+                    txtTitleId.Text = "TC0001"; // Valor inicial si no hay registros
                 }
             }
             catch (Exception ex)
@@ -256,6 +266,12 @@ namespace ExamenTopicos
                 return false;
             }
 
+            if (txtTitleId.Text.Length > 6) // Asegúrate de que coincida con la longitud permitida
+            {
+                MessageBox.Show("El ID del título no puede exceder 6 caracteres.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
             if (cmbType.SelectedIndex == -1)
             {
                 MessageBox.Show("El campo 'Tipo' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -268,41 +284,103 @@ namespace ExamenTopicos
                 return false;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out _) || !decimal.TryParse(txtAdvance.Text, out _))
-            {
-                MessageBox.Show("Los campos 'Precio' y 'Anticipo' deben ser números válidos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (!int.TryParse(txtRoyalty.Text, out _) || !int.TryParse(txtYtdSales.Text, out _))
-            {
-                MessageBox.Show("Los campos 'Regalías' y 'Ventas YTD' deben ser números válidos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
             return true;
         }
 
         private SqlParameter[] ObtenerParametros()
         {
+            string tipoSeleccionado = cmbType.SelectedItem is DataRowView rowView
+                ? rowView["type"].ToString()
+                : cmbType.SelectedItem?.ToString();
+
             return new SqlParameter[]
             {
-                new SqlParameter("@titleId", txtTitleId.Text),
-                new SqlParameter("@title", txtTitle.Text),
-                new SqlParameter("@type", cmbType.SelectedItem?.ToString()),
-                new SqlParameter("@pubId", cmbPubId.SelectedValue),
-                new SqlParameter("@price", decimal.Parse(txtPrice.Text)),
-                new SqlParameter("@advance", decimal.Parse(txtAdvance.Text)),
-                new SqlParameter("@royalty", int.Parse(txtRoyalty.Text)),
-                new SqlParameter("@ytdSales", int.Parse(txtYtdSales.Text)),
-                new SqlParameter("@notes", txtNotes.Text),
-                new SqlParameter("@pubdate", dtpPubDate.Value)
+        new SqlParameter("@titleId", txtTitleId.Text),
+        new SqlParameter("@title", txtTitle.Text),
+        new SqlParameter("@type", tipoSeleccionado?.PadRight(12).Substring(0, 12)),
+        new SqlParameter("@pubId", cmbPubId.SelectedValue),
+        new SqlParameter("@price", decimal.Parse(txtPrice.Text)),
+        new SqlParameter("@advance", decimal.Parse(txtAdvance.Text)),
+        new SqlParameter("@royalty", int.Parse(txtRoyalty.Text)),
+        new SqlParameter("@ytdSales", int.Parse(txtYtdSales.Text)),
+        new SqlParameter("@notes", txtNotes.Text),
+        new SqlParameter("@pubdate", dtpPubDate.Value)
             };
         }
+
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void FormAddEditTitle_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtRoyalty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir solo dígitos y la tecla de retroceso
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // Bloquea el carácter no permitido
+            }
+        }
+
+        private void txtRoyalty_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(txtRoyalty.Text, out int value))
+            {
+                if (value < 1)
+                {
+                    txtRoyalty.Text = "1"; // Rango mínimo
+                }
+                else if (value > 100)
+                {
+                    txtRoyalty.Text = "100"; // Rango máximo
+                }
+            }
+            else
+            {
+                // Si el texto no es numérico, restablecer a 1
+                txtRoyalty.Text = "1";
+            }
+
+            // Mueve el cursor al final del texto
+            txtRoyalty.SelectionStart = txtRoyalty.Text.Length;
+        }
+
+        private void txtYtdSales_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir solo dígitos y la tecla de retroceso
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // Bloquea el carácter no permitido
+            }
+        }
+
+        private void txtYtdSales_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(txtYtdSales.Text, out int value))
+            {
+                if (value < 1)
+                {
+                    txtYtdSales.Text = "1"; // Establece el mínimo permitido
+                }
+            }
+            else
+            {
+                // Si el texto no es numérico, restablecer a 1
+                txtYtdSales.Text = "1";
+            }
+
+            // Mueve el cursor al final del texto
+            txtYtdSales.SelectionStart = txtYtdSales.Text.Length;
+        }
+
+
+
+
     }
 }
