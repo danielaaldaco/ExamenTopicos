@@ -16,8 +16,8 @@ namespace ExamenTopicos
                 Application.Run(new FormMenu(usuarioLogueado));
             }
             */
-            Usuario usuarioLogueado = new Usuario("Juan", UserRole.Administrador, "Juan");
-            Application.Run(new FormMenu(usuarioLogueado));
-        }
+         Usuario usuarioLogueado = new Usuario("Juan", UserRole.Administrador, "Juan");
+         Application.Run(new FormMenu(usuarioLogueado));
+      }
     }
 }
