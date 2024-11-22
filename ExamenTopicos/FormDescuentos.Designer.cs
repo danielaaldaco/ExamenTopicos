@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDescuentos));
             btnAgregar = new Button();
             label1 = new Label();
             txtBuscar = new TextBox();
@@ -79,9 +80,9 @@
             Controls.Add(label1);
             Controls.Add(txtBuscar);
             Controls.Add(dgvDescuentos);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormDescuentos";
-            Text = "FormDescuentos";
-            Load += FormDescuentos_Load;
+            Text = "Descuentos";
             ((System.ComponentModel.ISupportInitialize)dgvDescuentos).EndInit();
             ResumeLayout(false);
             PerformLayout();
