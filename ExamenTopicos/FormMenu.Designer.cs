@@ -211,6 +211,7 @@
             Controls.Add(btnPuestos);
             Margin = new Padding(3, 4, 3, 4);
             Name = "FormMenu";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormMenu";
             ResumeLayout(false);
         }

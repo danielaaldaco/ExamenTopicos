@@ -1,363 +1,308 @@
-﻿    using System;
-    using System.Data;
-    using System.Data.SqlClient;
-    using System.Globalization;
-    using System.Text.RegularExpressions;
-    using System.Windows.Forms;
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+using static ExamenTopicos.Utils;
 
-    namespace ExamenTopicos
+namespace ExamenTopicos
+{
+    public partial class FormAddEditTitle : Form
     {
-        public partial class FormAddEditTitle : Form
+        private Operacion operacion;
+        private string titleId;
+        private Datos datos = new Datos();
+
+        public FormAddEditTitle(Operacion operacion, string titleId = null)
         {
-            private readonly Datos datos = new Datos();
-            private readonly string titleId;
-            private ErrorProvider errorProvider;
-            private TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+            InitializeComponent();
+            this.operacion = operacion;
+            this.titleId = titleId;
 
-            public FormAddEditTitle(string id = null)
+            ConfigurarFormulario();
+            CargarDatosComboBox();
+            this.Shown += FormAddEditTitle_Shown;
+        }
+
+        private void ConfigurarFormulario()
+        {
+            if (operacion == Operacion.Editar)
             {
-                InitializeComponent();
-                titleId = id;
-                errorProvider = new ErrorProvider
-                {
-                    BlinkStyle = ErrorBlinkStyle.NeverBlink
-                };
+                this.Text = "Editar Título";
+                btnGuardar.Text = "Actualizar";
+                ConfigurarCamposEdicion();
+                CargarDatosTitulo(titleId);
+                txtTitle.Focus();
+            }
+            else
+            {
+                this.Text = "Agregar Título";
+                btnGuardar.Text = "Agregar";
+                ConfigurarCamposAgregar();
+                GenerarNuevoTitleId();
+                txtTitle.Focus();
+            }
+        }
 
-                cmbPubId.DropDownStyle = ComboBoxStyle.DropDownList;
-                LoadPublishers();
+        private void FormAddEditTitle_Shown(object sender, EventArgs e)
+        {
+            txtTitle.BeginInvoke((Action)(() => txtTitle.Focus()));
+        }
 
-                if (!string.IsNullOrEmpty(titleId))
+        private void ConfigurarCamposEdicion()
+        {
+            txtTitleId.ReadOnly = true;
+            txtTitle.ReadOnly = false;
+            cmbType.Enabled = true;
+            cmbPubId.Enabled = true;
+            txtPrice.ReadOnly = false;
+            txtAdvance.ReadOnly = false;
+            txtRoyalty.ReadOnly = false;
+            txtYtdSales.ReadOnly = false;
+            txtNotes.ReadOnly = false;
+            dtpPubDate.Enabled = false; // Bloquear la fecha en modo "Editar"
+        }
+
+        private void ConfigurarCamposAgregar()
+        {
+            txtTitleId.ReadOnly = true;
+            txtTitle.ReadOnly = false;
+            cmbType.Enabled = true;
+            cmbPubId.Enabled = true;
+            txtPrice.ReadOnly = false;
+            txtAdvance.ReadOnly = false;
+            txtRoyalty.ReadOnly = false;
+            txtYtdSales.ReadOnly = false;
+            txtNotes.ReadOnly = false;
+            dtpPubDate.Enabled = true; // Permitir la edición de la fecha en modo "Agregar"
+        }
+
+        private void GenerarNuevoTitleId()
+        {
+            try
+            {
+                string query = "SELECT MAX(title_id) AS MaxId FROM titles";
+                DataSet ds = datos.consulta(query);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
-                    dtpPubDate.Enabled = false;
-                    CargarDatos();
+                    string maxId = ds.Tables[0].Rows[0]["MaxId"].ToString();
+
+                    if (!string.IsNullOrEmpty(maxId) && maxId.Length >= 4)
+                    {
+                        string prefix = maxId.Substring(0, 3);
+                        int number = int.Parse(maxId.Substring(3)) + 1;
+                        txtTitleId.Text = $"{prefix}{number:D4}";
+                    }
+                    else
+                    {
+                        txtTitleId.Text = "T0001";
+                    }
                 }
                 else
                 {
-                    dtpPubDate.Enabled = true; // El control sigue habilitado
-                    dtpPubDate.Format = DateTimePickerFormat.Custom; // Formato personalizado
-                    dtpPubDate.CustomFormat = "yyyy-MM-dd"; // Formato de la fecha
-                    dtpPubDate.ShowUpDown = false; // Mostrar el calendario desplegable
-                    dtpPubDate.Value = DateTime.Now.Date; // Establecer la fecha predeterminada
+                    txtTitleId.Text = "T0001";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al generar nuevo ID: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-                    // Evitar que el texto sea editable con el teclado
-                    dtpPubDate.KeyPress += (s, e) => e.Handled = true;
+        private void CargarDatosComboBox()
+        {
+            try
+            {
+                string queryTypes = "SELECT DISTINCT type FROM titles";
+                DataSet dsTypes = datos.consulta(queryTypes);
+                if (dsTypes != null && dsTypes.Tables.Count > 0)
+                {
+                    cmbType.DataSource = dsTypes.Tables[0];
+                    cmbType.DisplayMember = "type";
+                    cmbType.ValueMember = "type";
+                    cmbType.SelectedIndex = -1;
                 }
 
-                SuscribirEventosValidacion();
-            }
-
-            private void LoadPublishers()
-            {
-                DataSet ds = datos.consulta("SELECT pub_id, pub_name FROM publishers");
-                if (ds != null && ds.Tables.Count > 0)
+                string queryEditoriales = "SELECT pub_id, pub_name FROM publishers";
+                DataSet dsEditoriales = datos.consulta(queryEditoriales);
+                if (dsEditoriales != null && dsEditoriales.Tables.Count > 0)
                 {
-                    cmbPubId.DataSource = ds.Tables[0];
+                    cmbPubId.DataSource = dsEditoriales.Tables[0];
                     cmbPubId.DisplayMember = "pub_name";
                     cmbPubId.ValueMember = "pub_id";
                     cmbPubId.SelectedIndex = -1;
                 }
             }
-
-            private void SuscribirEventosValidacion()
+            catch (Exception ex)
             {
-                txtTitle.Validating += txtTitle_Validating;
-                txtType.Validating += txtType_Validating;
-                cmbPubId.Validating += cmbPubId_Validating;
-                txtPrice.Validating += txtPrice_Validating;
-                txtAdvance.Validating += txtAdvance_Validating;
-                txtRoyalty.Validating += txtRoyalty_Validating;
-                txtYtdSales.Validating += txtYtdSales_Validating;
+                MessageBox.Show($"Error al cargar datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
 
-            private void CargarDatos()
+        private void CargarDatosTitulo(string titleId)
+        {
+            try
             {
-                SqlParameter[] parametros = new SqlParameter[]
-                {
-                    new SqlParameter("@titleId", titleId)
-                };
-                DataSet ds = datos.consulta("SELECT * FROM titles WHERE title_id = @titleId", parametros);
+                string query = @"
+            SELECT 
+                title_id, title, type, pub_id, price, advance, royalty, ytd_sales, notes, pubdate
+            FROM 
+                titles
+            WHERE 
+                title_id = @titleId";
+
+                SqlParameter[] parametros = { new SqlParameter("@titleId", titleId) };
+
+                DataSet ds = datos.consulta(query, parametros);
+
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     var row = ds.Tables[0].Rows[0];
+                    txtTitleId.Text = row["title_id"].ToString();
                     txtTitle.Text = row["title"].ToString();
-                    txtType.Text = row["type"].ToString();
-                    string pubId = row["pub_id"]?.ToString();
+                    txtPrice.Text = row["price"].ToString();
+                    txtAdvance.Text = row["advance"].ToString();
+                    txtRoyalty.Text = row["royalty"].ToString();
+                    txtYtdSales.Text = row["ytd_sales"].ToString();
+                    txtNotes.Text = row["notes"].ToString();
+                    dtpPubDate.Value = Convert.ToDateTime(row["pubdate"]);
+
+                    // Seleccionar el tipo en el ComboBox
+                    string tipo = row["type"].ToString();
+                    if (!string.IsNullOrEmpty(tipo))
+                    {
+                        cmbType.SelectedItem = tipo;
+                    }
+
+                    // Seleccionar la editorial en el ComboBox
+                    string pubId = row["pub_id"].ToString();
                     if (!string.IsNullOrEmpty(pubId))
                     {
                         cmbPubId.SelectedValue = pubId;
                     }
-                    txtPrice.Text = row["price"]?.ToString();
-                    txtAdvance.Text = row["advance"]?.ToString();
-                    txtRoyalty.Text = row["royalty"]?.ToString();
-                    txtYtdSales.Text = row["ytd_sales"]?.ToString();
-                    txtNotes.Text = row["notes"]?.ToString();
-
-                    if (DateTime.TryParse(row["pubdate"]?.ToString(), out DateTime pubDate))
-                    {
-                        dtpPubDate.Value = pubDate.Date;
-                        dtpPubDate.Format = DateTimePickerFormat.Custom;
-                        dtpPubDate.CustomFormat = "yyyy-MM-dd";
-                    }
-                    else
-                    {
-                        dtpPubDate.Format = DateTimePickerFormat.Custom;
-                        dtpPubDate.CustomFormat = " ";
-                    }
                 }
                 else
                 {
-                    MessageBox.Show("No se encontraron datos para el título especificado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Close();
+                    MessageBox.Show("No se encontraron datos del título.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar datos del título: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            private void btnGuardar_Click(object sender, EventArgs e)
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Los datos son correctos?", "Sistema", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 try
                 {
-                    if (!this.ValidateChildren())
-                    {
-                        MessageBox.Show("Por favor, corrija los errores antes de guardar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (!ValidarCampos())
                         return;
-                    }
 
-                    string title = textInfo.ToTitleCase(Regex.Replace(txtTitle.Text.Trim(), @"\s{2,}", " ").ToLower());
-                    string type = textInfo.ToTitleCase(Regex.Replace(txtType.Text.Trim(), @"\s{2,}", " ").ToLower());
-                    string pubId = cmbPubId.SelectedValue?.ToString();
-                    string notes = string.IsNullOrWhiteSpace(txtNotes.Text) ? null : txtNotes.Text.Trim();
+                    string query;
+                    SqlParameter[] parametros;
 
-                    string consulta;
-                    bool esEdicion = !string.IsNullOrEmpty(titleId);
-
-                    if (esEdicion)
+                    if (operacion == Operacion.Agregar)
                     {
-                        consulta = @"
-                            UPDATE titles 
-                            SET title = @title, 
-                                type = @type, 
-                                pub_id = @pubId, 
-                                price = @price, 
-                                advance = @advance, 
-                                royalty = @royalty, 
-                                ytd_sales = @ytdSales, 
-                                notes = @notes 
-                            WHERE title_id = @titleId";
-                    }
-                    else
-                    {
-                        consulta = @"
+                        query = @"
                             INSERT INTO titles (title_id, title, type, pub_id, price, advance, royalty, ytd_sales, notes, pubdate)
                             VALUES (@titleId, @title, @type, @pubId, @price, @advance, @royalty, @ytdSales, @notes, @pubdate)";
-                    }
-
-                    List<SqlParameter> parametros = new List<SqlParameter>
-                    {
-                        new SqlParameter("@title", title),
-                        new SqlParameter("@type", type),
-                        new SqlParameter("@pubId", string.IsNullOrEmpty(pubId) ? (object)DBNull.Value : pubId),
-                        new SqlParameter("@price", decimal.Parse(txtPrice.Text)),
-                        new SqlParameter("@advance", decimal.Parse(txtAdvance.Text)),
-                        new SqlParameter("@royalty", int.Parse(txtRoyalty.Text)),
-                        new SqlParameter("@ytdSales", int.Parse(txtYtdSales.Text)),
-                        new SqlParameter("@notes", string.IsNullOrEmpty(notes) ? (object)DBNull.Value : notes)
-                    };
-
-                    if (esEdicion)
-                    {
-                        parametros.Add(new SqlParameter("@titleId", titleId));
+                        parametros = ObtenerParametros();
                     }
                     else
                     {
-                        string newTitleId = GenerateTitleId();
-                        parametros.Add(new SqlParameter("@titleId", newTitleId));
-                        parametros.Add(new SqlParameter("@pubdate", dtpPubDate.Value.Date));
+                        query = @"
+                            UPDATE titles
+                            SET title = @title,
+                                type = @type,
+                                pub_id = @pubId,
+                                price = @price,
+                                advance = @advance,
+                                royalty = @royalty,
+                                ytd_sales = @ytdSales,
+                                notes = @notes,
+                                pubdate = @pubdate
+                            WHERE title_id = @titleId";
+                        parametros = ObtenerParametros();
                     }
 
-                    if (datos.ejecutarABC(consulta, parametros.ToArray()))
+                    bool resultado = datos.ejecutarABC(query, parametros);
+
+                    if (resultado)
                     {
-                        MessageBox.Show("Datos guardados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        DialogResult = DialogResult.OK;
+                        MessageBox.Show($"Título {(operacion == Operacion.Agregar ? "agregado" : "actualizado")} correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
                     }
-                }
-                catch (FormatException fe)
-                {
-                    MessageBox.Show($"Error en el formato de los datos ingresados: {fe.Message}", "Formato Inválido", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                    {
+                        MessageBox.Show($"No se pudo {(operacion == Operacion.Agregar ? "agregar" : "actualizar")} el título.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al guardar datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
 
-            private string GenerateTitleId()
+        private bool ValidarCampos()
+        {
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                Random random = new Random();
-                string newTitleId;
-                bool exists = false;
-
-                do
-                {
-                    string letters = $"{(char)random.Next('A', 'Z' + 1)}{(char)random.Next('A', 'Z' + 1)}";
-                    string numbers = random.Next(0, 10000).ToString("D4");
-                    newTitleId = $"{letters}{numbers}";
-
-                    SqlParameter[] parametros = new SqlParameter[]
-                    {
-                        new SqlParameter("@titleId", newTitleId)
-                    };
-                    DataSet ds = datos.consulta("SELECT COUNT(*) AS Count FROM titles WHERE title_id = @titleId", parametros);
-                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                    {
-                        int count = Convert.ToInt32(ds.Tables[0].Rows[0]["Count"]);
-                        exists = count > 0;
-                    }
-                    else
-                    {
-                        exists = false;
-                    }
-
-                } while (exists);
-
-                return newTitleId;
+                MessageBox.Show("El campo 'Título' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
 
-            #region Validación de Controles
-
-            private void txtTitle_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+            if (cmbType.SelectedIndex == -1)
             {
-                string input = Regex.Replace(txtTitle.Text.Trim(), @"\s{2,}", " ");
-                txtTitle.Text = textInfo.ToTitleCase(input.ToLower());
-
-                if (string.IsNullOrWhiteSpace(txtTitle.Text))
-                {
-                    errorProvider.SetError(txtTitle, "El título no puede estar vacío.");
-                    e.Cancel = true;
-                }
-                else if (!Regex.IsMatch(txtTitle.Text, @"^[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚñÑ\s]+$"))
-                {
-                    errorProvider.SetError(txtTitle, "El título solo puede contener letras y espacios, y debe comenzar con una letra mayúscula.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(txtTitle, string.Empty);
-                }
+                MessageBox.Show("El campo 'Tipo' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
 
-            private void txtType_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+            if (cmbPubId.SelectedIndex == -1)
             {
-                string input = Regex.Replace(txtType.Text.Trim(), @"\s{2,}", " ");
-                txtType.Text = textInfo.ToTitleCase(input.ToLower());
-
-                if (string.IsNullOrWhiteSpace(txtType.Text))
-                {
-                    errorProvider.SetError(txtType, "El tipo no puede estar vacío.");
-                    e.Cancel = true;
-                }
-                else if (!Regex.IsMatch(txtType.Text, @"^[A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚñÑ\s]+$"))
-                {
-                    errorProvider.SetError(txtType, "El tipo solo puede contener letras y espacios, y debe comenzar con una letra mayúscula.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(txtType, string.Empty);
-                }
+                MessageBox.Show("El campo 'Editorial' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
 
-            private void cmbPubId_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+            if (!decimal.TryParse(txtPrice.Text, out _) || !decimal.TryParse(txtAdvance.Text, out _))
             {
-                if (cmbPubId.SelectedIndex == -1)
-                {
-                    errorProvider.SetError(cmbPubId, "Seleccione un Pub ID válido.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(cmbPubId, string.Empty);
-                }
+                MessageBox.Show("Los campos 'Precio' y 'Anticipo' deben ser números válidos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
 
-            private void txtPrice_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+            if (!int.TryParse(txtRoyalty.Text, out _) || !int.TryParse(txtYtdSales.Text, out _))
             {
-                txtPrice.Text = txtPrice.Text.Trim();
-
-                if (string.IsNullOrWhiteSpace(txtPrice.Text))
-                {
-                    errorProvider.SetError(txtPrice, "El precio no puede estar vacío.");
-                    e.Cancel = true;
-                }
-                else if (!decimal.TryParse(txtPrice.Text, out decimal price) || price < 0)
-                {
-                    errorProvider.SetError(txtPrice, "Ingrese un precio válido y positivo.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(txtPrice, string.Empty);
-                }
+                MessageBox.Show("Los campos 'Regalías' y 'Ventas YTD' deben ser números válidos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
 
-            private void txtAdvance_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+            return true;
+        }
+
+        private SqlParameter[] ObtenerParametros()
+        {
+            return new SqlParameter[]
             {
-                txtAdvance.Text = txtAdvance.Text.Trim();
+                new SqlParameter("@titleId", txtTitleId.Text),
+                new SqlParameter("@title", txtTitle.Text),
+                new SqlParameter("@type", cmbType.SelectedItem?.ToString()),
+                new SqlParameter("@pubId", cmbPubId.SelectedValue),
+                new SqlParameter("@price", decimal.Parse(txtPrice.Text)),
+                new SqlParameter("@advance", decimal.Parse(txtAdvance.Text)),
+                new SqlParameter("@royalty", int.Parse(txtRoyalty.Text)),
+                new SqlParameter("@ytdSales", int.Parse(txtYtdSales.Text)),
+                new SqlParameter("@notes", txtNotes.Text),
+                new SqlParameter("@pubdate", dtpPubDate.Value)
+            };
+        }
 
-                if (string.IsNullOrWhiteSpace(txtAdvance.Text))
-                {
-                    errorProvider.SetError(txtAdvance, "El adelanto no puede estar vacío.");
-                    e.Cancel = true;
-                }
-                else if (!decimal.TryParse(txtAdvance.Text, out decimal advance) || advance < 0)
-                {
-                    errorProvider.SetError(txtAdvance, "Ingrese un adelanto válido y positivo.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(txtAdvance, string.Empty);
-                }
-            }
-
-            private void txtRoyalty_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-            {
-                txtRoyalty.Text = txtRoyalty.Text.Trim();
-
-                if (string.IsNullOrWhiteSpace(txtRoyalty.Text))
-                {
-                    errorProvider.SetError(txtRoyalty, "Las regalías no pueden estar vacías.");
-                    e.Cancel = true;
-                }
-                else if (!int.TryParse(txtRoyalty.Text, out int royalty) || royalty < 0)
-                {
-                    errorProvider.SetError(txtRoyalty, "Ingrese un valor de regalías válido y positivo.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(txtRoyalty, string.Empty);
-                }
-            }
-
-            private void txtYtdSales_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-            {
-                txtYtdSales.Text = txtYtdSales.Text.Trim();
-
-                if (string.IsNullOrWhiteSpace(txtYtdSales.Text))
-                {
-                    errorProvider.SetError(txtYtdSales, "Las ventas YTD no pueden estar vacías.");
-                    e.Cancel = true;
-                }
-                else if (!int.TryParse(txtYtdSales.Text, out int ytdSales) || ytdSales < 0)
-                {
-                    errorProvider.SetError(txtYtdSales, "Ingrese un valor de ventas YTD válido y positivo.");
-                    e.Cancel = true;
-                }
-                else
-                {
-                    errorProvider.SetError(txtYtdSales, string.Empty);
-                }
-            }
-
-            #endregion
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
+}

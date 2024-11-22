@@ -1,10 +1,10 @@
 ﻿// FormAutorTitulo.cs
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Drawing;
+using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
@@ -14,14 +14,19 @@ namespace ExamenTopicos
         private UserRole userRole;
         private Datos datos = new Datos();
 
+        // Tamaño fijo para las columnas de acción
+        private const int ActionColumnWidth = 30;
+
         public FormAutorTitulo(UserRole role)
         {
             InitializeComponent();
             this.userRole = role;
             ConfigurarAccesoPorRol();
             ActualizarGrid();
+            AjustarAnchoVentana();
 
-            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // Suscribirse al evento Resize para ajustar las columnas dinámicas proporcionalmente
+            this.Resize += FormAutorTitulo_Resize;
         }
 
         /// <summary>
@@ -30,20 +35,34 @@ namespace ExamenTopicos
         private void ConfigurarAccesoPorRol()
         {
             btnAgregar.Visible = false;
+            eliminarToolStripMenuItem.Visible = false;
             dgvAutoresTitulos.ReadOnly = true;
 
             switch (userRole)
             {
                 case UserRole.Cliente:
+                    dgvAutoresTitulos.ReadOnly = true;
                     break;
+
                 case UserRole.Empleado:
-                case UserRole.GerenteVentas:
-                case UserRole.Administrador:
+                    dgvAutoresTitulos.ReadOnly = true;
                     btnAgregar.Visible = true;
                     break;
+
+                case UserRole.GerenteVentas:
+                    dgvAutoresTitulos.ReadOnly = false;
+                    btnAgregar.Visible = true;
+                    break;
+
+                case UserRole.Administrador:
+                    btnAgregar.Visible = true;
+                    eliminarToolStripMenuItem.Visible = true;
+                    dgvAutoresTitulos.ReadOnly = false;
+                    break;
+
                 default:
                     MessageBox.Show("Rol no reconocido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Close();
+                    this.Close();
                     break;
             }
         }
@@ -57,9 +76,9 @@ namespace ExamenTopicos
             {
                 string query = @"
                     SELECT 
-                        a.au_id,
+                        a.au_id AS 'ID Autor',
                         a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
-                        t.title_id,
+                        t.title_id AS 'ID Título',
                         t.title AS 'Título',
                         ta.au_ord AS 'Orden',
                         ta.royaltyper AS 'Regalía (%)'
@@ -76,51 +95,11 @@ namespace ExamenTopicos
                 {
                     dgvAutoresTitulos.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
-
-                    // Ocultar las columnas de IDs
-                    if (dgvAutoresTitulos.Columns.Contains("au_id"))
-                        dgvAutoresTitulos.Columns["au_id"].Visible = false;
-
-                    if (dgvAutoresTitulos.Columns.Contains("title_id"))
-                        dgvAutoresTitulos.Columns["title_id"].Visible = false;
-
-                    // Agregar la columna "Editar" con ícono de lápiz si no existe
-                    if (!dgvAutoresTitulos.Columns.Contains("Editar"))
-                    {
-                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
-                        {
-                            Name = "Editar",
-                            HeaderText = "", // Sin encabezado para mantenerlo pequeño
-                            Image = Properties.Resources.pencil2, // Asegúrate de haber agregado el ícono edit.png en recursos
-                            ImageLayout = DataGridViewImageCellLayout.Zoom,
-                            Width = 30 // Tamaño ajustado de la columna
-                        };
-                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn); // Insertar en la primera posición
-                    }
-
-                    // Agregar la columna "Eliminar" con ícono de basura si no existe
-                    if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
-                    {
-                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
-                        {
-                            Name = "Eliminar",
-                            HeaderText = "", // Sin encabezado para mantenerlo pequeño
-                            Image = Properties.Resources.garbage, // Asegúrate de haber agregado el ícono garbage.png en recursos
-                            ImageLayout = DataGridViewImageCellLayout.Zoom,
-                            Width = 30 // Tamaño ajustado de la columna
-                        };
-                        dgvAutoresTitulos.Columns.Add(eliminarColumn); // Agregar la columna de basura
-                    }
+                    ConfigurarColumnas();
                 }
                 else
                 {
                     dgvAutoresTitulos.DataSource = null;
-                }
-
-                if (dgvAutoresTitulos.Rows.Count > 0)
-                {
-                    dgvAutoresTitulos.ClearSelection();
-                    dgvAutoresTitulos.Rows[0].Selected = true;
                 }
             }
             catch (Exception ex)
@@ -134,8 +113,14 @@ namespace ExamenTopicos
         /// </summary>
         private void ConfigurarColumnasGrid()
         {
+            if (dgvAutoresTitulos.Columns.Contains("ID Autor"))
+                dgvAutoresTitulos.Columns["ID Autor"].HeaderText = "ID Autor";
+
             if (dgvAutoresTitulos.Columns.Contains("Nombre Autor"))
                 dgvAutoresTitulos.Columns["Nombre Autor"].HeaderText = "Autor";
+
+            if (dgvAutoresTitulos.Columns.Contains("ID Título"))
+                dgvAutoresTitulos.Columns["ID Título"].HeaderText = "ID Título";
 
             if (dgvAutoresTitulos.Columns.Contains("Título"))
                 dgvAutoresTitulos.Columns["Título"].HeaderText = "Título";
@@ -148,96 +133,83 @@ namespace ExamenTopicos
         }
 
         /// <summary>
-        /// Evento que se dispara cuando cambia el texto en el cuadro de búsqueda.
-        /// Filtra los datos mostrados en el DataGridView.
+        /// Configura las columnas adicionales del DataGridView (Editar y Eliminar).
         /// </summary>
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        private void ConfigurarColumnas()
         {
-            try
+            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvAutoresTitulos.Columns.Count);
+
+            foreach (DataGridViewColumn col in dgvAutoresTitulos.Columns)
             {
-                string searchValue = System.Text.RegularExpressions.Regex.Replace(txtBuscar.Text.Trim(), @"\s+", " ");
-                string query = string.IsNullOrWhiteSpace(searchValue)
-                            ? @"
-                        SELECT 
-                            a.au_id,
-                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
-                            t.title_id,
-                            t.title AS 'Título',
-                            ta.au_ord AS 'Orden',
-                            ta.royaltyper AS 'Regalía (%)'
-                        FROM 
-                            titleauthor ta
-                        INNER JOIN 
-                            authors a ON ta.au_id = a.au_id
-                        INNER JOIN 
-                            titles t ON ta.title_id = t.title_id"
-                            : $@"
-                        SELECT 
-                            a.au_id,
-                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
-                            t.title_id,
-                            t.title AS 'Título',
-                            ta.au_ord AS 'Orden',
-                            ta.royaltyper AS 'Regalía (%)'
-                        FROM 
-                            titleauthor ta
-                        INNER JOIN 
-                            authors a ON ta.au_id = a.au_id
-                        INNER JOIN 
-                            titles t ON ta.title_id = t.title_id
-                        WHERE 
-                            a.au_lname + ' ' + a.au_fname LIKE '%{searchValue}%' 
-                            OR t.title LIKE '%{searchValue}%'";
-                ds = datos.consulta(query);
-                if (ds != null && ds.Tables.Count > 0)
+                if (col.Name == "Editar" || col.Name == "Eliminar")
                 {
-                    dgvAutoresTitulos.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-
-                    // Ocultar las columnas de IDs
-                    if (dgvAutoresTitulos.Columns.Contains("au_id"))
-                        dgvAutoresTitulos.Columns["au_id"].Visible = false;
-
-                    if (dgvAutoresTitulos.Columns.Contains("title_id"))
-                        dgvAutoresTitulos.Columns["title_id"].Visible = false;
-
-                    // Asegurar que la columna "Editar" esté presente
-                    if (!dgvAutoresTitulos.Columns.Contains("Editar"))
-                    {
-                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
-                        {
-                            Name = "Editar",
-                            HeaderText = "", // Sin encabezado
-                            Image = Properties.Resources.pencil2, // Asegúrate de que edit.png esté en tus recursos
-                            ImageLayout = DataGridViewImageCellLayout.Zoom,
-                            Width = 30
-                        };
-                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
-                    }
-
-                    // Asegurar que la columna "Eliminar" esté presente
-                    if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
-                    {
-                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
-                        {
-                            Name = "Eliminar",
-                            HeaderText = "", // Sin encabezado
-                            Image = Properties.Resources.garbage, // Asegúrate de que garbage.png esté en tus recursos
-                            ImageLayout = DataGridViewImageCellLayout.Zoom,
-                            Width = 30
-                        };
-                        dgvAutoresTitulos.Columns.Add(eliminarColumn);
-                    }
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    col.Width = ActionColumnWidth;
                 }
                 else
                 {
-                    dgvAutoresTitulos.DataSource = null;
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
-            catch
+
+            dgvAutoresTitulos.RowTemplate.Height = ActionColumnWidth;
+        }
+
+        /// <summary>
+        /// Agrega una columna de icono al DataGridView.
+        /// </summary>
+        /// <param name="nombre">Nombre de la columna.</param>
+        /// <param name="imagen">Imagen a mostrar.</param>
+        /// <param name="ancho">Ancho de la columna.</param>
+        /// <param name="posicion">Posición donde insertar la columna.</param>
+        private void AgregarColumnaIcono(string nombre, Image imagen, int ancho, int posicion)
+        {
+            if (!dgvAutoresTitulos.Columns.Contains(nombre))
             {
-                MessageBox.Show("Error en la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var columna = new DataGridViewImageColumn
+                {
+                    Name = nombre,
+                    HeaderText = "",
+                    Image = imagen,
+                    ImageLayout = DataGridViewImageCellLayout.Zoom,
+                    Width = ancho,
+                    Resizable = DataGridViewTriState.False
+                };
+
+                if (posicion >= 0 && posicion < dgvAutoresTitulos.Columns.Count)
+                    dgvAutoresTitulos.Columns.Insert(posicion, columna);
+                else
+                    dgvAutoresTitulos.Columns.Add(columna);
             }
+        }
+
+        /// <summary>
+        /// Ajusta el ancho de la ventana según las columnas del DataGridView.
+        /// </summary>
+        private void AjustarAnchoVentana()
+        {
+            int totalColumnWidth = 0;
+            foreach (DataGridViewColumn col in dgvAutoresTitulos.Columns)
+            {
+                totalColumnWidth += col.Width;
+            }
+
+            int rowHeaderWidth = dgvAutoresTitulos.RowHeadersVisible ? dgvAutoresTitulos.RowHeadersWidth : 0;
+            int extraWidth = this.Width - dgvAutoresTitulos.ClientSize.Width;
+            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
+
+            this.Width = newWidth + 20; // Ajustar según sea necesario
+
+            ConfigurarColumnas();
+        }
+
+        /// <summary>
+        /// Evento que se dispara cuando cambia el tamaño de la ventana.
+        /// </summary>
+        private void FormAutorTitulo_Resize(object sender, EventArgs e)
+        {
+            ConfigurarColumnas();
         }
 
         /// <summary>
@@ -246,11 +218,14 @@ namespace ExamenTopicos
         /// </summary>
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            using (var agregar = new FormAgregarAT(Utils.Operacion.Agregar))
+            using (var agregarForm = new FormAgregarAT(Operacion.Agregar))
             {
-                agregar.ShowDialog();
+                if (agregarForm.ShowDialog() == DialogResult.OK)
+                {
+                    ActualizarGrid();
+                    AjustarAnchoVentana();
+                }
             }
-            ActualizarGrid();
         }
 
         /// <summary>
@@ -264,20 +239,21 @@ namespace ExamenTopicos
             {
                 string columnName = dgvAutoresTitulos.Columns[e.ColumnIndex].Name;
 
+                var row = dgvAutoresTitulos.Rows[e.RowIndex];
+                string auId = row.Cells["ID Autor"]?.Value?.ToString();
+                string titleId = row.Cells["ID Título"]?.Value?.ToString();
+
+                if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(titleId))
+                {
+                    MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 if (columnName == "Eliminar")
                 {
                     // Manejar eliminación
-                    var row = dgvAutoresTitulos.Rows[e.RowIndex];
-                    string auId = row.Cells["au_id"]?.Value?.ToString() ?? string.Empty;
-                    string titleId = row.Cells["title_id"]?.Value?.ToString() ?? string.Empty;
                     string nombreAutor = row.Cells["Nombre Autor"]?.Value?.ToString() ?? "Desconocido";
                     string titulo = row.Cells["Título"]?.Value?.ToString() ?? "Desconocido";
-
-                    if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(titleId))
-                    {
-                        MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
 
                     var confirmResult = MessageBox.Show(
                         $"¿Está seguro de eliminar el siguiente registro?\n\nID Autor: {auId}\nAutor: {nombreAutor}\nTítulo: {titulo}",
@@ -306,6 +282,7 @@ namespace ExamenTopicos
                             {
                                 MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 ActualizarGrid();
+                                AjustarAnchoVentana();
                             }
                             else
                             {
@@ -321,25 +298,128 @@ namespace ExamenTopicos
                 else if (columnName == "Editar")
                 {
                     // Manejar edición
-                    var row = dgvAutoresTitulos.Rows[e.RowIndex];
-                    string auId = row.Cells["au_id"]?.Value?.ToString() ?? string.Empty;
-                    string titleId = row.Cells["title_id"]?.Value?.ToString() ?? string.Empty;
-
-                    if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(titleId))
+                    using (var editarForm = new FormAgregarAT(Operacion.Editar, auId, titleId))
                     {
-                        MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        if (editarForm.ShowDialog() == DialogResult.OK)
+                        {
+                            ActualizarGrid();
+                            AjustarAnchoVentana();
+                        }
                     }
-
-                    // Abrir el formulario de edición, pasando los IDs
-                    using (var editarForm = new FormAgregarAT(Utils.Operacion.Editar, auId, titleId))
-                    {
-                        editarForm.ShowDialog();
-                    }
-
-                    // Actualizar el DataGridView después de la edición
-                    ActualizarGrid();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Evento que se dispara al hacer clic en el elemento del menú "Eliminar".
+        /// </summary>
+        private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvAutoresTitulos.CurrentRow != null)
+            {
+                int columnIndex = dgvAutoresTitulos.Columns["Eliminar"].Index;
+                int rowIndex = dgvAutoresTitulos.CurrentRow.Index;
+                dgvAutoresTitulos_CellContentClick(sender, new DataGridViewCellEventArgs(columnIndex, rowIndex));
+            }
+        }
+
+        /// <summary>
+        /// Evento que se dispara cuando cambia el texto en el cuadro de búsqueda.
+        /// Filtra los datos mostrados en el DataGridView.
+        /// </summary>
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string searchValue = System.Text.RegularExpressions.Regex.Replace(txtBuscar.Text.Trim(), @"\s+", " ");
+                string query = string.IsNullOrWhiteSpace(searchValue)
+                            ? @"
+                        SELECT 
+                            a.au_id AS 'ID Autor',
+                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                            t.title_id AS 'ID Título',
+                            t.title AS 'Título',
+                            ta.au_ord AS 'Orden',
+                            ta.royaltyper AS 'Regalía (%)'
+                        FROM 
+                            titleauthor ta
+                        INNER JOIN 
+                            authors a ON ta.au_id = a.au_id
+                        INNER JOIN 
+                            titles t ON ta.title_id = t.title_id"
+                            : @"
+                        SELECT 
+                            a.au_id AS 'ID Autor',
+                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                            t.title_id AS 'ID Título',
+                            t.title AS 'Título',
+                            ta.au_ord AS 'Orden',
+                            ta.royaltyper AS 'Regalía (%)'
+                        FROM 
+                            titleauthor ta
+                        INNER JOIN 
+                            authors a ON ta.au_id = a.au_id
+                        INNER JOIN 
+                            titles t ON ta.title_id = t.title_id
+                        WHERE 
+                            a.au_lname + ' ' + a.au_fname LIKE @searchValue 
+                            OR t.title LIKE @searchValue";
+
+                SqlParameter[] parametros = new SqlParameter[]
+                {
+                    new SqlParameter("@searchValue", $"%{searchValue}%")
+                };
+
+                ds = datos.consulta(query, parametros);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    dgvAutoresTitulos.DataSource = ds.Tables[0];
+                    ConfigurarColumnasGrid();
+                    ConfigurarColumnas();
+
+                    // Ocultar las columnas de IDs
+                    if (dgvAutoresTitulos.Columns.Contains("ID Autor"))
+                        dgvAutoresTitulos.Columns["ID Autor"].Visible = false;
+
+                    if (dgvAutoresTitulos.Columns.Contains("ID Título"))
+                        dgvAutoresTitulos.Columns["ID Título"].Visible = false;
+
+                    // Asegurar que la columna "Editar" esté presente
+                    if (!dgvAutoresTitulos.Columns.Contains("Editar"))
+                    {
+                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Editar",
+                            HeaderText = "", // Sin encabezado
+                            Image = Properties.Resources.lapiz, // Asegúrate de que pencil2.png esté en tus recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30
+                        };
+                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
+                    }
+
+                    // Asegurar que la columna "Eliminar" esté presente
+                    if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
+                    {
+                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Eliminar",
+                            HeaderText = "", // Sin encabezado
+                            Image = Properties.Resources.mdi__garbage, // Asegúrate de que garbage.png esté en tus recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30
+                        };
+                        dgvAutoresTitulos.Columns.Add(eliminarColumn);
+                    }
+                }
+                else
+                {
+                    dgvAutoresTitulos.DataSource = null;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error en la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
