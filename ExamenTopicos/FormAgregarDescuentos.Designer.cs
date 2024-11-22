@@ -54,6 +54,7 @@
             btnCancelar.TabIndex = 7;
             btnCancelar.Text = "Cerrar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click_1;
             // 
             // btnAceptar
             // 
@@ -63,6 +64,7 @@
             btnAceptar.TabIndex = 6;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.Click += btnAceptar_Click_1;
             // 
             // nudMin
             // 
@@ -149,11 +151,10 @@
             // 
             // txtDescripcion
             // 
-            txtDescripcion.Location = new Point(123, 9);
+            txtDescripcion.Location = new Point(124, 14);
             txtDescripcion.Name = "txtDescripcion";
             txtDescripcion.Size = new Size(255, 23);
             txtDescripcion.TabIndex = 1;
-            txtDescripcion.TextAlign = HorizontalAlignment.Right;
             // 
             // FormAgregarDescuentos
             // 
@@ -175,7 +176,6 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAgregarDescuentos";
             Text = "Agregar descuentos";
-            Load += FormAgregarDescuentos_Load;
             ((System.ComponentModel.ISupportInitialize)nudMin).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudMax).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudDescuento).EndInit();

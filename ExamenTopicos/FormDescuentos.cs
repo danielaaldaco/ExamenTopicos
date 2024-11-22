@@ -12,8 +12,7 @@ namespace ExamenTopicos
         private DataSet ds;
         private UserRole userRole;
         private Datos datos = new Datos();
-
-        private const int ActionColumnWidth = 30;
+        private const int ActionColumnWidth = 30; // Ancho fijo para las columnas de acción
 
         public FormDescuentos(UserRole role)
         {
@@ -22,7 +21,11 @@ namespace ExamenTopicos
             ConfigurarAccesoPorRol();
             ActualizarGrid();
 
+            // Ajustar las columnas dinámicas al redimensionar el formulario
             this.Resize += FormDescuentos_Resize;
+
+            // Asociar el evento de clic en las celdas
+            this.dgvDescuentos.CellContentClick += dgvDescuentos_CellContentClick;
         }
 
         private void ConfigurarAccesoPorRol()
@@ -66,8 +69,8 @@ namespace ExamenTopicos
                     SELECT 
                         d.discounttype AS 'Tipo de descuento',
                         s.stor_name AS 'Nombre',
-                        d.lowqty AS 'Cantidad Minima',
-                        d.highqty AS 'Cantidad Maxima',
+                        d.lowqty AS 'Cantidad Mínima',
+                        d.highqty AS 'Cantidad Máxima',
                         d.discount AS 'Descuento'
                     FROM discounts d
                     LEFT JOIN stores s ON d.stor_id = s.stor_id";
@@ -77,7 +80,7 @@ namespace ExamenTopicos
                 if (ds != null && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvDescuentos.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
+                    ConfigurarColumnas();
                 }
                 else
                 {
@@ -90,15 +93,12 @@ namespace ExamenTopicos
             }
         }
 
-        private void ConfigurarColumnasGrid()
+        private void ConfigurarColumnas()
         {
-            dgvDescuentos.Columns["Tipo de descuento"].HeaderText = "Tipo de descuento";
-            dgvDescuentos.Columns["Nombre"].HeaderText = "Nombre";
-            dgvDescuentos.Columns["Cantidad Minima"].HeaderText = "Cantidad Minima";
-            dgvDescuentos.Columns["Cantidad Maxima"].HeaderText = "Cantidad Maxima";
-            dgvDescuentos.Columns["Descuento"].HeaderText = "Descuento";
+            // Agregar columna de edición al principio
+            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
 
-            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, dgvDescuentos.Columns.Count);
+            // Agregar columna de eliminación al final
             AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvDescuentos.Columns.Count);
 
             foreach (DataGridViewColumn col in dgvDescuentos.Columns)
@@ -107,6 +107,7 @@ namespace ExamenTopicos
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     col.Width = ActionColumnWidth;
+                    col.ReadOnly = false; // Asegurarse de que no sean de solo lectura
                 }
                 else
                 {
@@ -131,25 +132,68 @@ namespace ExamenTopicos
                     Resizable = DataGridViewTriState.False
                 };
 
-                dgvDescuentos.Columns.Insert(posicion, columna);
+                if (posicion >= 0 && posicion <= dgvDescuentos.Columns.Count)
+                    dgvDescuentos.Columns.Insert(posicion, columna);
+                else
+                    dgvDescuentos.Columns.Add(columna);
+            }
+        }
+
+        private void FormDescuentos_Resize(object sender, EventArgs e)
+        {
+            ConfigurarColumnas();
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            using (var agregarForm = new FormAgregarDescuentos(Operacion.Agregar))
+            {
+                if (agregarForm.ShowDialog() == DialogResult.OK)
+                {
+                    ActualizarGrid();
+                }
             }
         }
 
         private void dgvDescuentos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Validar que se selecciona una fila y columna válidas
             {
-                string columnName = dgvDescuentos.Columns[e.ColumnIndex].Name;
+                string columnName = dgvDescuentos.Columns[e.ColumnIndex].Name; // Nombre de la columna clickeada
                 var row = dgvDescuentos.Rows[e.RowIndex];
-                string discountType = row.Cells["Tipo de descuento"]?.Value?.ToString();
+                string discountType = row.Cells["Tipo de descuento"]?.Value?.ToString(); // Obtiene el tipo de descuento
 
+                // Validar que el valor existe
                 if (string.IsNullOrWhiteSpace(discountType))
                 {
                     MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                if (columnName == "Eliminar")
+                if (columnName == "Editar") // Si se presionó el ícono de "Editar"
+                {
+                    // Obtener los valores necesarios
+                    string storId = row.Cells["Nombre"]?.Value?.ToString();
+                    int lowQty = row.Cells["Cantidad Mínima"]?.Value == DBNull.Value
+                        ? 0
+                        : Convert.ToInt32(row.Cells["Cantidad Mínima"]?.Value);
+                    int highQty = row.Cells["Cantidad Máxima"]?.Value == DBNull.Value
+                        ? 0
+                        : Convert.ToInt32(row.Cells["Cantidad Máxima"]?.Value);
+                    decimal discount = row.Cells["Descuento"]?.Value == DBNull.Value
+                        ? 0
+                        : Convert.ToDecimal(row.Cells["Descuento"]?.Value);
+
+                    // Abrir el formulario de edición
+                    using (var editarForm = new FormAgregarDescuentos(Operacion.Editar, discountType, storId, lowQty, highQty, discount))
+                    {
+                        if (editarForm.ShowDialog() == DialogResult.OK)
+                        {
+                            ActualizarGrid(); // Refrescar la tabla
+                        }
+                    }
+                }
+                else if (columnName == "Eliminar") // Si se presionó el ícono de "Eliminar"
                 {
                     var confirmResult = MessageBox.Show(
                         $"¿Está seguro de eliminar el descuento de tipo: {discountType}?",
@@ -161,9 +205,7 @@ namespace ExamenTopicos
                     {
                         try
                         {
-                            string deleteQuery = @"
-                                DELETE FROM discounts
-                                WHERE discounttype = @discountType";
+                            string deleteQuery = "DELETE FROM discounts WHERE discounttype = @discountType";
 
                             SqlParameter[] parametros = new SqlParameter[]
                             {
@@ -175,7 +217,7 @@ namespace ExamenTopicos
                             if (exito)
                             {
                                 MessageBox.Show("Descuento eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                ActualizarGrid();
+                                ActualizarGrid(); // Refrescar la tabla
                             }
                             else
                             {
@@ -187,33 +229,6 @@ namespace ExamenTopicos
                             MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-                }
-                else if (columnName == "Editar")
-                {
-                    using (var editarForm = new FormAgregarDescuentos(Operacion.Editar, discountType))
-                    {
-                        if (editarForm.ShowDialog() == DialogResult.OK)
-                        {
-                            ActualizarGrid();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void FormDescuentos_Resize(object sender, EventArgs e)
-        {
-            ConfigurarColumnasGrid();
-        }
-
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            using (var agregarForm = new FormAgregarEmpleados(Operacion.Agregar))
-            {
-                if (agregarForm.ShowDialog() == DialogResult.OK)
-                {
-                    ActualizarGrid();
-                    AjustarAnchoVentana();
                 }
             }
         }
