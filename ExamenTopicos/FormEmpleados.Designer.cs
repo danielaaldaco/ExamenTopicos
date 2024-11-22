@@ -47,7 +47,7 @@ namespace ExamenTopicos
             dgvEmpleados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvEmpleados.Location = new Point(14, 58);
-            dgvEmpleados.Margin = new Padding(4, 4, 4, 4);
+            dgvEmpleados.Margin = new Padding(4);
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.ReadOnly = true;
             dgvEmpleados.RowHeadersWidth = 51;
@@ -58,7 +58,7 @@ namespace ExamenTopicos
             // txtBuscar
             // 
             txtBuscar.Location = new Point(81, 17);
-            txtBuscar.Margin = new Padding(4, 4, 4, 4);
+            txtBuscar.Margin = new Padding(4);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(291, 23);
             txtBuscar.TabIndex = 1;
@@ -78,7 +78,7 @@ namespace ExamenTopicos
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAgregar.Location = new Point(520, 17);
-            btnAgregar.Margin = new Padding(4, 4, 4, 4);
+            btnAgregar.Margin = new Padding(4);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(88, 26);
             btnAgregar.TabIndex = 3;
@@ -110,10 +110,11 @@ namespace ExamenTopicos
             Controls.Add(txtBuscar);
             Controls.Add(dgvEmpleados);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "FormEmpleados";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestión de Empleados";
+            Load += FormEmpleados_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);

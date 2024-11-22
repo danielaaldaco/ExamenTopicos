@@ -313,5 +313,10 @@ namespace ExamenTopicos
                 MessageBox.Show("Ocurrió un error al realizar la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void FormEmpleados_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

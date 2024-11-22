@@ -81,7 +81,6 @@
             Controls.Add(dgvDescuentos);
             Name = "FormDescuentos";
             Text = "FormDescuentos";
-            Load += FormDescuentos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDescuentos).EndInit();
             ResumeLayout(false);
             PerformLayout();

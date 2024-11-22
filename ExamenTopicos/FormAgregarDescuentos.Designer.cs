@@ -34,16 +34,15 @@
             nudMax = new NumericUpDown();
             label5 = new Label();
             label4 = new Label();
-            label3 = new Label();
             label1 = new Label();
-            comboBox2 = new ComboBox();
-            numericUpDown1 = new NumericUpDown();
+            cmbIdTienda = new ComboBox();
+            nudDescuento = new NumericUpDown();
             label6 = new Label();
             label2 = new Label();
             txtDescripcion = new TextBox();
             ((System.ComponentModel.ISupportInitialize)nudMin).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudMax).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudDescuento).BeginInit();
             SuspendLayout();
             // 
             // btnCancelar
@@ -102,15 +101,6 @@
             label4.TabIndex = 16;
             label4.Text = "Cantidad minima";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(36, 45);
-            label3.Name = "label3";
-            label3.Size = new Size(426, 15);
-            label3.TabIndex = 14;
-            label3.Text = "Favor de rellenar los campos correspondientes para agregar el nuevo descuento";
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -120,23 +110,23 @@
             label1.TabIndex = 19;
             label1.Text = "ID Tienda";
             // 
-            // comboBox2
+            // cmbIdTienda
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(147, 137);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(121, 23);
-            comboBox2.TabIndex = 2;
+            cmbIdTienda.FormattingEnabled = true;
+            cmbIdTienda.Location = new Point(147, 137);
+            cmbIdTienda.Name = "cmbIdTienda";
+            cmbIdTienda.Size = new Size(121, 23);
+            cmbIdTienda.TabIndex = 2;
             // 
-            // numericUpDown1
+            // nudDescuento
             // 
-            numericUpDown1.Location = new Point(148, 275);
-            numericUpDown1.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
-            numericUpDown1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(120, 23);
-            numericUpDown1.TabIndex = 5;
-            numericUpDown1.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            nudDescuento.Location = new Point(148, 275);
+            nudDescuento.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
+            nudDescuento.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            nudDescuento.Name = "nudDescuento";
+            nudDescuento.Size = new Size(120, 23);
+            nudDescuento.TabIndex = 5;
+            nudDescuento.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label6
             // 
@@ -155,7 +145,6 @@
             label2.Size = new Size(30, 15);
             label2.TabIndex = 11;
             label2.Text = "Tipo";
-            label2.Click += label2_Click;
             // 
             // txtDescripcion
             // 
@@ -170,10 +159,10 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(476, 388);
-            Controls.Add(numericUpDown1);
+            Controls.Add(nudDescuento);
             Controls.Add(label6);
             Controls.Add(label1);
-            Controls.Add(comboBox2);
+            Controls.Add(cmbIdTienda);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(nudMin);
@@ -181,13 +170,13 @@
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(txtDescripcion);
-            Controls.Add(label3);
             Controls.Add(label2);
             Name = "FormAgregarDescuentos";
             Text = "FormAgregarDescuentos";
+            Load += FormAgregarDescuentos_Load;
             ((System.ComponentModel.ISupportInitialize)nudMin).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudMax).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudDescuento).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -200,10 +189,9 @@
         private NumericUpDown nudMax;
         private Label label5;
         private Label label4;
-        private Label label3;
         private Label label1;
-        private ComboBox comboBox2;
-        private NumericUpDown numericUpDown1;
+        private ComboBox cmbIdTienda;
+        private NumericUpDown nudDescuento;
         private Label label6;
         private Label label2;
         private TextBox txtDescripcion;
