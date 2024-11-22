@@ -23,11 +23,11 @@ namespace ExamenTopicos
             ConfigurarAccesoPorRol();
             ActualizarGrid();
             AjustarAnchoVentana();
+
+            // Suscribirse al evento Resize para ajustar las columnas dinámicas proporcionalmente
+            this.Resize += FormEmpleados_Resize;
         }
 
-        /// <summary>
-        /// Configura la interfaz y los permisos según el rol del usuario.
-        /// </summary>
         private void ConfigurarAccesoPorRol()
         {
             btnAgregar.Visible = false;
@@ -63,9 +63,6 @@ namespace ExamenTopicos
             }
         }
 
-        /// <summary>
-        /// Actualiza el DataGridView con los datos de empleados.
-        /// </summary>
         private void ActualizarGrid()
         {
             try
@@ -90,33 +87,7 @@ namespace ExamenTopicos
                 {
                     dgvEmpleados.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
-
-                    // Desactivar el ajuste automático global
-                    dgvEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-                    // Configurar cada columna
-                    foreach (DataGridViewColumn col in dgvEmpleados.Columns)
-                    {
-                        if (col.Name == "Editar" || col.Name == "Eliminar")
-                        {
-                            // Establecer ancho fijo para columnas de acciones
-                            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                            col.Width = ActionColumnWidth;
-                        }
-                        else
-                        {
-                            // Ajustar automáticamente al contenido para columnas de datos
-                            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                            col.Width = Math.Max(0, ActionColumnWidth);
-                        }
-                    }
-
-                    // Agregar columnas de iconos si no existen
-                    AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
-                    AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
-
-                    // Opcional: Ajustar la altura de las filas para mostrar los iconos correctamente
-                    dgvEmpleados.RowTemplate.Height = ActionColumnWidth;
+                    ConfigurarColumnas();
                 }
                 else
                 {
@@ -129,12 +100,8 @@ namespace ExamenTopicos
             }
         }
 
-        /// <summary>
-        /// Configura los encabezados de las columnas del DataGridView.
-        /// </summary>
         private void ConfigurarColumnasGrid()
         {
-            // Personalizar los encabezados si es necesario
             dgvEmpleados.Columns["ID Empleado"].HeaderText = "ID Empleado";
             dgvEmpleados.Columns["Nombre"].HeaderText = "Nombre";
             dgvEmpleados.Columns["Inicial"].HeaderText = "Inicial";
@@ -145,13 +112,27 @@ namespace ExamenTopicos
             dgvEmpleados.Columns["Fecha Contratación"].HeaderText = "Fecha de Contratación";
         }
 
-        /// <summary>
-        /// Agrega una columna de imagen (icono) al DataGridView.
-        /// </summary>
-        /// <param name="nombre">Nombre de la columna.</param>
-        /// <param name="imagen">Imagen a mostrar en la columna.</param>
-        /// <param name="ancho">Ancho fijo de la columna.</param>
-        /// <param name="posicion">Posición donde insertar la columna.</param>
+        private void ConfigurarColumnas()
+        {
+            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
+
+            foreach (DataGridViewColumn col in dgvEmpleados.Columns)
+            {
+                if (col.Name == "Editar" || col.Name == "Eliminar")
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    col.Width = ActionColumnWidth;
+                }
+                else
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+            }
+
+            dgvEmpleados.RowTemplate.Height = ActionColumnWidth;
+        }
+
         private void AgregarColumnaIcono(string nombre, Image imagen, int ancho, int posicion)
         {
             if (!dgvEmpleados.Columns.Contains(nombre))
@@ -173,77 +154,40 @@ namespace ExamenTopicos
             }
         }
 
-        /// <summary>
-        /// Maneja el evento de cambio de texto en el cuadro de búsqueda.
-        /// </summary>
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        private void AjustarAnchoVentana()
         {
-            try
+            int totalColumnWidth = 0;
+            foreach (DataGridViewColumn col in dgvEmpleados.Columns)
             {
-                string searchValue = txtBuscar.Text.Trim();
-                string query = @"
-                    SELECT 
-                        e.emp_id AS 'ID Empleado', 
-                        e.fname AS 'Nombre', 
-                        e.minit AS 'Inicial', 
-                        e.lname AS 'Apellido', 
-                        j.job_desc AS 'Puesto', 
-                        e.job_lvl AS 'Nivel Puesto', 
-                        p.pub_name AS 'Publicador', 
-                        e.hire_date AS 'Fecha Contratación'
-                    FROM employee e
-                    INNER JOIN jobs j ON e.job_id = j.job_id
-                    INNER JOIN publishers p ON e.pub_id = p.pub_id
-                    WHERE CAST(e.emp_id AS NVARCHAR) LIKE @searchValue OR 
-                          e.fname LIKE @searchValue OR 
-                          e.lname LIKE @searchValue OR 
-                          j.job_desc LIKE @searchValue OR 
-                          p.pub_name LIKE @searchValue";
-
-                SqlParameter[] parametros = new SqlParameter[]
-                {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
-                };
-
-                ds = datos.consulta(query, parametros);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvEmpleados.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-
-                    // Reaplicar el ajuste de columnas
-                    foreach (DataGridViewColumn col in dgvEmpleados.Columns)
-                    {
-                        if (col.Name == "Editar" || col.Name == "Eliminar")
-                        {
-                            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                            col.Width = ActionColumnWidth;
-                        }
-                        else
-                        {
-                            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                        }
-                    }
-
-                    // Reagregar columnas de iconos si es necesario
-                    AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
-                    AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
-                }
-                else
-                {
-                    dgvEmpleados.DataSource = null;
-                }
+                totalColumnWidth += col.Width;
             }
-            catch
+
+            int rowHeaderWidth = dgvEmpleados.RowHeadersVisible ? dgvEmpleados.RowHeadersWidth : 0;
+            int extraWidth = this.Width - dgvEmpleados.ClientSize.Width;
+            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
+
+            this.Width = newWidth + this.Width - dgvEmpleados.Width + 20;
+
+            ConfigurarColumnas();
+        }
+
+        private void FormEmpleados_Resize(object sender, EventArgs e)
+        {
+            ConfigurarColumnas();
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            using (var agregarForm = new FormAgregarEmpleados(Operacion.Agregar))
             {
-                MessageBox.Show("Ocurrió un error al realizar la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (agregarForm.ShowDialog() == DialogResult.OK)
+                {
+                    ActualizarGrid();
+                    AjustarAnchoVentana();
+                }
             }
         }
 
-        /// <summary>
-        /// Maneja el evento de clic en las celdas del DataGridView.
-        /// </summary>
         private void dgvEmpleados_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -260,7 +204,6 @@ namespace ExamenTopicos
 
                 if (columnName == "Eliminar")
                 {
-                    // Manejar eliminación
                     var confirmResult = MessageBox.Show(
                         $"¿Está seguro de eliminar al empleado con ID: {empId}?",
                         "Confirmar Eliminación",
@@ -301,7 +244,6 @@ namespace ExamenTopicos
                 }
                 else if (columnName == "Editar")
                 {
-                    // Manejar edición
                     using (var editarForm = new FormAgregarEmpleados(Operacion.Editar, empId))
                     {
                         if (editarForm.ShowDialog() == DialogResult.OK)
@@ -314,24 +256,6 @@ namespace ExamenTopicos
             }
         }
 
-        /// <summary>
-        /// Maneja el evento de clic en el botón Agregar.
-        /// </summary>
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            using (var agregarForm = new FormAgregarEmpleados(Operacion.Agregar))
-            {
-                if (agregarForm.ShowDialog() == DialogResult.OK)
-                {
-                    ActualizarGrid();
-                    AjustarAnchoVentana();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Maneja el evento de clic en el menú de eliminar.
-        /// </summary>
         private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (dgvEmpleados.CurrentRow != null)
@@ -342,31 +266,52 @@ namespace ExamenTopicos
             }
         }
 
-        /// <summary>
-        /// Ajusta el tamaño de la ventana para acomodar el DataGridView.
-        /// </summary>
-        private void AjustarAnchoVentana()
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
-            // Calcular el ancho total de todas las columnas visibles
-            int totalColumnWidth = 0;
-            foreach (DataGridViewColumn col in dgvEmpleados.Columns)
+            try
             {
-                totalColumnWidth += col.Width;
+                string searchValue = txtBuscar.Text.Trim();
+                string query = @"
+                    SELECT 
+                        e.emp_id AS 'ID Empleado', 
+                        e.fname AS 'Nombre', 
+                        e.minit AS 'Inicial', 
+                        e.lname AS 'Apellido', 
+                        j.job_desc AS 'Puesto', 
+                        e.job_lvl AS 'Nivel Puesto', 
+                        p.pub_name AS 'Publicador', 
+                        e.hire_date AS 'Fecha Contratación'
+                    FROM employee e
+                    INNER JOIN jobs j ON e.job_id = j.job_id
+                    INNER JOIN publishers p ON e.pub_id = p.pub_id
+                    WHERE CAST(e.emp_id AS NVARCHAR) LIKE @searchValue OR 
+                          e.fname LIKE @searchValue OR 
+                          e.lname LIKE @searchValue OR 
+                          j.job_desc LIKE @searchValue OR 
+                          p.pub_name LIKE @searchValue";
+
+                SqlParameter[] parametros = new SqlParameter[]
+                {
+                    new SqlParameter("@searchValue", $"%{searchValue}%")
+                };
+
+                ds = datos.consulta(query, parametros);
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    dgvEmpleados.DataSource = ds.Tables[0];
+                    ConfigurarColumnasGrid();
+                    ConfigurarColumnas();
+                }
+                else
+                {
+                    dgvEmpleados.DataSource = null;
+                }
             }
-
-            // Sumar el ancho de los encabezados de fila si están visibles
-            int rowHeaderWidth = dgvEmpleados.RowHeadersVisible ? dgvEmpleados.RowHeadersWidth : 0;
-
-            // Calcular el espacio adicional necesario (bordes, márgenes, etc.)
-            int extraWidth = this.Width - dgvEmpleados.ClientSize.Width;
-
-            // Establecer el ancho exacto del formulario para eliminar espacio gris
-            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
-
-            // Aplicar el nuevo tamaño al formulario sin modificar la altura
-            this.Width = newWidth + this.Width - dgvEmpleados.Width + 20;
-
-            dgvEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            catch
+            {
+                MessageBox.Show("Ocurrió un error al realizar la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
