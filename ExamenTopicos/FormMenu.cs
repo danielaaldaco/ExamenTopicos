@@ -75,7 +75,8 @@ namespace ExamenTopicos
                 return;
             }
 
-            MessageBox.Show("Bienvenido a la sección de Regalías.", "Regalías", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormRegalias form = new FormRegalias ();
+            form.Show();
         }
 
         private void btnVentas_Click(object sender, EventArgs e)

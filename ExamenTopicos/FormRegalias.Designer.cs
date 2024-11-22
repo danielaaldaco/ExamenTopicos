@@ -38,18 +38,17 @@
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(36, 56);
+            lblBuscar.Location = new Point(10, 20);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(83, 15);
+            lblBuscar.Size = new Size(105, 20);
             lblBuscar.TabIndex = 8;
             lblBuscar.Text = "Buscar regalia:";
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(125, 54);
-            txtBuscar.Margin = new Padding(3, 2, 3, 2);
+            txtBuscar.Location = new Point(112, 17);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(311, 23);
+            txtBuscar.Size = new Size(355, 27);
             txtBuscar.TabIndex = 6;
             // 
             // dgvRegalias
@@ -58,23 +57,22 @@
             dgvRegalias.AllowUserToDeleteRows = false;
             dgvRegalias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvRegalias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvRegalias.Location = new Point(38, 93);
-            dgvRegalias.Margin = new Padding(3, 2, 3, 2);
+            dgvRegalias.Location = new Point(12, 69);
             dgvRegalias.MultiSelect = false;
             dgvRegalias.Name = "dgvRegalias";
             dgvRegalias.ReadOnly = true;
             dgvRegalias.RowHeadersWidth = 51;
-            dgvRegalias.RowTemplate.Height = 29;
             dgvRegalias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRegalias.Size = new Size(519, 262);
+            dgvRegalias.Size = new Size(649, 349);
             dgvRegalias.TabIndex = 5;
             dgvRegalias.CellContentClick += dgvRegalias_CellContentClick;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(482, 56);
+            btnAgregar.Location = new Point(543, 17);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.Size = new Size(86, 31);
             btnAgregar.TabIndex = 9;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -82,16 +80,16 @@
             // 
             // FormRegalias
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(631, 399);
+            ClientSize = new Size(694, 431);
             Controls.Add(btnAgregar);
             Controls.Add(lblBuscar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvRegalias);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormRegalias";
             Text = "FormRegalias";
-            Load += FormRegalias_Load;
             ((System.ComponentModel.ISupportInitialize)dgvRegalias).EndInit();
             ResumeLayout(false);
             PerformLayout();

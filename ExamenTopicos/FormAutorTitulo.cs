@@ -1,8 +1,10 @@
-﻿using System;
+﻿// FormAutorTitulo.cs
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
+using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace ExamenTopicos
 {
@@ -11,8 +13,6 @@ namespace ExamenTopicos
         private DataSet ds;
         private UserRole userRole;
         private Datos datos = new Datos();
-        private Dictionary<int, RowBackupData> rowBackups = new Dictionary<int, RowBackupData>();
-        private bool isUpdatingGrid = false;
 
         public FormAutorTitulo(UserRole role)
         {
@@ -21,18 +21,11 @@ namespace ExamenTopicos
             ConfigurarAccesoPorRol();
             ActualizarGrid();
 
-            dgvAutoresTitulos.EditMode = DataGridViewEditMode.EditOnEnter;
-
-            // Asignar manejadores de eventos correctamente
-            dgvAutoresTitulos.CellBeginEdit += dgvAutoresTitulos_CellBeginEdit;
-            dgvAutoresTitulos.RowValidating += dgvAutoresTitulos_RowValidating;
-            dgvAutoresTitulos.EditingControlShowing += dgvAutoresTitulos_EditingControlShowing;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
-            btnAgregar.Click += btnAgregar_Click;
         }
 
         /// <summary>
-        /// Configura la interfaz según el rol del usuario.
+        /// Configura el acceso a funcionalidades según el rol del usuario.
         /// </summary>
         private void ConfigurarAccesoPorRol()
         {
@@ -42,19 +35,12 @@ namespace ExamenTopicos
             switch (userRole)
             {
                 case UserRole.Cliente:
-                    dgvAutoresTitulos.ReadOnly = true;
                     break;
-
                 case UserRole.Empleado:
-                    btnAgregar.Visible = true;
-                    break;
-
                 case UserRole.GerenteVentas:
                 case UserRole.Administrador:
                     btnAgregar.Visible = true;
-                    dgvAutoresTitulos.ReadOnly = false;
                     break;
-
                 default:
                     MessageBox.Show("Rol no reconocido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Close();
@@ -63,238 +49,26 @@ namespace ExamenTopicos
         }
 
         /// <summary>
-        /// Actualiza el DataGridView con los datos de la base de datos.
+        /// Actualiza el contenido del DataGridView con los datos de la base de datos.
         /// </summary>
         private void ActualizarGrid()
         {
             try
             {
-                dgvAutoresTitulos.EndEdit(); // Completa cualquier edición pendiente.
-                isUpdatingGrid = true;
-                ds = datos.consulta("SELECT au_id, title_id, au_ord, royaltyper FROM titleauthor");
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvAutoresTitulos.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-                    dgvAutoresTitulos.Refresh(); // Asegura que se actualice visualmente
-                }
-                else
-                {
-                    dgvAutoresTitulos.DataSource = null;
-                }
-
-                rowBackups.Clear();
-
-                // Seleccionar la primera fila si existen registros
-                if (dgvAutoresTitulos.Rows.Count > 0)
-                {
-                    dgvAutoresTitulos.ClearSelection();
-                    dgvAutoresTitulos.Rows[0].Selected = true;
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Manejo específico para errores de cambio de celdas.
-                if (!isUpdatingGrid)
-                {
-                    MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error inesperado al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                isUpdatingGrid = false;
-            }
-        }
-
-        /// <summary>
-        /// Configura los encabezados y propiedades de las columnas del DataGridView.
-        /// </summary>
-        private void ConfigurarColumnasGrid()
-        {
-            if (dgvAutoresTitulos.Columns.Contains("au_id"))
-                dgvAutoresTitulos.Columns["au_id"].HeaderText = "ID Autor";
-
-            if (dgvAutoresTitulos.Columns.Contains("title_id"))
-                dgvAutoresTitulos.Columns["title_id"].HeaderText = "ID Título";
-
-            if (dgvAutoresTitulos.Columns.Contains("au_ord"))
-                dgvAutoresTitulos.Columns["au_ord"].HeaderText = "Orden";
-
-            if (dgvAutoresTitulos.Columns.Contains("royaltyper"))
-                dgvAutoresTitulos.Columns["royaltyper"].HeaderText = "Regalía (%)";
-
-            if (dgvAutoresTitulos.Columns.Contains("au_id"))
-                dgvAutoresTitulos.Columns["au_id"].ReadOnly = true;
-
-            if (dgvAutoresTitulos.Columns.Contains("title_id"))
-                dgvAutoresTitulos.Columns["title_id"].ReadOnly = true;
-        }
-
-        /// <summary>
-        /// Maneja el evento cuando se comienza a editar una celda.
-        /// </summary>
-        private void dgvAutoresTitulos_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            if (!rowBackups.ContainsKey(e.RowIndex))
-            {
-                DataGridViewRow row = dgvAutoresTitulos.Rows[e.RowIndex];
-                rowBackups[e.RowIndex] = new RowBackupData
-                {
-                    AutorId = row.Cells["au_id"].Value?.ToString(),
-                    TituloId = row.Cells["title_id"].Value?.ToString(),
-                    Orden = Convert.ToInt32(row.Cells["au_ord"].Value),
-                    Regalía = Convert.ToInt32(row.Cells["royaltyper"].Value)
-                };
-            }
-        }
-
-        /// <summary>
-        /// Valida la fila después de la edición.
-        /// </summary>
-        private void dgvAutoresTitulos_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            try
-            {
-                if (isUpdatingGrid || e.RowIndex < 0 || e.RowIndex >= dgvAutoresTitulos.Rows.Count)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
-                DataGridViewRow row = dgvAutoresTitulos.Rows[e.RowIndex];
-                string autorId = row.Cells["au_id"]?.Value?.ToString()?.Trim();
-                string tituloId = row.Cells["title_id"]?.Value?.ToString()?.Trim();
-
-                if (!rowBackups.ContainsKey(e.RowIndex))
-                    return;
-
-                RowBackupData originalData = rowBackups[e.RowIndex];
-                string newOrdenStr = row.Cells["au_ord"].Value?.ToString()?.Trim();
-                string newRoyaltyStr = row.Cells["royaltyper"].Value?.ToString()?.Trim();
-
-                // Validaciones básicas
-                if (string.IsNullOrWhiteSpace(autorId) || string.IsNullOrWhiteSpace(tituloId))
-                {
-                    MessageBox.Show("El ID del Autor y el Título son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                if (!int.TryParse(newOrdenStr, out int newOrden) || newOrden < 1)
-                {
-                    MessageBox.Show("El orden debe ser un número entero mayor o igual a 1.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                if (!int.TryParse(newRoyaltyStr, out int newRoyalty) || newRoyalty < 0 || newRoyalty > 100)
-                {
-                    MessageBox.Show("La regalía debe estar entre 0 y 100.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                // Verificar si hay cambios
-                if (originalData.Orden != newOrden || originalData.Regalía != newRoyalty)
-                {
-                    StringBuilder cambios = new StringBuilder("¿Deseas guardar los siguientes cambios?\n");
-
-                    if (originalData.Orden != newOrden)
-                    {
-                        cambios.AppendLine($"- Orden: {originalData.Orden} ➔ {newOrden}");
-                    }
-
-                    if (originalData.Regalía != newRoyalty)
-                    {
-                        cambios.AppendLine($"- Regalía: {originalData.Regalía} ➔ {newRoyalty}");
-                    }
-
-                    DialogResult result = MessageBox.Show(cambios.ToString(), "Confirmar cambios", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        try
-                        {
-                            // **Recomendación:** Utilizar consultas parametrizadas para prevenir inyecciones SQL.
-                            string query = $"UPDATE titleauthor SET au_ord = {newOrden}, royaltyper = {newRoyalty} " +
-                                           $"WHERE au_id = '{autorId}' AND title_id = '{tituloId}'";
-                            datos.ejecutarABC(query);
-
-                            MessageBox.Show("Cambios guardados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ActualizarGrid();
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Error al guardar los cambios: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            e.Cancel = true;
-                        }
-                    }
-                    else
-                    {
-                        dgvAutoresTitulos.CancelEdit();
-                        ActualizarGrid();
-                    }
-                }
-
-                rowBackups.Remove(e.RowIndex);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error en RowValidating: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                e.Cancel = true;
-            }
-        }
-
-        /// <summary>
-        /// Maneja el evento de mostrar controles de edición en el DataGridView.
-        /// </summary>
-        private void dgvAutoresTitulos_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            if (e.Control is TextBox tb)
-            {
-                tb.KeyPress -= TextBox_KeyPress;
-                tb.KeyPress += TextBox_KeyPress;
-            }
-        }
-
-        /// <summary>
-        /// Restringe la entrada de caracteres a solo dígitos para ciertas columnas.
-        /// </summary>
-        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (dgvAutoresTitulos.CurrentCell.ColumnIndex == dgvAutoresTitulos.Columns["au_ord"].Index ||
-                dgvAutoresTitulos.CurrentCell.ColumnIndex == dgvAutoresTitulos.Columns["royaltyper"].Index)
-            {
-                if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Maneja el evento de cambio de texto en el cuadro de búsqueda.
-        /// </summary>
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                string searchValue = txtBuscar.Text.Trim();
-
-                if (string.IsNullOrWhiteSpace(searchValue))
-                {
-                    ActualizarGrid();
-                    return;
-                }
-
-                // **Recomendación:** Utilizar consultas parametrizadas para prevenir inyecciones SQL.
-                string query = $"SELECT au_id, title_id, au_ord, royaltyper FROM titleauthor " +
-                               $"WHERE au_id LIKE '%{searchValue}%' OR title_id LIKE '%{searchValue}%'";
+                string query = @"
+                    SELECT 
+                        a.au_id,
+                        a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                        t.title_id,
+                        t.title AS 'Título',
+                        ta.au_ord AS 'Orden',
+                        ta.royaltyper AS 'Regalía (%)'
+                    FROM 
+                        titleauthor ta
+                    INNER JOIN 
+                        authors a ON ta.au_id = a.au_id
+                    INNER JOIN 
+                        titles t ON ta.title_id = t.title_id";
 
                 ds = datos.consulta(query);
 
@@ -302,7 +76,158 @@ namespace ExamenTopicos
                 {
                     dgvAutoresTitulos.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
-                    dgvAutoresTitulos.Refresh(); // Asegura que se actualice visualmente
+
+                    // Ocultar las columnas de IDs
+                    if (dgvAutoresTitulos.Columns.Contains("au_id"))
+                        dgvAutoresTitulos.Columns["au_id"].Visible = false;
+
+                    if (dgvAutoresTitulos.Columns.Contains("title_id"))
+                        dgvAutoresTitulos.Columns["title_id"].Visible = false;
+
+                    // Agregar la columna "Editar" con ícono de lápiz si no existe
+                    if (!dgvAutoresTitulos.Columns.Contains("Editar"))
+                    {
+                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Editar",
+                            HeaderText = "", // Sin encabezado para mantenerlo pequeño
+                            Image = Properties.Resources.pencil2, // Asegúrate de haber agregado el ícono edit.png en recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30 // Tamaño ajustado de la columna
+                        };
+                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn); // Insertar en la primera posición
+                    }
+
+                    // Agregar la columna "Eliminar" con ícono de basura si no existe
+                    if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
+                    {
+                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Eliminar",
+                            HeaderText = "", // Sin encabezado para mantenerlo pequeño
+                            Image = Properties.Resources.garbage, // Asegúrate de haber agregado el ícono garbage.png en recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30 // Tamaño ajustado de la columna
+                        };
+                        dgvAutoresTitulos.Columns.Add(eliminarColumn); // Agregar la columna de basura
+                    }
+                }
+                else
+                {
+                    dgvAutoresTitulos.DataSource = null;
+                }
+
+                if (dgvAutoresTitulos.Rows.Count > 0)
+                {
+                    dgvAutoresTitulos.ClearSelection();
+                    dgvAutoresTitulos.Rows[0].Selected = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Configura los encabezados de las columnas del DataGridView.
+        /// </summary>
+        private void ConfigurarColumnasGrid()
+        {
+            if (dgvAutoresTitulos.Columns.Contains("Nombre Autor"))
+                dgvAutoresTitulos.Columns["Nombre Autor"].HeaderText = "Autor";
+
+            if (dgvAutoresTitulos.Columns.Contains("Título"))
+                dgvAutoresTitulos.Columns["Título"].HeaderText = "Título";
+
+            if (dgvAutoresTitulos.Columns.Contains("Orden"))
+                dgvAutoresTitulos.Columns["Orden"].HeaderText = "Orden";
+
+            if (dgvAutoresTitulos.Columns.Contains("Regalía (%)"))
+                dgvAutoresTitulos.Columns["Regalía (%)"].HeaderText = "Regalía (%)";
+        }
+
+        /// <summary>
+        /// Evento que se dispara cuando cambia el texto en el cuadro de búsqueda.
+        /// Filtra los datos mostrados en el DataGridView.
+        /// </summary>
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string searchValue = System.Text.RegularExpressions.Regex.Replace(txtBuscar.Text.Trim(), @"\s+", " ");
+                string query = string.IsNullOrWhiteSpace(searchValue)
+                            ? @"
+                        SELECT 
+                            a.au_id,
+                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                            t.title_id,
+                            t.title AS 'Título',
+                            ta.au_ord AS 'Orden',
+                            ta.royaltyper AS 'Regalía (%)'
+                        FROM 
+                            titleauthor ta
+                        INNER JOIN 
+                            authors a ON ta.au_id = a.au_id
+                        INNER JOIN 
+                            titles t ON ta.title_id = t.title_id"
+                            : $@"
+                        SELECT 
+                            a.au_id,
+                            a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
+                            t.title_id,
+                            t.title AS 'Título',
+                            ta.au_ord AS 'Orden',
+                            ta.royaltyper AS 'Regalía (%)'
+                        FROM 
+                            titleauthor ta
+                        INNER JOIN 
+                            authors a ON ta.au_id = a.au_id
+                        INNER JOIN 
+                            titles t ON ta.title_id = t.title_id
+                        WHERE 
+                            a.au_lname + ' ' + a.au_fname LIKE '%{searchValue}%' 
+                            OR t.title LIKE '%{searchValue}%'";
+                ds = datos.consulta(query);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    dgvAutoresTitulos.DataSource = ds.Tables[0];
+                    ConfigurarColumnasGrid();
+
+                    // Ocultar las columnas de IDs
+                    if (dgvAutoresTitulos.Columns.Contains("au_id"))
+                        dgvAutoresTitulos.Columns["au_id"].Visible = false;
+
+                    if (dgvAutoresTitulos.Columns.Contains("title_id"))
+                        dgvAutoresTitulos.Columns["title_id"].Visible = false;
+
+                    // Asegurar que la columna "Editar" esté presente
+                    if (!dgvAutoresTitulos.Columns.Contains("Editar"))
+                    {
+                        DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Editar",
+                            HeaderText = "", // Sin encabezado
+                            Image = Properties.Resources.pencil2, // Asegúrate de que edit.png esté en tus recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30
+                        };
+                        dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
+                    }
+
+                    // Asegurar que la columna "Eliminar" esté presente
+                    if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
+                    {
+                        DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
+                        {
+                            Name = "Eliminar",
+                            HeaderText = "", // Sin encabezado
+                            Image = Properties.Resources.garbage, // Asegúrate de que garbage.png esté en tus recursos
+                            ImageLayout = DataGridViewImageCellLayout.Zoom,
+                            Width = 30
+                        };
+                        dgvAutoresTitulos.Columns.Add(eliminarColumn);
+                    }
                 }
                 else
                 {
@@ -316,98 +241,106 @@ namespace ExamenTopicos
         }
 
         /// <summary>
+        /// Evento que se dispara al hacer clic en el botón "Agregar".
         /// Abre el formulario para agregar un nuevo registro.
         /// </summary>
-        private void btnAgregar_Click(object sender, EventArgs e)  
+        private void btnAgregar_Click(object sender, EventArgs e)
         {
-            FormTitles agregar = new FormTitles(userRole);
-            agregar.Show();
-            agregar.FormClosed += (s, args) => ActualizarGrid();
-        }
-         
-        /// <summary>
-        /// Método dedicado exclusivamente a la eliminación de registros. 
-        /// </summary>
-        private void eliminarRegistroToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
+            using (var agregar = new FormAgregarAT(Utils.Operacion.Agregar))
             {
-                dgvAutoresTitulos.EndEdit(); // Asegura que no haya ediciones pendientes.
+                agregar.ShowDialog();
+            }
+            ActualizarGrid();
+        }
 
-                if (dgvAutoresTitulos.SelectedRows.Count > 0)
+        /// <summary>
+        /// Evento que se dispara al hacer clic en una celda del DataGridView.
+        /// Maneja la eliminación y edición de registros cuando se hace clic en los botones correspondientes.
+        /// </summary>
+        private void dgvAutoresTitulos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verifica que la fila y columna sean válidas
+            if (e.RowIndex >= 0)
+            {
+                string columnName = dgvAutoresTitulos.Columns[e.ColumnIndex].Name;
+
+                if (columnName == "Eliminar")
                 {
-                    string autorId = dgvAutoresTitulos.SelectedRows[0].Cells["au_id"].Value?.ToString();
-                    string tituloId = dgvAutoresTitulos.SelectedRows[0].Cells["title_id"].Value?.ToString();
+                    // Manejar eliminación
+                    var row = dgvAutoresTitulos.Rows[e.RowIndex];
+                    string auId = row.Cells["au_id"]?.Value?.ToString() ?? string.Empty;
+                    string titleId = row.Cells["title_id"]?.Value?.ToString() ?? string.Empty;
+                    string nombreAutor = row.Cells["Nombre Autor"]?.Value?.ToString() ?? "Desconocido";
+                    string titulo = row.Cells["Título"]?.Value?.ToString() ?? "Desconocido";
 
-                    if (string.IsNullOrWhiteSpace(autorId) || string.IsNullOrWhiteSpace(tituloId))
+                    if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(titleId))
                     {
-                        MessageBox.Show("No se pudo obtener el ID del Autor o del Título.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
-                    DialogResult confirmResult = MessageBox.Show(
-                        $"¿Eliminar el registro de Autor '{autorId}' y Título '{tituloId}'?",
-                        "Eliminar Registro",
+                    var confirmResult = MessageBox.Show(
+                        $"¿Está seguro de eliminar el siguiente registro?\n\nID Autor: {auId}\nAutor: {nombreAutor}\nTítulo: {titulo}",
+                        "Confirmar Eliminación",
                         MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
+                        MessageBoxIcon.Question);
 
                     if (confirmResult == DialogResult.Yes)
                     {
-                        EliminarRegistro(autorId, tituloId);
+                        // Realizar la eliminación
+                        try
+                        {
+                            string deleteQuery = @"
+                                DELETE FROM titleauthor
+                                WHERE au_id = @auId AND title_id = @titleId";
+
+                            // Crear parámetros para la consulta
+                            SqlParameter[] parametros = new SqlParameter[] {
+                                new SqlParameter("@auId", auId),
+                                new SqlParameter("@titleId", titleId)
+                            };
+
+                            bool exito = datos.ejecutarABC(deleteQuery, parametros);
+
+                            if (exito)
+                            {
+                                MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                ActualizarGrid();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se pudo eliminar el registro. Inténtalo nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
-                else
+                else if (columnName == "Editar")
                 {
-                    MessageBox.Show("Por favor, selecciona una fila para eliminar.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Manejar edición
+                    var row = dgvAutoresTitulos.Rows[e.RowIndex];
+                    string auId = row.Cells["au_id"]?.Value?.ToString() ?? string.Empty;
+                    string titleId = row.Cells["title_id"]?.Value?.ToString() ?? string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(titleId))
+                    {
+                        MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Abrir el formulario de edición, pasando los IDs
+                    using (var editarForm = new FormAgregarAT(Utils.Operacion.Editar, auId, titleId))
+                    {
+                        editarForm.ShowDialog();
+                    }
+
+                    // Actualizar el DataGridView después de la edición
+                    ActualizarGrid();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error durante la eliminación: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        /// <summary>
-        /// Método encargado de eliminar un registro específico de la base de datos.
-        /// </summary>
-        /// <param name="autorId">ID del Autor.</param>
-        /// <param name="tituloId">ID del Título.</param>
-        private void EliminarRegistro(string autorId, string tituloId)
-        {
-            try
-            {
-                // Construir la consulta SQL de eliminación
-                string query = $"DELETE FROM titleauthor WHERE au_id = '{autorId}' AND title_id = '{tituloId}'";
-
-                // Ejecutar la consulta de eliminación
-                bool exito = datos.ejecutarABC(query);
-
-                if (exito)
-                {
-                    MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ActualizarGrid(); // Recargar toda la tabla
-                }
-                else
-                {
-                    MessageBox.Show("No se pudo eliminar el registro.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Clase de respaldo de datos de fila para manejar actualizaciones.
-    /// </summary>
-    public class RowBackupData
-    {
-        public string AutorId { get; set; }
-        public string TituloId { get; set; }
-        public int Orden { get; set; }
-        public int Regalía { get; set; }
     }
 }
