@@ -109,7 +109,7 @@ namespace ExamenTopicos
 
         private void btnDescuentos_Click(object sender, EventArgs e)
         {
-            FormDescuentos formDescuentos = new FormDescuentos();
+            FormDescuentos formDescuentos = new FormDescuentos(user.Rol);
             formDescuentos.Show();
         }
 

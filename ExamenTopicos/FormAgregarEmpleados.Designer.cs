@@ -35,7 +35,6 @@
             label3 = new Label();
             label1 = new Label();
             label10 = new Label();
-            mskIdEmpleado = new MaskedTextBox();
             mskInicialSNombre = new MaskedTextBox();
             dtpFecha = new DateTimePicker();
             cmbPuesto = new ComboBox();
@@ -47,6 +46,7 @@
             label15 = new Label();
             btnCancelar = new Button();
             btnAceptar = new Button();
+            lblID = new Label();
             ((System.ComponentModel.ISupportInitialize)nudNivel).BeginInit();
             SuspendLayout();
             // 
@@ -110,14 +110,6 @@
             label10.TabIndex = 78;
             label10.Text = "Inicial segundo nombre";
             // 
-            // mskIdEmpleado
-            // 
-            mskIdEmpleado.Location = new Point(191, 77);
-            mskIdEmpleado.Mask = "AAA90000A";
-            mskIdEmpleado.Name = "mskIdEmpleado";
-            mskIdEmpleado.Size = new Size(153, 23);
-            mskIdEmpleado.TabIndex = 1;
-            // 
             // mskInicialSNombre
             // 
             mskInicialSNombre.Location = new Point(191, 164);
@@ -128,9 +120,10 @@
             // 
             // dtpFecha
             // 
+            dtpFecha.Format = DateTimePickerFormat.Short;
             dtpFecha.Location = new Point(574, 211);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(214, 23);
+            dtpFecha.Size = new Size(120, 23);
             dtpFecha.TabIndex = 8;
             dtpFecha.Value = new DateTime(2024, 11, 19, 5, 51, 46, 0);
             // 
@@ -141,6 +134,7 @@
             cmbPuesto.Name = "cmbPuesto";
             cmbPuesto.Size = new Size(121, 23);
             cmbPuesto.TabIndex = 5;
+            cmbPuesto.SelectedIndexChanged += cmbPuesto_SelectedIndexChanged;
             // 
             // label11
             // 
@@ -206,6 +200,7 @@
             btnCancelar.TabIndex = 10;
             btnCancelar.Text = "Cerrar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // btnAceptar
             // 
@@ -217,11 +212,20 @@
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
             // 
+            // lblID
+            // 
+            lblID.BackColor = Color.White;
+            lblID.Location = new Point(190, 82);
+            lblID.Name = "lblID";
+            lblID.Size = new Size(194, 18);
+            lblID.TabIndex = 89;
+            // 
             // FormAgregarEmpleados
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(837, 326);
+            Controls.Add(lblID);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(cmbEditorial);
@@ -234,7 +238,6 @@
             Controls.Add(label13);
             Controls.Add(mskInicialSNombre);
             Controls.Add(label10);
-            Controls.Add(mskIdEmpleado);
             Controls.Add(label6);
             Controls.Add(txtApellido);
             Controls.Add(txtNombre);
@@ -257,7 +260,6 @@
         private Label label3;
         private Label label1;
         private Label label10;
-        private MaskedTextBox mskIdEmpleado;
         private MaskedTextBox mskInicialSNombre;
         private DateTimePicker dtpFecha;
         private ComboBox cmbPuesto;
@@ -269,5 +271,6 @@
         private Label label15;
         private Button btnCancelar;
         private Button btnAceptar;
+        private Label lblID;
     }
 }

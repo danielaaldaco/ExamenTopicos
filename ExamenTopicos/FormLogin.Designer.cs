@@ -33,53 +33,67 @@
             txtUsuario = new TextBox();
             txtContrasena = new TextBox();
             btnLogin = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
             // lblUsuario
             // 
-            lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(41, 42);
+            lblUsuario.Image = Properties.Resources.icons8_user_24;
+            lblUsuario.ImageAlign = ContentAlignment.MiddleLeft;
+            lblUsuario.Location = new Point(12, 150);
             lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(62, 20);
+            lblUsuario.Size = new Size(100, 20);
             lblUsuario.TabIndex = 0;
             lblUsuario.Text = "Usuario:";
+            lblUsuario.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblContrasena
             // 
-            lblContrasena.AutoSize = true;
-            lblContrasena.Location = new Point(41, 92);
+            lblContrasena.Image = Properties.Resources.icons8_password_30;
+            lblContrasena.ImageAlign = ContentAlignment.MiddleLeft;
+            lblContrasena.Location = new Point(13, 193);
             lblContrasena.Name = "lblContrasena";
-            lblContrasena.Size = new Size(86, 20);
+            lblContrasena.Size = new Size(102, 35);
             lblContrasena.TabIndex = 2;
             lblContrasena.Text = "Contraseña:";
+            lblContrasena.TextAlign = ContentAlignment.MiddleRight;
             // 
             // txtUsuario
             // 
-            txtUsuario.Location = new Point(141, 37);
+            txtUsuario.Location = new Point(118, 150);
             txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(200, 27);
+            txtUsuario.Size = new Size(179, 23);
             txtUsuario.TabIndex = 1;
             // 
             // txtContrasena
             // 
-            txtContrasena.Location = new Point(141, 87);
+            txtContrasena.Location = new Point(118, 200);
             txtContrasena.Name = "txtContrasena";
             txtContrasena.PasswordChar = '*';
-            txtContrasena.Size = new Size(200, 27);
+            txtContrasena.Size = new Size(179, 23);
             txtContrasena.TabIndex = 3;
             // 
             // btnLogin
             // 
-            btnLogin.Location = new Point(141, 142);
+            btnLogin.Location = new Point(25, 258);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(200, 30);
+            btnLogin.Size = new Size(311, 30);
             btnLogin.TabIndex = 4;
             btnLogin.Text = "Iniciar Sesión";
             btnLogin.Click += btnLogin_Click;
             // 
+            // label1
+            // 
+            label1.Image = Properties.Resources.icons8_user_100;
+            label1.Location = new Point(108, 22);
+            label1.Name = "label1";
+            label1.Size = new Size(139, 106);
+            label1.TabIndex = 5;
+            // 
             // FormLogin
             // 
-            ClientSize = new Size(400, 212);
+            ClientSize = new Size(354, 312);
+            Controls.Add(label1);
             Controls.Add(lblUsuario);
             Controls.Add(txtUsuario);
             Controls.Add(lblContrasena);
@@ -93,5 +107,7 @@
             ResumeLayout(false);
             PerformLayout();
         }
+
+        private Label label1;
     }
 }

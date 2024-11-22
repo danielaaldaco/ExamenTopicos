@@ -359,5 +359,10 @@ namespace ExamenTopicos
         }
 
         #endregion
+
+        private void cmbPubId_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
