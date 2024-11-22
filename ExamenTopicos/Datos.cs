@@ -8,8 +8,13 @@ namespace ExamenTopicos
 {
     internal class Datos
     {
-        String cadenaConexion = @"Data Source=ALFREDO\SQLEXPRESS;
+        private const string ALFREDO = @"Data Source=ALFREDO\SQLEXPRESS;
                 Integrated Security=true;initial catalog=pubs";
+
+        private const string DANI = @"Data Source=DESKTOP-VR4NTPA;
+                Integrated Security=true;initial catalog=pubs";
+
+        String cadenaConexion = ALFREDO;
 
         SqlConnection conexion;
 

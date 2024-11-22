@@ -23,251 +23,257 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            label6 = new Label();
-            txtApellido = new TextBox();
-            txtNombre = new TextBox();
-            label5 = new Label();
-            label3 = new Label();
-            label1 = new Label();
-            label10 = new Label();
+            lblIdEmpleado = new Label();
             mskIdEmpleado = new MaskedTextBox();
+            lblNombre = new Label();
+            txtNombre = new TextBox();
+            lblInicial = new Label();
             mskInicialSNombre = new MaskedTextBox();
-            dtpFecha = new DateTimePicker();
+            lblApellido = new Label();
+            txtApellido = new TextBox();
+            lblPuesto = new Label();
             cmbPuesto = new ComboBox();
-            label11 = new Label();
-            label13 = new Label();
+            lblNivel = new Label();
             nudNivel = new NumericUpDown();
-            label14 = new Label();
+            lblEditorial = new Label();
             cmbEditorial = new ComboBox();
-            label15 = new Label();
-            btnCancelar = new Button();
+            lblFechaContratacion = new Label();
+            dtpFecha = new DateTimePicker();
             btnAceptar = new Button();
+            btnCancelar = new Button();
             ((System.ComponentModel.ISupportInitialize)nudNivel).BeginInit();
             SuspendLayout();
             // 
-            // label6
+            // lblIdEmpleado
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(35, 85);
-            label6.Name = "label6";
-            label6.Size = new Size(74, 15);
-            label6.TabIndex = 75;
-            label6.Text = "ID Empleado";
-            // 
-            // txtApellido
-            // 
-            txtApellido.Location = new Point(190, 208);
-            txtApellido.Name = "txtApellido";
-            txtApellido.Size = new Size(194, 23);
-            txtApellido.TabIndex = 4;
-            // 
-            // txtNombre
-            // 
-            txtNombre.Location = new Point(191, 119);
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(193, 23);
-            txtNombre.TabIndex = 2;
-            // 
-            // label5
-            // 
-            label5.Location = new Point(34, 22);
-            label5.Name = "label5";
-            label5.Size = new Size(502, 38);
-            label5.TabIndex = 70;
-            label5.Text = "Favor de rellene los campos correspondientes para agregar la información sobre el empleado";
-            label5.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(34, 122);
-            label3.Name = "label3";
-            label3.RightToLeft = RightToLeft.Yes;
-            label3.Size = new Size(51, 15);
-            label3.TabIndex = 69;
-            label3.Text = "Nombre";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(34, 211);
-            label1.Name = "label1";
-            label1.Size = new Size(87, 15);
-            label1.TabIndex = 66;
-            label1.Text = "Primer apellido";
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Location = new Point(35, 167);
-            label10.Name = "label10";
-            label10.Size = new Size(132, 15);
-            label10.TabIndex = 78;
-            label10.Text = "Inicial segundo nombre";
+            lblIdEmpleado.AutoSize = true;
+            lblIdEmpleado.Location = new Point(16, 23);
+            lblIdEmpleado.Margin = new Padding(4, 0, 4, 0);
+            lblIdEmpleado.Name = "lblIdEmpleado";
+            lblIdEmpleado.Size = new Size(99, 20);
+            lblIdEmpleado.TabIndex = 0;
+            lblIdEmpleado.Text = "ID Empleado:";
             // 
             // mskIdEmpleado
             // 
-            mskIdEmpleado.Location = new Point(191, 77);
-            mskIdEmpleado.Mask = "AAA90000A";
+            mskIdEmpleado.Location = new Point(160, 18);
+            mskIdEmpleado.Margin = new Padding(4, 5, 4, 5);
             mskIdEmpleado.Name = "mskIdEmpleado";
-            mskIdEmpleado.Size = new Size(153, 23);
+            mskIdEmpleado.Size = new Size(132, 27);
             mskIdEmpleado.TabIndex = 1;
+            // 
+            // lblNombre
+            // 
+            lblNombre.AutoSize = true;
+            lblNombre.Location = new Point(16, 69);
+            lblNombre.Margin = new Padding(4, 0, 4, 0);
+            lblNombre.Name = "lblNombre";
+            lblNombre.Size = new Size(67, 20);
+            lblNombre.TabIndex = 2;
+            lblNombre.Text = "Nombre:";
+            // 
+            // txtNombre
+            // 
+            txtNombre.Location = new Point(160, 65);
+            txtNombre.Margin = new Padding(4, 5, 4, 5);
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(265, 27);
+            txtNombre.TabIndex = 3;
+            // 
+            // lblInicial
+            // 
+            lblInicial.AutoSize = true;
+            lblInicial.Location = new Point(16, 115);
+            lblInicial.Margin = new Padding(4, 0, 4, 0);
+            lblInicial.Name = "lblInicial";
+            lblInicial.Size = new Size(51, 20);
+            lblInicial.TabIndex = 4;
+            lblInicial.Text = "Inicial:";
             // 
             // mskInicialSNombre
             // 
-            mskInicialSNombre.Location = new Point(191, 164);
+            mskInicialSNombre.Location = new Point(160, 111);
+            mskInicialSNombre.Margin = new Padding(4, 5, 4, 5);
             mskInicialSNombre.Mask = "A";
             mskInicialSNombre.Name = "mskInicialSNombre";
-            mskInicialSNombre.Size = new Size(45, 23);
-            mskInicialSNombre.TabIndex = 3;
+            mskInicialSNombre.Size = new Size(25, 27);
+            mskInicialSNombre.TabIndex = 5;
             // 
-            // dtpFecha
+            // lblApellido
             // 
-            dtpFecha.Location = new Point(574, 211);
-            dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(214, 23);
-            dtpFecha.TabIndex = 8;
-            dtpFecha.Value = new DateTime(2024, 11, 19, 5, 51, 46, 0);
+            lblApellido.AutoSize = true;
+            lblApellido.Location = new Point(16, 162);
+            lblApellido.Margin = new Padding(4, 0, 4, 0);
+            lblApellido.Name = "lblApellido";
+            lblApellido.Size = new Size(69, 20);
+            lblApellido.TabIndex = 6;
+            lblApellido.Text = "Apellido:";
+            // 
+            // txtApellido
+            // 
+            txtApellido.Location = new Point(160, 157);
+            txtApellido.Margin = new Padding(4, 5, 4, 5);
+            txtApellido.Name = "txtApellido";
+            txtApellido.Size = new Size(265, 27);
+            txtApellido.TabIndex = 7;
+            // 
+            // lblPuesto
+            // 
+            lblPuesto.AutoSize = true;
+            lblPuesto.Location = new Point(16, 208);
+            lblPuesto.Margin = new Padding(4, 0, 4, 0);
+            lblPuesto.Name = "lblPuesto";
+            lblPuesto.Size = new Size(56, 20);
+            lblPuesto.TabIndex = 8;
+            lblPuesto.Text = "Puesto:";
             // 
             // cmbPuesto
             // 
+            cmbPuesto.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPuesto.FormattingEnabled = true;
-            cmbPuesto.Location = new Point(570, 74);
+            cmbPuesto.Location = new Point(160, 203);
+            cmbPuesto.Margin = new Padding(4, 5, 4, 5);
             cmbPuesto.Name = "cmbPuesto";
-            cmbPuesto.Size = new Size(121, 23);
-            cmbPuesto.TabIndex = 5;
+            cmbPuesto.Size = new Size(265, 28);
+            cmbPuesto.TabIndex = 9;
             // 
-            // label11
+            // lblNivel
             // 
-            label11.AutoSize = true;
-            label11.Location = new Point(414, 217);
-            label11.Name = "label11";
-            label11.RightToLeft = RightToLeft.Yes;
-            label11.Size = new Size(124, 15);
-            label11.TabIndex = 83;
-            label11.Text = "Fecha de contratación";
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(413, 77);
-            label13.Name = "label13";
-            label13.Size = new Size(57, 15);
-            label13.TabIndex = 81;
-            label13.Text = "ID Puesto";
+            lblNivel.AutoSize = true;
+            lblNivel.Location = new Point(16, 254);
+            lblNivel.Margin = new Padding(4, 0, 4, 0);
+            lblNivel.Name = "lblNivel";
+            lblNivel.Size = new Size(94, 20);
+            lblNivel.TabIndex = 10;
+            lblNivel.Text = "Nivel Puesto:";
             // 
             // nudNivel
             // 
-            nudNivel.Increment = new decimal(new int[] { 5, 0, 0, 0 });
-            nudNivel.Location = new Point(574, 118);
-            nudNivel.Maximum = new decimal(new int[] { 250, 0, 0, 0 });
-            nudNivel.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
+            nudNivel.Location = new Point(160, 251);
+            nudNivel.Margin = new Padding(4, 5, 4, 5);
+            nudNivel.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
+            nudNivel.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudNivel.Name = "nudNivel";
-            nudNivel.Size = new Size(120, 23);
-            nudNivel.TabIndex = 6;
+            nudNivel.Size = new Size(80, 27);
+            nudNivel.TabIndex = 11;
             nudNivel.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
-            // label14
+            // lblEditorial
             // 
-            label14.AutoSize = true;
-            label14.Location = new Point(414, 126);
-            label14.Name = "label14";
-            label14.Size = new Size(37, 15);
-            label14.TabIndex = 87;
-            label14.Text = "Nivel ";
+            lblEditorial.AutoSize = true;
+            lblEditorial.Location = new Point(16, 300);
+            lblEditorial.Margin = new Padding(4, 0, 4, 0);
+            lblEditorial.Name = "lblEditorial";
+            lblEditorial.Size = new Size(68, 20);
+            lblEditorial.TabIndex = 12;
+            lblEditorial.Text = "Editorial:";
             // 
             // cmbEditorial
             // 
+            cmbEditorial.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEditorial.FormattingEnabled = true;
-            cmbEditorial.Location = new Point(574, 166);
+            cmbEditorial.Location = new Point(160, 295);
+            cmbEditorial.Margin = new Padding(4, 5, 4, 5);
             cmbEditorial.Name = "cmbEditorial";
-            cmbEditorial.Size = new Size(121, 23);
-            cmbEditorial.TabIndex = 7;
+            cmbEditorial.Size = new Size(265, 28);
+            cmbEditorial.TabIndex = 13;
             // 
-            // label15
+            // lblFechaContratacion
             // 
-            label15.AutoSize = true;
-            label15.Location = new Point(414, 169);
-            label15.Name = "label15";
-            label15.Size = new Size(64, 15);
-            label15.TabIndex = 88;
-            label15.Text = "ID Editorial";
+            lblFechaContratacion.AutoSize = true;
+            lblFechaContratacion.Location = new Point(16, 346);
+            lblFechaContratacion.Margin = new Padding(4, 0, 4, 0);
+            lblFechaContratacion.Name = "lblFechaContratacion";
+            lblFechaContratacion.Size = new Size(139, 20);
+            lblFechaContratacion.TabIndex = 14;
+            lblFechaContratacion.Text = "Fecha Contratación:";
             // 
-            // btnCancelar
+            // dtpFecha
             // 
-            btnCancelar.Location = new Point(690, 291);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(98, 23);
-            btnCancelar.TabIndex = 10;
-            btnCancelar.Text = "Cerrar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            dtpFecha.Format = DateTimePickerFormat.Short;
+            dtpFecha.Location = new Point(160, 342);
+            dtpFecha.Margin = new Padding(4, 5, 4, 5);
+            dtpFecha.Name = "dtpFecha";
+            dtpFecha.Size = new Size(132, 27);
+            dtpFecha.TabIndex = 15;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(577, 291);
+            btnAceptar.Location = new Point(160, 400);
+            btnAceptar.Margin = new Padding(4, 5, 4, 5);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(97, 23);
-            btnAceptar.TabIndex = 9;
-            btnAceptar.Text = "Aceptar";
+            btnAceptar.Size = new Size(100, 35);
+            btnAceptar.TabIndex = 16;
+            btnAceptar.Text = "Agregar";
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
             // 
+            // btnCancelar
+            // 
+            btnCancelar.Location = new Point(327, 400);
+            btnCancelar.Margin = new Padding(4, 5, 4, 5);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(100, 35);
+            btnCancelar.TabIndex = 17;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
+            // 
             // FormAgregarEmpleados
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(837, 326);
+            ClientSize = new Size(445, 463);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
-            Controls.Add(cmbEditorial);
-            Controls.Add(label15);
-            Controls.Add(nudNivel);
-            Controls.Add(label14);
             Controls.Add(dtpFecha);
+            Controls.Add(lblFechaContratacion);
+            Controls.Add(cmbEditorial);
+            Controls.Add(lblEditorial);
+            Controls.Add(nudNivel);
+            Controls.Add(lblNivel);
             Controls.Add(cmbPuesto);
-            Controls.Add(label11);
-            Controls.Add(label13);
-            Controls.Add(mskInicialSNombre);
-            Controls.Add(label10);
-            Controls.Add(mskIdEmpleado);
-            Controls.Add(label6);
+            Controls.Add(lblPuesto);
             Controls.Add(txtApellido);
+            Controls.Add(lblApellido);
+            Controls.Add(mskInicialSNombre);
+            Controls.Add(lblInicial);
             Controls.Add(txtNombre);
-            Controls.Add(label5);
-            Controls.Add(label3);
-            Controls.Add(label1);
+            Controls.Add(lblNombre);
+            Controls.Add(mskIdEmpleado);
+            Controls.Add(lblIdEmpleado);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "FormAgregarEmpleados";
-            Text = "FormAgregarEmpleados";
-            Load += FormAgregarEmpleados_Load;
+            Text = "Agregar Empleado";
             ((System.ComponentModel.ISupportInitialize)nudNivel).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Label label6;
-        private TextBox txtApellido;
-        private TextBox txtNombre;
-        private Label label5;
-        private Label label3;
-        private Label label1;
-        private Label label10;
-        private MaskedTextBox mskIdEmpleado;
-        private MaskedTextBox mskInicialSNombre;
-        private DateTimePicker dtpFecha;
-        private ComboBox cmbPuesto;
-        private Label label11;
-        private Label label13;
-        private NumericUpDown nudNivel;
-        private Label label14;
-        private ComboBox cmbEditorial;
-        private Label label15;
-        private Button btnCancelar;
-        private Button btnAceptar;
+
+        private System.Windows.Forms.Label lblIdEmpleado;
+        private System.Windows.Forms.MaskedTextBox mskIdEmpleado;
+        private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.TextBox txtNombre;
+        private System.Windows.Forms.Label lblInicial;
+        private System.Windows.Forms.MaskedTextBox mskInicialSNombre;
+        private System.Windows.Forms.Label lblApellido;
+        private System.Windows.Forms.TextBox txtApellido;
+        private System.Windows.Forms.Label lblPuesto;
+        private System.Windows.Forms.ComboBox cmbPuesto;
+        private System.Windows.Forms.Label lblNivel;
+        private System.Windows.Forms.NumericUpDown nudNivel;
+        private System.Windows.Forms.Label lblEditorial;
+        private System.Windows.Forms.ComboBox cmbEditorial;
+        private System.Windows.Forms.Label lblFechaContratacion;
+        private System.Windows.Forms.DateTimePicker dtpFecha;
+        private System.Windows.Forms.Button btnAceptar;
+        private System.Windows.Forms.Button btnCancelar;
     }
 }
