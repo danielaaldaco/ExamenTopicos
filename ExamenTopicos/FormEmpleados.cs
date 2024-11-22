@@ -112,8 +112,8 @@ namespace ExamenTopicos
                     }
 
                     // Agregar columnas de iconos si no existen
-                    AgregarColumnaIcono("Editar", Properties.Resources.edit, ActionColumnWidth, 0);
-                    AgregarColumnaIcono("Eliminar", Properties.Resources.garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
+                    AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+                    AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
 
                     // Opcional: Ajustar la altura de las filas para mostrar los iconos correctamente
                     dgvEmpleados.RowTemplate.Height = ActionColumnWidth;
@@ -227,8 +227,8 @@ namespace ExamenTopicos
                     }
 
                     // Reagregar columnas de iconos si es necesario
-                    AgregarColumnaIcono("Editar", Properties.Resources.edit, ActionColumnWidth, 0);
-                    AgregarColumnaIcono("Eliminar", Properties.Resources.garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
+                    AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+                    AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
                 }
                 else
                 {
