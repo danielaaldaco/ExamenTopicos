@@ -30,9 +30,6 @@ namespace ExamenTopicos
 
         private void ConfigurarAccesoPorRol()
         {
-            btnAgregar.Visible = false;
-            contextMenuStrip1.Items["eliminarToolStripMenuItem"].Visible = false;
-            dgvEmpleados.ReadOnly = true;
 
             switch (userRole)
             {
@@ -65,7 +62,7 @@ namespace ExamenTopicos
 
         private void ActualizarGrid()
         {
-            ds = datos.consulta("SELECT emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date FROM employee");
+            ds = datos.consulta("SELECT emp_id, fname, minit, lname, job_desc, job_lvl, pub_id, hire_date FROM employee, jobs");
 
             if (ds != null)
             {
@@ -75,7 +72,7 @@ namespace ExamenTopicos
                 dgvEmpleados.Columns["fname"].HeaderText = "Nombre";
                 dgvEmpleados.Columns["minit"].HeaderText = "Inicial";
                 dgvEmpleados.Columns["lname"].HeaderText = "Apellido";
-                dgvEmpleados.Columns["job_id"].HeaderText = "ID Puesto";
+                dgvEmpleados.Columns["job_desc"].HeaderText = "ID Puesto";
                 dgvEmpleados.Columns["job_lvl"].HeaderText = "Nivel Puesto";
                 dgvEmpleados.Columns["pub_id"].HeaderText = "ID Publicador";
                 dgvEmpleados.Columns["hire_date"].HeaderText = "Fecha de Contratación";
@@ -138,7 +135,7 @@ namespace ExamenTopicos
                         if (resultado)
                         {
                             MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ActualizarGrid(); 
+                            ActualizarGrid();
                         }
                         else
                         {
@@ -157,6 +154,45 @@ namespace ExamenTopicos
             }
         }
 
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            FormAgregarEmpleados agregar = new FormAgregarEmpleados();
+            agregar.Show();
+            agregar.FormClosed += (s, args) => ActualizarGrid();
+        }
+
+        private void editarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+                if (dgvEmpleados.SelectedRows.Count > 0)
+                {
+                    try
+                    {
+                        FormAgregarEmpleados editar = new FormAgregarEmpleados(
+                            dgvEmpleados[0, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
+                            dgvEmpleados[1, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
+                            dgvEmpleados[2, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
+                            dgvEmpleados[3, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
+                            dgvEmpleados[4, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
+                            Convert.ToInt32(dgvEmpleados[5, dgvEmpleados.SelectedRows[0].Index].Value ?? 0),
+                            dgvEmpleados[6, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
+                            Convert.ToDateTime(dgvEmpleados[7, dgvEmpleados.SelectedRows[0].Index].Value ?? DateTime.Now)
+                        );
+
+                        editar.ShowDialog();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar un registro", "Sistema", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                }
+            }
+
+        
     }
 
 
