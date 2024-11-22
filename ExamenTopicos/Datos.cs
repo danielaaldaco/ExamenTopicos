@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
@@ -8,8 +8,13 @@ namespace ExamenTopicos
 {
     internal class Datos
     {
-        String cadenaConexion = @"Data Source=DESKTOP-VR4NTPA;
+        private const string ALFREDO = @"Data Source=ALFREDO\SQLEXPRESS;
                 Integrated Security=true;initial catalog=pubs";
+
+        private const string DANI = @"Data Source=DESKTOP-VR4NTPA;
+                Integrated Security=true;initial catalog=pubs";
+
+        String cadenaConexion = ALFREDO;
 
         SqlConnection conexion;
 
@@ -119,27 +124,5 @@ namespace ExamenTopicos
                 return null;
             }
         }
-        public void LlenarComboBox(ComboBox comboBox, string query, string displayMember, string valueMember)
-        {
-            try
-            {
-                DataSet ds = consulta(query); 
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    comboBox.DataSource = ds.Tables[0];
-                    comboBox.DisplayMember = displayMember; 
-                    comboBox.ValueMember = valueMember;
-                }
-                else
-                {
-                    Debug.WriteLine("No se obtuvieron resultados de la consulta.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error al llenar el ComboBox: {ex.Message}");
-            }
-        }
-
     }
 }

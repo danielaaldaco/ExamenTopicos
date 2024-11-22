@@ -1,4 +1,4 @@
-﻿namespace ExamenTopicos
+namespace ExamenTopicos
 {
     partial class FormEmpleados
     {
@@ -29,87 +29,89 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            btnAgregar = new Button();
-            label1 = new Label();
-            txtBuscar = new TextBox();
             dgvEmpleados = new DataGridView();
+            txtBuscar = new TextBox();
+            lblBuscar = new Label();
+            btnAgregar = new Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             eliminarToolStripMenuItem = new ToolStripMenuItem();
-            editarToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
-            // 
-            // btnAgregar
-            // 
-            btnAgregar.Location = new Point(546, 373);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
-            btnAgregar.TabIndex = 11;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
-            btnAgregar.Click += btnAgregar_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(44, 42);
-            label1.Name = "label1";
-            label1.Size = new Size(103, 15);
-            label1.TabIndex = 10;
-            label1.Text = "Buscar empleados";
-            // 
-            // txtBuscar
-            // 
-            txtBuscar.Location = new Point(192, 39);
-            txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(429, 23);
-            txtBuscar.TabIndex = 9;
             // 
             // dgvEmpleados
             // 
             dgvEmpleados.AllowUserToAddRows = false;
             dgvEmpleados.AllowUserToDeleteRows = false;
-            dgvEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEmpleados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmpleados.ContextMenuStrip = contextMenuStrip1;
-            dgvEmpleados.Location = new Point(44, 84);
+            dgvEmpleados.Location = new Point(16, 78);
+            dgvEmpleados.Margin = new Padding(4, 5, 4, 5);
             dgvEmpleados.Name = "dgvEmpleados";
-            dgvEmpleados.Size = new Size(577, 253);
-            dgvEmpleados.TabIndex = 8;
+            dgvEmpleados.ReadOnly = true;
+            dgvEmpleados.RowHeadersWidth = 51;
+            dgvEmpleados.Size = new Size(678, 612);
+            dgvEmpleados.TabIndex = 0;
+            dgvEmpleados.CellContentClick += dgvEmpleados_CellContentClick;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Location = new Point(93, 23);
+            txtBuscar.Margin = new Padding(4, 5, 4, 5);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(332, 27);
+            txtBuscar.TabIndex = 1;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // 
+            // lblBuscar
+            // 
+            lblBuscar.AutoSize = true;
+            lblBuscar.Location = new Point(16, 28);
+            lblBuscar.Margin = new Padding(4, 0, 4, 0);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(59, 20);
+            lblBuscar.TabIndex = 2;
+            lblBuscar.Text = "Buscar: ";
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAgregar.Location = new Point(594, 23);
+            btnAgregar.Margin = new Padding(4, 5, 4, 5);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(100, 35);
+            btnAgregar.TabIndex = 3;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarToolStripMenuItem, editarToolStripMenuItem });
+            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { eliminarToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(181, 70);
+            contextMenuStrip1.Size = new Size(133, 28);
             // 
             // eliminarToolStripMenuItem
             // 
             eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
-            eliminarToolStripMenuItem.Size = new Size(180, 22);
+            eliminarToolStripMenuItem.Size = new Size(132, 24);
             eliminarToolStripMenuItem.Text = "Eliminar";
             eliminarToolStripMenuItem.Click += eliminarToolStripMenuItem_Click;
             // 
-            // editarToolStripMenuItem
-            // 
-            editarToolStripMenuItem.Name = "editarToolStripMenuItem";
-            editarToolStripMenuItem.Size = new Size(180, 22);
-            editarToolStripMenuItem.Text = "Editar";
-            editarToolStripMenuItem.Click += editarToolStripMenuItem_Click;
-            // 
             // FormEmpleados
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(665, 450);
+            ClientSize = new Size(707, 709);
             Controls.Add(btnAgregar);
-            Controls.Add(label1);
+            Controls.Add(lblBuscar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvEmpleados);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "FormEmpleados";
-            Text = "FormEmpleados";
-            Load += FormEmpleados_Load;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Gestión de Empleados";
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
@@ -118,12 +120,12 @@
 
         #endregion
 
-        private Button btnAgregar;
-        private Label label1;
-        private TextBox txtBuscar;
-        private DataGridView dgvEmpleados;
-        private ContextMenuStrip contextMenuStrip1;
-        private ToolStripMenuItem eliminarToolStripMenuItem;
-        private ToolStripMenuItem editarToolStripMenuItem;
+        private System.Windows.Forms.DataGridView dgvEmpleados;
+        private System.Windows.Forms.TextBox txtBuscar;
+        private System.Windows.Forms.Label lblBuscar;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem eliminarToolStripMenuItem;
     }
 }
+    

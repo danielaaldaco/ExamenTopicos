@@ -1,35 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data;
-using System.Text.RegularExpressions;
+using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
+using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
     public partial class FormEmpleados : Form
     {
-        DataSet ds;
-        UserRole userRole;
-        Datos datos = new Datos();
+        private DataSet ds;
+        private UserRole userRole;
+        private Datos datos = new Datos();
+
+        // Tamaño fijo para las columnas de acción
+        private const int ActionColumnWidth = 30;
 
         public FormEmpleados(UserRole role)
         {
             InitializeComponent();
             this.userRole = role;
             ConfigurarAccesoPorRol();
-        }
-
-        private void FormEmpleados_Load(object sender, EventArgs e)
-        {
             ActualizarGrid();
+            AjustarAnchoVentana();
 
-            dgvEmpleados.EditMode = DataGridViewEditMode.EditOnEnter;
-
-            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // Suscribirse al evento Resize para ajustar las columnas dinámicas proporcionalmente
+            this.Resize += FormEmpleados_Resize;
         }
 
         private void ConfigurarAccesoPorRol()
         {
+            btnAgregar.Visible = false;
+            eliminarToolStripMenuItem.Visible = false;
+            dgvEmpleados.ReadOnly = true;
 
             switch (userRole)
             {
@@ -49,7 +52,7 @@ namespace ExamenTopicos
 
                 case UserRole.Administrador:
                     btnAgregar.Visible = true;
-                    contextMenuStrip1.Items["eliminarToolStripMenuItem"].Visible = true;
+                    eliminarToolStripMenuItem.Visible = true;
                     dgvEmpleados.ReadOnly = false;
                     break;
 
@@ -62,22 +65,204 @@ namespace ExamenTopicos
 
         private void ActualizarGrid()
         {
-            ds = datos.consulta("SELECT emp_id, fname, minit, lname, job_desc, job_lvl, pub_id, hire_date FROM employee, jobs");
-
-            if (ds != null)
+            try
             {
-                dgvEmpleados.DataSource = ds.Tables[0];
+                string query = @"
+                    SELECT 
+                        e.emp_id AS 'ID Empleado', 
+                        e.fname AS 'Nombre', 
+                        e.minit AS 'Inicial', 
+                        e.lname AS 'Apellido', 
+                        j.job_desc AS 'Puesto', 
+                        e.job_lvl AS 'Nivel Puesto', 
+                        p.pub_name AS 'Publicador', 
+                        e.hire_date AS 'Fecha Contratación'
+                    FROM employee e
+                    INNER JOIN jobs j ON e.job_id = j.job_id
+                    INNER JOIN publishers p ON e.pub_id = p.pub_id";
 
-                dgvEmpleados.Columns["emp_id"].HeaderText = "ID Empleado";
-                dgvEmpleados.Columns["fname"].HeaderText = "Nombre";
-                dgvEmpleados.Columns["minit"].HeaderText = "Inicial";
-                dgvEmpleados.Columns["lname"].HeaderText = "Apellido";
-                dgvEmpleados.Columns["job_desc"].HeaderText = "ID Puesto";
-                dgvEmpleados.Columns["job_lvl"].HeaderText = "Nivel Puesto";
-                dgvEmpleados.Columns["pub_id"].HeaderText = "ID Publicador";
-                dgvEmpleados.Columns["hire_date"].HeaderText = "Fecha de Contratación";
+                ds = datos.consulta(query);
 
-                dgvEmpleados.Columns["emp_id"].ReadOnly = true;
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    dgvEmpleados.DataSource = ds.Tables[0];
+                    ConfigurarColumnasGrid();
+                    ConfigurarColumnas();
+                }
+                else
+                {
+                    dgvEmpleados.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ConfigurarColumnasGrid()
+        {
+            dgvEmpleados.Columns["ID Empleado"].HeaderText = "ID Empleado";
+            dgvEmpleados.Columns["Nombre"].HeaderText = "Nombre";
+            dgvEmpleados.Columns["Inicial"].HeaderText = "Inicial";
+            dgvEmpleados.Columns["Apellido"].HeaderText = "Apellido";
+            dgvEmpleados.Columns["Puesto"].HeaderText = "Puesto";
+            dgvEmpleados.Columns["Nivel Puesto"].HeaderText = "Nivel Puesto";
+            dgvEmpleados.Columns["Publicador"].HeaderText = "Publicador";
+            dgvEmpleados.Columns["Fecha Contratación"].HeaderText = "Fecha de Contratación";
+        }
+
+        private void ConfigurarColumnas()
+        {
+            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvEmpleados.Columns.Count);
+
+            foreach (DataGridViewColumn col in dgvEmpleados.Columns)
+            {
+                if (col.Name == "Editar" || col.Name == "Eliminar")
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    col.Width = ActionColumnWidth;
+                }
+                else
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+            }
+
+            dgvEmpleados.RowTemplate.Height = ActionColumnWidth;
+        }
+
+        private void AgregarColumnaIcono(string nombre, Image imagen, int ancho, int posicion)
+        {
+            if (!dgvEmpleados.Columns.Contains(nombre))
+            {
+                var columna = new DataGridViewImageColumn
+                {
+                    Name = nombre,
+                    HeaderText = "",
+                    Image = imagen,
+                    ImageLayout = DataGridViewImageCellLayout.Zoom,
+                    Width = ancho,
+                    Resizable = DataGridViewTriState.False
+                };
+
+                if (posicion >= 0 && posicion < dgvEmpleados.Columns.Count)
+                    dgvEmpleados.Columns.Insert(posicion, columna);
+                else
+                    dgvEmpleados.Columns.Add(columna);
+            }
+        }
+
+        private void AjustarAnchoVentana()
+        {
+            int totalColumnWidth = 0;
+            foreach (DataGridViewColumn col in dgvEmpleados.Columns)
+            {
+                totalColumnWidth += col.Width;
+            }
+
+            int rowHeaderWidth = dgvEmpleados.RowHeadersVisible ? dgvEmpleados.RowHeadersWidth : 0;
+            int extraWidth = this.Width - dgvEmpleados.ClientSize.Width;
+            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
+
+            this.Width = newWidth + this.Width - dgvEmpleados.Width + 20;
+
+            ConfigurarColumnas();
+        }
+
+        private void FormEmpleados_Resize(object sender, EventArgs e)
+        {
+            ConfigurarColumnas();
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            using (var agregarForm = new FormAgregarEmpleados(Operacion.Agregar))
+            {
+                if (agregarForm.ShowDialog() == DialogResult.OK)
+                {
+                    ActualizarGrid();
+                    AjustarAnchoVentana();
+                }
+            }
+        }
+
+        private void dgvEmpleados_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                string columnName = dgvEmpleados.Columns[e.ColumnIndex].Name;
+                var row = dgvEmpleados.Rows[e.RowIndex];
+                string empId = row.Cells["ID Empleado"]?.Value?.ToString();
+
+                if (string.IsNullOrWhiteSpace(empId))
+                {
+                    MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (columnName == "Eliminar")
+                {
+                    var confirmResult = MessageBox.Show(
+                        $"¿Está seguro de eliminar al empleado con ID: {empId}?",
+                        "Confirmar Eliminación",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            string deleteQuery = @"
+                                DELETE FROM employee
+                                WHERE emp_id = @empId";
+
+                            SqlParameter[] parametros = new SqlParameter[]
+                            {
+                                new SqlParameter("@empId", empId)
+                            };
+
+                            bool exito = datos.ejecutarABC(deleteQuery, parametros);
+
+                            if (exito)
+                            {
+                                MessageBox.Show("Empleado eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                ActualizarGrid();
+                                AjustarAnchoVentana();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se pudo eliminar el registro. Inténtelo nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+                else if (columnName == "Editar")
+                {
+                    using (var editarForm = new FormAgregarEmpleados(Operacion.Editar, empId))
+                    {
+                        if (editarForm.ShowDialog() == DialogResult.OK)
+                        {
+                            ActualizarGrid();
+                            AjustarAnchoVentana();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvEmpleados.CurrentRow != null)
+            {
+                int columnIndex = dgvEmpleados.Columns["Eliminar"].Index;
+                int rowIndex = dgvEmpleados.CurrentRow.Index;
+                dgvEmpleados_CellContentClick(sender, new DataGridViewCellEventArgs(columnIndex, rowIndex));
             }
         }
 
@@ -85,115 +270,48 @@ namespace ExamenTopicos
         {
             try
             {
-                string searchValue = txtBuscar.Text;
+                string searchValue = txtBuscar.Text.Trim();
+                string query = @"
+                    SELECT 
+                        e.emp_id AS 'ID Empleado', 
+                        e.fname AS 'Nombre', 
+                        e.minit AS 'Inicial', 
+                        e.lname AS 'Apellido', 
+                        j.job_desc AS 'Puesto', 
+                        e.job_lvl AS 'Nivel Puesto', 
+                        p.pub_name AS 'Publicador', 
+                        e.hire_date AS 'Fecha Contratación'
+                    FROM employee e
+                    INNER JOIN jobs j ON e.job_id = j.job_id
+                    INNER JOIN publishers p ON e.pub_id = p.pub_id
+                    WHERE CAST(e.emp_id AS NVARCHAR) LIKE @searchValue OR 
+                          e.fname LIKE @searchValue OR 
+                          e.lname LIKE @searchValue OR 
+                          j.job_desc LIKE @searchValue OR 
+                          p.pub_name LIKE @searchValue";
 
-                string query = $@"
-                    SELECT emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date
-                    FROM employee
-                    WHERE CAST(emp_id AS VARCHAR) LIKE '%{searchValue}%' OR 
-                          fname LIKE '%{searchValue}%' OR 
-                          lname LIKE '%{searchValue}%'";
-                ds = datos.consulta(query);
+                SqlParameter[] parametros = new SqlParameter[]
+                {
+                    new SqlParameter("@searchValue", $"%{searchValue}%")
+                };
 
-                if (ds != null)
+                ds = datos.consulta(query, parametros);
+
+                if (ds != null && ds.Tables.Count > 0)
                 {
                     dgvEmpleados.DataSource = ds.Tables[0];
+                    ConfigurarColumnasGrid();
+                    ConfigurarColumnas();
+                }
+                else
+                {
+                    dgvEmpleados.DataSource = null;
                 }
             }
             catch
             {
-                MessageBox.Show("Ocurrió un error al realizar la búsqueda. Verifique los datos ingresados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ocurrió un error al realizar la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            FormAgregarEmpleados agregar = new FormAgregarEmpleados();
-            agregar.Show();
-            agregar.FormClosed += (s, args) => ActualizarGrid();
-        }
-
-        private void eliminarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (userRole != UserRole.Administrador)
-            {
-                MessageBox.Show("Solo un administrador puede eliminar empleados.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                if (dgvEmpleados.SelectedRows.Count > 0)
-                {
-                    string id = dgvEmpleados.SelectedRows[0].Cells["emp_id"].Value.ToString();
-                    string nombre = dgvEmpleados.SelectedRows[0].Cells["fname"].Value.ToString();
-
-                    if (MessageBox.Show($"¿Deseas eliminar al empleado '{nombre}'?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        bool resultado = datos.ejecutarABC("DELETE FROM employee WHERE emp_id='" + id + "'");
-
-                        if (resultado)
-                        {
-                            MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ActualizarGrid();
-                        }
-                        else
-                        {
-                            MessageBox.Show("No se pudo eliminar el registro. Verifique que no esté siendo utilizado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Seleccione un registro para eliminar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error al intentar eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnEditar_Click(object sender, EventArgs e)
-        {
-            FormAgregarEmpleados agregar = new FormAgregarEmpleados();
-            agregar.Show();
-            agregar.FormClosed += (s, args) => ActualizarGrid();
-        }
-
-        private void editarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-                if (dgvEmpleados.SelectedRows.Count > 0)
-                {
-                    try
-                    {
-                        FormAgregarEmpleados editar = new FormAgregarEmpleados(
-                            dgvEmpleados[0, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
-                            dgvEmpleados[1, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
-                            dgvEmpleados[2, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
-                            dgvEmpleados[3, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
-                            dgvEmpleados[4, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
-                            Convert.ToInt32(dgvEmpleados[5, dgvEmpleados.SelectedRows[0].Index].Value ?? 0),
-                            dgvEmpleados[6, dgvEmpleados.SelectedRows[0].Index].Value?.ToString() ?? "",
-                            Convert.ToDateTime(dgvEmpleados[7, dgvEmpleados.SelectedRows[0].Index].Value ?? DateTime.Now)
-                        );
-
-                        editar.ShowDialog();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Debe seleccionar un registro", "Sistema", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                }
-            }
-
-        
     }
-
-
 }

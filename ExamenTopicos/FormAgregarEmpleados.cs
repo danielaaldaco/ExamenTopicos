@@ -1,248 +1,293 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
-using System.Diagnostics;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
     public partial class FormAgregarEmpleados : Form
     {
-        Datos datos = new Datos();
-        private int contador = 1;
-        bool bandera = false;
+        private Operacion operacion;
+        private string empId;
+        private Datos datos = new Datos();
+        private const int ID_MIN_LENGTH = 8;
+        private const int ID_MAX_LENGTH = 10;
 
-
-        public FormAgregarEmpleados()
+        public FormAgregarEmpleados(Operacion operacion, string empId = null)
         {
             InitializeComponent();
+            this.operacion = operacion;
+            this.empId = empId;
 
-
-            cmbEditorial.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbPuesto.DropDownStyle = ComboBoxStyle.DropDownList;
-            LoadPuestos();
-            LoadEditorial();
+            ConfigurarRangoNivel();
+            CargarDatosComboBox();
+            ConfigurarFormulario();
+            this.Shown += FormAgregarEmpleados_Shown;
         }
 
-        public FormAgregarEmpleados(string empId, string nombre, string inicial, string apellido,
-     string jobId, int jobLvl, string pubId, DateTime hireDate)
+        private void ConfigurarFormulario()
         {
-            InitializeComponent();
-
-            cmbEditorial.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbPuesto.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            LoadPuestos();
-            LoadEditorial();
-
-            this.Text = "Editar Empleado";
-
-            lblID.Text = empId;
-            lblID.Enabled = false;
-            txtNombre.Text = nombre;
-            mskInicialSNombre.Text = inicial;
-            txtApellido.Text = apellido;
-
-            if (cmbPuesto.DataSource != null)
+            if (operacion == Operacion.Editar)
             {
-                cmbPuesto.SelectedValue = jobId;
+                this.Text = "Editar Empleado";
+                btnAceptar.Text = "Actualizar";
+                ConfigurarCamposEdicion();
+                CargarDatosEmpleado(empId);
+                cmbPuesto.Focus(); // Foco en "Puesto" al editar
             }
-
-            nudNivel.Value = jobLvl;
-
-            if (cmbEditorial.DataSource != null)
+            else
             {
-                cmbEditorial.SelectedValue = pubId;
+                this.Text = "Agregar Empleado";
+                btnAceptar.Text = "Agregar";
+                ConfigurarCamposAgregar();
+                GenerarIdAlfanumerico();
+                txtNombre.Focus(); // Foco en "Nombre" al agregar
             }
-
-            dtpFecha.Value = hireDate;
-            bandera = true;
         }
 
-
-
-
-
-        private void FormAgregarEmpleados_Load(object sender, EventArgs e)
+        private void FormAgregarEmpleados_Shown(object sender, EventArgs e)
         {
-            String nuevoId = GenerarNuevoID();
-            lblID.Text = nuevoId;
+            if (operacion == Operacion.Agregar)
+            {
+                txtNombre.BeginInvoke((Action)(() => txtNombre.Focus()));
+            }
+            else if (operacion == Operacion.Editar)
+            {
+                cmbPuesto.BeginInvoke((Action)(() => cmbPuesto.Focus()));
+            }
+        }
+
+        private void ConfigurarCamposEdicion()
+        {
+            mskIdEmpleado.ReadOnly = true;
+            txtNombre.ReadOnly = true;
+            mskInicialSNombre.ReadOnly = true;
+            txtApellido.ReadOnly = true;
+            dtpFecha.Enabled = false;
+
+            cmbPuesto.Enabled = true;
+            nudNivel.Enabled = true;
+            cmbEditorial.Enabled = true;
+        }
+
+        private void ConfigurarCamposAgregar()
+        {
+            mskIdEmpleado.ReadOnly = true;
+
+            txtNombre.ReadOnly = false;
+            mskInicialSNombre.ReadOnly = false;
+            txtApellido.ReadOnly = false;
+            cmbPuesto.Enabled = true;
+            nudNivel.Enabled = true;
+            cmbEditorial.Enabled = true;
+            dtpFecha.Enabled = true;
+        }
+
+        private void GenerarIdAlfanumerico()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random random = new Random();
+            int length = random.Next(ID_MIN_LENGTH, ID_MAX_LENGTH + 1);
+
+            string nuevoId = new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            mskIdEmpleado.Text = nuevoId;
+            mskIdEmpleado.ReadOnly = true;
+        }
+
+        private void ConfigurarRangoNivel()
+        {
+            try
+            {
+                string query = "SELECT MIN(min_lvl) AS MinLevel, MAX(max_lvl) AS MaxLevel FROM jobs";
+                DataSet ds = datos.consulta(query);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    var row = ds.Tables[0].Rows[0];
+                    nudNivel.Minimum = Convert.ToInt32(row["MinLevel"]);
+                    nudNivel.Maximum = Convert.ToInt32(row["MaxLevel"]);
+                }
+                else
+                {
+                    nudNivel.Minimum = 10;
+                    nudNivel.Maximum = 250;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al configurar el rango de nivel: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                nudNivel.Minimum = 10;
+                nudNivel.Maximum = 250;
+            }
+        }
+
+        private void CargarDatosComboBox()
+        {
+            try
+            {
+                string queryPuestos = "SELECT job_id, job_desc FROM jobs";
+                DataSet dsPuestos = datos.consulta(queryPuestos);
+                if (dsPuestos != null && dsPuestos.Tables.Count > 0)
+                {
+                    cmbPuesto.DataSource = dsPuestos.Tables[0];
+                    cmbPuesto.DisplayMember = "job_desc";
+                    cmbPuesto.ValueMember = "job_id";
+                    cmbPuesto.SelectedIndex = -1;
+                }
+
+                string queryEditoriales = "SELECT pub_id, pub_name FROM publishers";
+                DataSet dsEditoriales = datos.consulta(queryEditoriales);
+                if (dsEditoriales != null && dsEditoriales.Tables.Count > 0)
+                {
+                    cmbEditorial.DataSource = dsEditoriales.Tables[0];
+                    cmbEditorial.DisplayMember = "pub_name";
+                    cmbEditorial.ValueMember = "pub_id";
+                    cmbEditorial.SelectedIndex = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CargarDatosEmpleado(string empId)
+        {
+            try
+            {
+                string query = @"
+                    SELECT emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date
+                    FROM employee
+                    WHERE emp_id = @empId";
+
+                SqlParameter[] parametros = new SqlParameter[]
+                {
+                    new SqlParameter("@empId", empId)
+                };
+
+                DataSet ds = datos.consulta(query, parametros);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    var row = ds.Tables[0].Rows[0];
+                    mskIdEmpleado.Text = row["emp_id"].ToString();
+                    txtNombre.Text = row["fname"].ToString();
+                    mskInicialSNombre.Text = row["minit"]?.ToString();
+                    txtApellido.Text = row["lname"].ToString();
+
+                    cmbPuesto.SelectedValue = row["job_id"];
+                    cmbEditorial.SelectedValue = row["pub_id"];
+
+                    nudNivel.Value = Convert.ToInt32(row["job_lvl"]);
+                    dtpFecha.Value = Convert.ToDateTime(row["hire_date"]);
+
+                    mskIdEmpleado.Enabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("No se pudieron cargar los datos del empleado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los datos del empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            string selectedEditorialId = cmbEditorial.SelectedValue.ToString();
-            string selectedPuestosId = cmbPuesto.SelectedValue.ToString();
-
-            if (MessageBox.Show("¿Los datos son correctos?", "Sistema",
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("¿Los datos son correctos?", "Sistema", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 try
                 {
-                    if (bandera == true)
+                    if (!ValidarCampos())
+                        return;
+
+                    string query;
+                    SqlParameter[] parametros;
+
+                    if (operacion == Operacion.Agregar)
                     {
-                        bool j = datos.ejecutarABC("Update UPDATE employee SET " +
-                            "fname = '" + txtNombre.Text + "', " +
-                            "minit = '" + mskInicialSNombre.Text + "', " +
-                            "lname = '" + txtApellido.Text + "', " +
-                            "job_id = " + selectedPuestosId + ", " +
-                            "job_lvl = " + (int)nudNivel.Value + ", " +
-                            "pub_id = '" + selectedEditorialId + "', " +
-                            "hire_date = '" + dtpFecha.Value.ToShortDateString() + "' " +
-                            "WHERE emp_id = '" + lblID.Text + "'");
-                        if (j == true)
-                        {
-                            MessageBox.Show("Datos Actualizados", "Sistema", MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Error", "Sistema", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                        }
+                        query = @"
+                            INSERT INTO employee (emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date)
+                            VALUES (@empId, @fname, @minit, @lname, @jobId, @jobLvl, @pubId, @hireDate)";
+                        parametros = ObtenerParametros(false);
                     }
                     else
                     {
-                        bool resultado = datos.ejecutarABC(
-                        "INSERT INTO employee(emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date) " +
-                        "VALUES('" + lblID.Text + "','" + txtNombre.Text + "','" + mskInicialSNombre.Text + "','" +
-                        txtApellido.Text + "'," + selectedPuestosId + "," + (int)nudNivel.Value + ",'" + selectedEditorialId + "','" +
-                        dtpFecha.Value.ToShortDateString() + "')");
+                        query = @"
+                            UPDATE employee
+                            SET job_id = @jobId, 
+                                job_lvl = @jobLvl, 
+                                pub_id = @pubId
+                            WHERE emp_id = @empId";
+                        parametros = ObtenerParametros(true);
+                    }
 
-                        if (resultado)
-                        {
-                            MessageBox.Show("Datos Agregados Correctamente", "Sistema",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    bool resultado = datos.ejecutarABC(query, parametros);
 
-                            LimpiarCampos();
-                            String nuevoId = GenerarNuevoID();
-                            lblID.Text = nuevoId;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Error al insertar los datos", "Sistema",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                    if (resultado)
+                    {
+                        MessageBox.Show($"Empleado {(operacion == Operacion.Agregar ? "agregado" : "actualizado")} correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"No se pudo {(operacion == Operacion.Agregar ? "agregar" : "actualizar")} el empleado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al insertar los datos: {ex.Message}", "Sistema",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private void LimpiarCampos()
+        private bool ValidarCampos()
         {
-            lblID.Text = "";
-            txtNombre.Clear();
-            mskInicialSNombre.Clear();
-            txtApellido.Clear();
-            cmbPuesto.SelectedIndex = -1;
-            cmbEditorial.SelectedIndex = -1;
-            nudNivel.Value = 10;
-            dtpFecha.Value = DateTime.Now;
+            if (cmbPuesto.SelectedIndex == -1)
+            {
+                MessageBox.Show("El puesto es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (cmbEditorial.SelectedIndex == -1)
+            {
+                MessageBox.Show("La editorial es obligatoria.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
         }
 
-        private void LoadPuestos()
+        private SqlParameter[] ObtenerParametros(bool incluirId)
         {
-            DataSet ds = datos.consulta("SELECT job_id, job_desc FROM jobs");
-            if (ds != null && ds.Tables.Count > 0)
+            var parametros = new List<SqlParameter>
             {
-                cmbPuesto.DataSource = ds.Tables[0];
-                cmbPuesto.DisplayMember = "job_desc";
-                cmbPuesto.ValueMember = "job_id";
-                cmbPuesto.SelectedIndex = -1;
-            }
-        }
+                new SqlParameter("@jobId", cmbPuesto.SelectedValue),
+                new SqlParameter("@jobLvl", (int)nudNivel.Value),
+                new SqlParameter("@pubId", cmbEditorial.SelectedValue)
+            };
 
-        private void LoadEditorial()
-        {
-            DataSet ds = datos.consulta("SELECT pub_id, pub_name FROM publishers");
-            if (ds != null && ds.Tables.Count > 0)
+            if (incluirId || operacion == Operacion.Agregar)
             {
-                cmbEditorial.DataSource = ds.Tables[0];
-                cmbEditorial.DisplayMember = "pub_name";
-                cmbEditorial.ValueMember = "pub_id";
-                cmbEditorial.SelectedIndex = -1;
-
-
+                parametros.Insert(0, new SqlParameter("@empId", mskIdEmpleado.Text));
             }
+
+            return parametros.ToArray();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
-
-
-        private string GenerarNuevoID()
-        {
-            const string sufijo = "M";
-            Random random = new Random();
-
-            char letra1 = (char)random.Next('A', 'Z' + 1);
-            char letra2 = (char)random.Next('A', 'Z' + 1);
-            char letra3 = (char)random.Next('A', 'Z' + 1);
-            string prefijo = $"{letra1}{letra2}{letra3}";
-
-            int primerDigito = random.Next(1, 10);
-
-            int siguientesDigitos = random.Next(0, 1000);
-
-            string numero = $"{primerDigito}{siguientesDigitos.ToString("D4")}";
-
-            string nuevoID = $"{prefijo}{numero}{sufijo}";
-            return nuevoID;
-        }
-
-        private void cmbPuesto_SelectedIndexChanged(object sender, EventArgs e)
-        {
-                if (cmbPuesto.SelectedIndex != -1)
-                {
-                    string selectedJobId = cmbPuesto.SelectedValue.ToString();
-
-                    string query = "SELECT min_lvl FROM jobs WHERE job_id = @job_id";
-
-                    SqlParameter[] parametros = new SqlParameter[]
-                    {
-            new SqlParameter("@job_id", SqlDbType.SmallInt) { Value = selectedJobId }
-                    };
-                    DataSet ds = datos.consulta(query, parametros);
-
-                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-                    {
-                        int jobLevel = Convert.ToInt32(ds.Tables[0].Rows[0]["min_lvl"]);
-
-                        nudNivel.Value = jobLevel;
-                    }
-                    else
-                    {
-                        nudNivel.Value = 10;
-                    }
-                }
-            
-
-
-        }
     }
 }
-
-
-
-
-
-
-
-
-    
-

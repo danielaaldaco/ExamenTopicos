@@ -81,7 +81,7 @@ namespace ExamenTopicos
         {
             try
             {
-                string search = txtBuscar.Text.Trim();
+                string search = txtBuscar.Text.Trim(); 
                 DataSet ds = datos.consulta($"SELECT * FROM titles WHERE title LIKE '%{search}%' OR title_id LIKE '%{search}%'");
                 dgvTitles.DataSource = ds.Tables[0];
             }
