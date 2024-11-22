@@ -1,9 +1,7 @@
-﻿// FormRegalias.cs
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-using System.Drawing;
 using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
@@ -27,7 +25,8 @@ namespace ExamenTopicos
                 string query = string.IsNullOrWhiteSpace(searchValue)
                     ? @"
                         SELECT 
-                            a.au_id,
+                            ta.au_id,
+                            ta.title_id,
                             a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
                             t.title AS 'Título',
                             ta.au_ord AS 'Orden',
@@ -40,7 +39,8 @@ namespace ExamenTopicos
                             titles t ON ta.title_id = t.title_id"
                     : @"
                         SELECT 
-                            a.au_id,
+                            ta.au_id,
+                            ta.title_id,
                             a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
                             t.title AS 'Título',
                             ta.au_ord AS 'Orden',
@@ -66,10 +66,14 @@ namespace ExamenTopicos
                     dgvRegalias.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
 
+                    // Ocultar las columnas de IDs
                     if (dgvRegalias.Columns.Contains("au_id"))
                         dgvRegalias.Columns["au_id"].Visible = false;
 
-                    AgregarColumnaIcono("Editar", Properties.Resources.pencil2, 30, 0);
+                    if (dgvRegalias.Columns.Contains("title_id"))
+                        dgvRegalias.Columns["title_id"].Visible = false;
+
+                    AgregarColumnaIcono("Editar", Properties.Resources.edit, 30, 0);
                     AgregarColumnaIcono("Eliminar", Properties.Resources.garbage, 30, dgvRegalias.Columns.Count);
                 }
                 else
@@ -95,10 +99,10 @@ namespace ExamenTopicos
                 dgvRegalias.Columns["Orden"].HeaderText = "Orden";
 
             if (dgvRegalias.Columns.Contains("Regalía (%)"))
-                dgvRegalias.Columns["Regalía (%)"].HeaderText = "Regalías(%)";
+                dgvRegalias.Columns["Regalía (%)"].HeaderText = "Regalía (%)";
         }
 
-        private void AgregarColumnaIcono(string nombre, Image imagen, int ancho, int posicion)
+        private void AgregarColumnaIcono(string nombre, System.Drawing.Image imagen, int ancho, int posicion)
         {
             if (!dgvRegalias.Columns.Contains(nombre))
             {
@@ -117,7 +121,6 @@ namespace ExamenTopicos
             }
         }
 
-        // FormRegalias.cs (Método dgvRegalias_CellContentClick)
         private void dgvRegalias_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -125,9 +128,9 @@ namespace ExamenTopicos
                 string columnName = dgvRegalias.Columns[e.ColumnIndex].Name;
                 var row = dgvRegalias.Rows[e.RowIndex];
                 string auId = row.Cells["au_id"]?.Value?.ToString() ?? string.Empty;
-                string title = row.Cells["Título"]?.Value?.ToString() ?? string.Empty;
+                string titleId = row.Cells["title_id"]?.Value?.ToString() ?? string.Empty;
 
-                if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(title))
+                if (string.IsNullOrWhiteSpace(auId) || string.IsNullOrWhiteSpace(titleId))
                 {
                     MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -135,11 +138,49 @@ namespace ExamenTopicos
 
                 if (columnName == "Eliminar")
                 {
-                    // Manejar eliminación (código existente)
+                    // Manejar eliminación
+                    var confirmResult = MessageBox.Show(
+                        $"¿Está seguro de eliminar el siguiente registro?\n\nAutor ID: {auId}\nTítulo ID: {titleId}",
+                        "Confirmar Eliminación",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            string deleteQuery = @"
+                                DELETE FROM titleauthor
+                                WHERE au_id = @auId AND title_id = @titleId";
+
+                            SqlParameter[] parametros = new SqlParameter[]
+                            {
+                                new SqlParameter("@auId", auId),
+                                new SqlParameter("@titleId", titleId)
+                            };
+
+                            bool exito = datos.ejecutarABC(deleteQuery, parametros);
+
+                            if (exito)
+                            {
+                                MessageBox.Show("Registro eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                ActualizarGrid();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se pudo eliminar el registro. Inténtalo nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                 }
                 else if (columnName == "Editar")
                 {
-                    using (var editarForm = new FormAgregarRegalias(Operacion.Editar, auId, title))
+                    // Manejar edición
+                    using (var editarForm = new FormAgregarRegalias(Operacion.Editar, auId, titleId))
                     {
                         if (editarForm.ShowDialog() == DialogResult.OK)
                         {
@@ -150,7 +191,6 @@ namespace ExamenTopicos
             }
         }
 
-        // FormRegalias.cs (Método btnAgregar_Click_1)
         private void btnAgregar_Click_1(object sender, EventArgs e)
         {
             using (var formAgregarRegalias = new FormAgregarRegalias(Operacion.Agregar))
@@ -162,14 +202,14 @@ namespace ExamenTopicos
             }
         }
 
-
         private void ActualizarGrid()
         {
             try
             {
                 string query = @"
                     SELECT 
-                        a.au_id,
+                        ta.au_id,
+                        ta.title_id,
                         a.au_lname + ' ' + a.au_fname AS 'Nombre Autor',
                         t.title AS 'Título',
                         ta.au_ord AS 'Orden',
@@ -187,10 +227,14 @@ namespace ExamenTopicos
                     dgvRegalias.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
 
+                    // Ocultar las columnas de IDs
                     if (dgvRegalias.Columns.Contains("au_id"))
                         dgvRegalias.Columns["au_id"].Visible = false;
 
-                    AgregarColumnaIcono("Editar", Properties.Resources.pencil2, 30, 0);
+                    if (dgvRegalias.Columns.Contains("title_id"))
+                        dgvRegalias.Columns["title_id"].Visible = false;
+
+                    AgregarColumnaIcono("Editar", Properties.Resources.edit, 30, 0);
                     AgregarColumnaIcono("Eliminar", Properties.Resources.garbage, 30, dgvRegalias.Columns.Count);
                 }
                 else
