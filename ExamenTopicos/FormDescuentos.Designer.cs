@@ -31,8 +31,8 @@
             btnAgregar = new Button();
             label1 = new Label();
             txtBuscar = new TextBox();
-            dgvEditoriales = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dgvEditoriales).BeginInit();
+            dgvDescuentos = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvDescuentos).BeginInit();
             SuspendLayout();
             // 
             // btnAgregar
@@ -61,14 +61,14 @@
             txtBuscar.Size = new Size(429, 23);
             txtBuscar.TabIndex = 5;
             // 
-            // dgvEditoriales
+            // dgvDescuentos
             // 
-            dgvEditoriales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvEditoriales.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEditoriales.Location = new Point(29, 86);
-            dgvEditoriales.Name = "dgvEditoriales";
-            dgvEditoriales.Size = new Size(577, 253);
-            dgvEditoriales.TabIndex = 4;
+            dgvDescuentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDescuentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvDescuentos.Location = new Point(29, 86);
+            dgvDescuentos.Name = "dgvDescuentos";
+            dgvDescuentos.Size = new Size(577, 253);
+            dgvDescuentos.TabIndex = 4;
             // 
             // FormDescuentos
             // 
@@ -78,10 +78,11 @@
             Controls.Add(btnAgregar);
             Controls.Add(label1);
             Controls.Add(txtBuscar);
-            Controls.Add(dgvEditoriales);
+            Controls.Add(dgvDescuentos);
             Name = "FormDescuentos";
             Text = "FormDescuentos";
-            ((System.ComponentModel.ISupportInitialize)dgvEditoriales).EndInit();
+            Load += FormDescuentos_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvDescuentos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -91,6 +92,6 @@
         private Button btnAgregar;
         private Label label1;
         private TextBox txtBuscar;
-        private DataGridView dgvEditoriales;
+        private DataGridView dgvDescuentos;
     }
 }

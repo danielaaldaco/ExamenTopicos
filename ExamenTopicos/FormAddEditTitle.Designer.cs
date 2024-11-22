@@ -75,21 +75,21 @@ namespace ExamenTopicos
             txtTitleId.Location = new Point(177, 20);
             txtTitleId.Name = "txtTitleId";
             txtTitleId.ReadOnly = true;
-            txtTitleId.Size = new Size(200, 27);
+            txtTitleId.Size = new Size(200, 23);
             txtTitleId.TabIndex = 1;
             // 
             // txtTitle
             // 
             txtTitle.Location = new Point(177, 60);
             txtTitle.Name = "txtTitle";
-            txtTitle.Size = new Size(200, 27);
+            txtTitle.Size = new Size(200, 23);
             txtTitle.TabIndex = 3;
             // 
             // txtType
             // 
             txtType.Location = new Point(177, 100);
             txtType.Name = "txtType";
-            txtType.Size = new Size(200, 27);
+            txtType.Size = new Size(200, 23);
             txtType.TabIndex = 5;
             // 
             // cmbPubId
@@ -97,42 +97,43 @@ namespace ExamenTopicos
             cmbPubId.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPubId.Location = new Point(177, 140);
             cmbPubId.Name = "cmbPubId";
-            cmbPubId.Size = new Size(200, 28);
+            cmbPubId.Size = new Size(200, 23);
             cmbPubId.TabIndex = 7;
+            cmbPubId.SelectedIndexChanged += cmbPubId_SelectedIndexChanged;
             // 
             // dtpPubDate
             // 
             dtpPubDate.Location = new Point(177, 180);
             dtpPubDate.Name = "dtpPubDate";
-            dtpPubDate.Size = new Size(200, 27);
+            dtpPubDate.Size = new Size(200, 23);
             dtpPubDate.TabIndex = 9;
             // 
             // txtPrice
             // 
             txtPrice.Location = new Point(177, 220);
             txtPrice.Name = "txtPrice";
-            txtPrice.Size = new Size(200, 27);
+            txtPrice.Size = new Size(200, 23);
             txtPrice.TabIndex = 11;
             // 
             // txtAdvance
             // 
             txtAdvance.Location = new Point(177, 260);
             txtAdvance.Name = "txtAdvance";
-            txtAdvance.Size = new Size(200, 27);
+            txtAdvance.Size = new Size(200, 23);
             txtAdvance.TabIndex = 13;
             // 
             // txtRoyalty
             // 
             txtRoyalty.Location = new Point(177, 300);
             txtRoyalty.Name = "txtRoyalty";
-            txtRoyalty.Size = new Size(200, 27);
+            txtRoyalty.Size = new Size(200, 23);
             txtRoyalty.TabIndex = 15;
             // 
             // txtYtdSales
             // 
             txtYtdSales.Location = new Point(177, 340);
             txtYtdSales.Name = "txtYtdSales";
-            txtYtdSales.Size = new Size(200, 27);
+            txtYtdSales.Size = new Size(200, 23);
             txtYtdSales.TabIndex = 17;
             // 
             // txtNotes
@@ -158,7 +159,7 @@ namespace ExamenTopicos
             lblTitleId.AutoSize = true;
             lblTitleId.Location = new Point(20, 20);
             lblTitleId.Name = "lblTitleId";
-            lblTitleId.Size = new Size(57, 20);
+            lblTitleId.Size = new Size(43, 15);
             lblTitleId.TabIndex = 0;
             lblTitleId.Text = "Title ID";
             // 
@@ -167,7 +168,7 @@ namespace ExamenTopicos
             lblTitle.AutoSize = true;
             lblTitle.Location = new Point(20, 60);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(47, 20);
+            lblTitle.Size = new Size(37, 15);
             lblTitle.TabIndex = 2;
             lblTitle.Text = "Título";
             // 
@@ -176,7 +177,7 @@ namespace ExamenTopicos
             lblType.AutoSize = true;
             lblType.Location = new Point(20, 100);
             lblType.Name = "lblType";
-            lblType.Size = new Size(39, 20);
+            lblType.Size = new Size(30, 15);
             lblType.TabIndex = 4;
             lblType.Text = "Tipo";
             // 
@@ -185,7 +186,7 @@ namespace ExamenTopicos
             lblPubId.AutoSize = true;
             lblPubId.Location = new Point(20, 140);
             lblPubId.Name = "lblPubId";
-            lblPubId.Size = new Size(65, 20);
+            lblPubId.Size = new Size(50, 15);
             lblPubId.TabIndex = 6;
             lblPubId.Text = "Editorial";
             // 
@@ -194,7 +195,7 @@ namespace ExamenTopicos
             lblPubDate.AutoSize = true;
             lblPubDate.Location = new Point(20, 180);
             lblPubDate.Name = "lblPubDate";
-            lblPubDate.Size = new Size(148, 20);
+            lblPubDate.Size = new Size(119, 15);
             lblPubDate.TabIndex = 8;
             lblPubDate.Text = "Fecha de Publicación";
             // 
@@ -203,7 +204,7 @@ namespace ExamenTopicos
             lblPrice.AutoSize = true;
             lblPrice.Location = new Point(20, 220);
             lblPrice.Name = "lblPrice";
-            lblPrice.Size = new Size(50, 20);
+            lblPrice.Size = new Size(40, 15);
             lblPrice.TabIndex = 10;
             lblPrice.Text = "Precio";
             // 
@@ -212,7 +213,7 @@ namespace ExamenTopicos
             lblAdvance.AutoSize = true;
             lblAdvance.Location = new Point(20, 260);
             lblAdvance.Name = "lblAdvance";
-            lblAdvance.Size = new Size(70, 20);
+            lblAdvance.Size = new Size(55, 15);
             lblAdvance.TabIndex = 12;
             lblAdvance.Text = "Adelanto";
             // 
@@ -221,7 +222,7 @@ namespace ExamenTopicos
             lblRoyalty.AutoSize = true;
             lblRoyalty.Location = new Point(20, 300);
             lblRoyalty.Name = "lblRoyalty";
-            lblRoyalty.Size = new Size(65, 20);
+            lblRoyalty.Size = new Size(50, 15);
             lblRoyalty.TabIndex = 14;
             lblRoyalty.Text = "Regalías";
             // 
@@ -230,7 +231,7 @@ namespace ExamenTopicos
             lblYtdSales.AutoSize = true;
             lblYtdSales.Location = new Point(20, 340);
             lblYtdSales.Name = "lblYtdSales";
-            lblYtdSales.Size = new Size(83, 20);
+            lblYtdSales.Size = new Size(65, 15);
             lblYtdSales.TabIndex = 16;
             lblYtdSales.Text = "Ventas YTD";
             // 
@@ -239,7 +240,7 @@ namespace ExamenTopicos
             lblNotes.AutoSize = true;
             lblNotes.Location = new Point(20, 380);
             lblNotes.Name = "lblNotes";
-            lblNotes.Size = new Size(48, 20);
+            lblNotes.Size = new Size(38, 15);
             lblNotes.TabIndex = 18;
             lblNotes.Text = "Notas";
             // 

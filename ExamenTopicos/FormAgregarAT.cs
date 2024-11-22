@@ -21,5 +21,10 @@ namespace ExamenTopicos
         {
 
         }
+
+        private void cmbTitulo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

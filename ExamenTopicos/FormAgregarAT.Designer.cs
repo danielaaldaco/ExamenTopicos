@@ -50,6 +50,7 @@
             cmbTitulo.Name = "cmbTitulo";
             cmbTitulo.Size = new Size(121, 23);
             cmbTitulo.TabIndex = 1;
+            cmbTitulo.SelectedIndexChanged += cmbTitulo_SelectedIndexChanged;
             // 
             // cmbAutor
             // 
