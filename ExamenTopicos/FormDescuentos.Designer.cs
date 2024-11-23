@@ -38,7 +38,7 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(531, 375);
+            btnAgregar.Location = new Point(514, 325);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(75, 23);
             btnAgregar.TabIndex = 7;
@@ -49,25 +49,28 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(29, 44);
+            label1.Location = new Point(29, 18);
             label1.Name = "label1";
-            label1.Size = new Size(105, 15);
+            label1.Size = new Size(42, 15);
             label1.TabIndex = 6;
-            label1.Text = "Buscar descuentos";
+            label1.Text = "Buscar";
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(177, 41);
+            txtBuscar.Location = new Point(77, 15);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(429, 23);
             txtBuscar.TabIndex = 5;
             // 
             // dgvDescuentos
             // 
+            dgvDescuentos.AllowUserToAddRows = false;
+            dgvDescuentos.AllowUserToDeleteRows = false;
             dgvDescuentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDescuentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDescuentos.Location = new Point(29, 86);
+            dgvDescuentos.Location = new Point(12, 55);
             dgvDescuentos.Name = "dgvDescuentos";
+            dgvDescuentos.ReadOnly = true;
             dgvDescuentos.Size = new Size(577, 253);
             dgvDescuentos.TabIndex = 4;
             // 
@@ -75,7 +78,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(668, 450);
+            ClientSize = new Size(604, 363);
             Controls.Add(btnAgregar);
             Controls.Add(label1);
             Controls.Add(txtBuscar);

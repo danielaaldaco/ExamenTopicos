@@ -1,28 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
 using System.Globalization;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
     public partial class FormJobs : Form
     {
-        DataSet ds;
-        UserRole userRole;
-        Datos datos = new Datos();
-        private Dictionary<int, OriginalRowData> originalRows = new Dictionary<int, OriginalRowData>();
-        private bool isUpdatingGrid = false;
+        private DataSet ds;
+        private UserRole userRole;
+        private Datos datos = new Datos();
+        private const int ActionColumnWidth = 30; // Ancho fijo para la columna de acción
 
         public FormJobs(UserRole role)
         {
             InitializeComponent();
             this.userRole = role;
             ConfigurarAccesoPorRol();
+            ActualizarGrid();
+
+            // Ajustar las columnas dinámicas al redimensionar el formulario
+            this.Resize += FormJobs_Resize;
+
+            // Asegurar que el evento esté asociado
+            this.dgvPuestos.CellContentClick += dgvPuestos_CellContentClick;
         }
+
 
         private void ConfigurarAccesoPorRol()
         {
@@ -32,6 +40,7 @@ namespace ExamenTopicos
             switch (userRole)
             {
                 case UserRole.Cliente:
+                    dgvPuestos.ReadOnly = true;
                     break;
 
                 case UserRole.Empleado:
@@ -60,297 +69,156 @@ namespace ExamenTopicos
         {
             try
             {
-                isUpdatingGrid = true;
+                string query = "SELECT job_id AS 'ID Puesto', job_desc AS 'Descripción', min_lvl AS 'Nivel Mínimo', max_lvl AS 'Nivel Máximo' FROM jobs";
+                ds = datos.consulta(query);
 
-                ds = datos.consulta("SELECT job_id, job_desc, min_lvl, max_lvl FROM jobs");
-
-                if (ds != null)
+                if (ds != null && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvPuestos.DataSource = ds.Tables[0];
-                    dgvPuestos.Columns["job_id"].HeaderText = "ID Puesto";
-                    dgvPuestos.Columns["job_desc"].HeaderText = "Descripción";
-                    dgvPuestos.Columns["min_lvl"].HeaderText = "Nivel Mínimo";
-                    dgvPuestos.Columns["max_lvl"].HeaderText = "Nivel Máximo";
-                    dgvPuestos.Columns["job_id"].ReadOnly = true;
+                    ConfigurarColumnas();
                 }
-
-                originalRows.Clear();
+                else
+                {
+                    dgvPuestos.DataSource = null;
+                }
             }
-            finally
+            catch (Exception ex)
             {
-                isUpdatingGrid = false;
+                MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void ConfigurarColumnas()
+        {
+            // Solo agregar columna de edición
+            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+
+            foreach (DataGridViewColumn col in dgvPuestos.Columns)
+            {
+                if (col.Name == "Editar")
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    col.Width = ActionColumnWidth;
+                    col.ReadOnly = false; // Asegurarse de que no sea de solo lectura
+                }
+                else
+                {
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    // La propiedad ReadOnly se manejará en ConfigurarAccesoPorRol
+                }
+            }
+
+            dgvPuestos.RowTemplate.Height = ActionColumnWidth;
+        }
+
+
+        private void AgregarColumnaIcono(string nombre, Image imagen, int ancho, int posicion)
+        {
+            if (!dgvPuestos.Columns.Contains(nombre))
+            {
+                var columna = new DataGridViewImageColumn
+                {
+                    Name = nombre,
+                    HeaderText = "",
+                    Image = imagen,
+                    ImageLayout = DataGridViewImageCellLayout.Zoom,
+                    Width = ancho,
+                    Resizable = DataGridViewTriState.False
+                };
+
+                if (posicion >= 0 && posicion < dgvPuestos.Columns.Count)
+                    dgvPuestos.Columns.Insert(posicion, columna);
+                else
+                    dgvPuestos.Columns.Add(columna);
+            }
+        }
+
+        private void FormJobs_Resize(object sender, EventArgs e)
+        {
+            ConfigurarColumnas();
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            using (var agregarForm = new FormAgregarJob(Operacion.Agregar))
+            {
+                if (agregarForm.ShowDialog() == DialogResult.OK)
+                {
+                    ActualizarGrid();
+                }
+            }
+        }
+
+        private void dgvPuestos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Validar que se selecciona una fila y columna válidas
+            {
+                string columnName = dgvPuestos.Columns[e.ColumnIndex].Name; // Nombre de la columna clickeada
+                var row = dgvPuestos.Rows[e.RowIndex];
+                string jobId = row.Cells["ID Puesto"]?.Value?.ToString(); // Obtiene el ID del puesto
+
+                // Depuración
+                Console.WriteLine($"Clic en columna: {columnName}, Job ID: {jobId}");
+
+                if (string.IsNullOrWhiteSpace(jobId)) // Verifica si el ID del puesto es válido
+                {
+                    MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (columnName == "Editar") // Si se presionó el ícono de "Editar"
+                {
+                    // Abre el formulario de edición
+                    using (var editarForm = new FormAgregarJob(Operacion.Editar, jobId)) // Pasar el ID del puesto al formulario
+                    {
+                        if (editarForm.ShowDialog() == DialogResult.OK) // Si se confirma la edición
+                        {
+                            ActualizarGrid(); // Refresca el DataGridView
+                            ConfigurarColumnas(); // Ajusta las columnas si es necesario
+                        }
+                    }
+                }
+            }
+        }
+
+
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                isUpdatingGrid = true;
+                string searchValue = txtBuscar.Text.Trim();
+                string query = @"
+                    SELECT 
+                        job_id AS 'ID Puesto', 
+                        job_desc AS 'Descripción', 
+                        min_lvl AS 'Nivel Mínimo', 
+                        max_lvl AS 'Nivel Máximo'
+                    FROM jobs
+                    WHERE CAST(job_id AS VARCHAR) LIKE @searchValue OR 
+                          job_desc LIKE @searchValue";
 
-                string searchValue = txtBuscar.Text;
+                SqlParameter[] parametros = new SqlParameter[]
+                {
+                    new SqlParameter("@searchValue", $"%{searchValue}%")
+                };
 
-                string searchValueTrimmed = searchValue.Trim();
-                string searchValueSingleSpaces = Regex.Replace(searchValueTrimmed, @"\s+", " ");
-                TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-                string searchValueTransformed = textInfo.ToTitleCase(searchValueSingleSpaces.ToLower());
+                ds = datos.consulta(query, parametros);
 
-                ds = datos.consulta("SELECT * FROM jobs WHERE CAST(job_id AS VARCHAR) LIKE '%" + searchValueTransformed + "%' OR job_desc LIKE '%" + searchValueTransformed + "%'");
-
-                if (ds != null)
+                if (ds != null && ds.Tables.Count > 0)
                 {
                     dgvPuestos.DataSource = ds.Tables[0];
+                    ConfigurarColumnas();
                 }
-
-                originalRows.Clear();
+                else
+                {
+                    dgvPuestos.DataSource = null;
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error al realizar la búsqueda. Verifique los datos ingresados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                isUpdatingGrid = false;
+                MessageBox.Show($"Error al realizar la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void FormJobs_Load(object sender, EventArgs e)
-        {
-            ActualizarGrid();
-
-            dgvPuestos.EditMode = DataGridViewEditMode.EditOnEnter;
-
-            dgvPuestos.CellBeginEdit += dgvPuestos_CellBeginEdit;
-            dgvPuestos.RowValidating += dgvPuestos_RowValidating;
-            dgvPuestos.EditingControlShowing += dgvPuestos_EditingControlShowing;
-            txtBuscar.KeyPress += txtBuscar_KeyPress;
-        }
-
-        private void txtBuscar_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!Regex.IsMatch(e.KeyChar.ToString(), @"^[\w\s\b]$"))
-            {
-                e.Handled = true;
-                return;
-            }
-
-            if (char.IsWhiteSpace(e.KeyChar))
-            {
-                TextBox tb = sender as TextBox;
-                int selectionStart = tb.SelectionStart;
-                if (selectionStart > 0 && char.IsWhiteSpace(tb.Text[selectionStart - 1]))
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void dgvPuestos_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            if (e.Control is TextBox tb)
-            {
-                tb.KeyPress -= TextBox_KeyPress;
-                tb.KeyPress += TextBox_KeyPress;
-            }
-        }
-
-        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (dgvPuestos.CurrentCell.ColumnIndex == dgvPuestos.Columns["job_desc"].Index)
-            {
-                if (!Regex.IsMatch(e.KeyChar.ToString(), @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s\b]$"))
-                {
-                    e.Handled = true;
-                    return;
-                }
-
-                if (char.IsWhiteSpace(e.KeyChar))
-                {
-                    TextBox tb = sender as TextBox;
-                    int selectionStart = tb.SelectionStart;
-                    if (selectionStart > 0 && char.IsWhiteSpace(tb.Text[selectionStart - 1]))
-                    {
-                        e.Handled = true;
-                    }
-                }
-            }
-            else if (dgvPuestos.CurrentCell.ColumnIndex == dgvPuestos.Columns["min_lvl"].Index ||
-                     dgvPuestos.CurrentCell.ColumnIndex == dgvPuestos.Columns["max_lvl"].Index)
-            {
-                if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            FormAgregarJob agregar = new FormAgregarJob();
-            agregar.Show();
-            agregar.FormClosed += (s, args) => ActualizarGrid();
-        }
-
-        private void dgvPuestos_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            try
-            {
-                var row = dgvPuestos.Rows[e.RowIndex];
-
-                if (!originalRows.ContainsKey(e.RowIndex))
-                {
-                    OriginalRowData originalData = new OriginalRowData
-                    {
-                        JobDesc = row.Cells["job_desc"].Value?.ToString(),
-                        MinLvl = Convert.ToInt32(row.Cells["min_lvl"].Value),
-                        MaxLvl = Convert.ToInt32(row.Cells["max_lvl"].Value)
-                    };
-
-                    originalRows[e.RowIndex] = originalData;
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Ocurrió un error al iniciar la edición.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void dgvPuestos_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            try
-            {
-                if (isUpdatingGrid)
-                {
-                    return;
-                }
-
-                var row = dgvPuestos.Rows[e.RowIndex];
-
-                if (row.IsNewRow || row.Index < 0)
-                {
-                    return;
-                }
-
-                if (!originalRows.ContainsKey(e.RowIndex))
-                {
-                    return;
-                }
-
-                OriginalRowData originalData = originalRows[e.RowIndex];
-
-                int id = Convert.ToInt32(row.Cells["job_id"].Value);
-                string newDescripcion = row.Cells["job_desc"].Value?.ToString();
-
-                if (string.IsNullOrWhiteSpace(newDescripcion))
-                {
-                    MessageBox.Show("La descripción no puede estar vacía.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                if (!int.TryParse(row.Cells["min_lvl"].Value?.ToString(), out int newMinLvl))
-                {
-                    MessageBox.Show("El nivel mínimo debe ser un número entero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                if (!int.TryParse(row.Cells["max_lvl"].Value?.ToString(), out int newMaxLvl))
-                {
-                    MessageBox.Show("El nivel máximo debe ser un número entero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                if (newMinLvl > newMaxLvl)
-                {
-                    MessageBox.Show("El nivel mínimo debe ser menor o igual al nivel máximo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    e.Cancel = true;
-                    return;
-                }
-
-                string descripcionTrimmed = newDescripcion.Trim();
-                string descripcionConEspacios = Regex.Replace(descripcionTrimmed, @"\s+", " ");
-                TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-                string descripcionLimpia = textInfo.ToTitleCase(descripcionConEspacios.ToLower());
-
-                if (originalData.JobDesc != descripcionLimpia || originalData.MinLvl != newMinLvl || originalData.MaxLvl != newMaxLvl)
-                {
-                    StringBuilder mensaje = new StringBuilder();
-                    mensaje.AppendLine("¿Deseas guardar los siguientes cambios?\n");
-
-                    if (originalData.JobDesc != descripcionLimpia)
-                    {
-                        mensaje.AppendLine($"• Descripción: '{originalData.JobDesc}' ➔ '{descripcionLimpia}'");
-                    }
-                    if (originalData.MinLvl != newMinLvl)
-                    {
-                        mensaje.AppendLine($"• Nivel mínimo: {originalData.MinLvl} ➔ {newMinLvl}");
-                    }
-                    if (originalData.MaxLvl != newMaxLvl)
-                    {
-                        mensaje.AppendLine($"• Nivel máximo: {originalData.MaxLvl} ➔ {newMaxLvl}");
-                    }
-
-                    var confirmResult = MessageBox.Show(
-                        mensaje.ToString(),
-                        "Confirmar Cambios",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (confirmResult == DialogResult.Yes)
-                    {
-                        string safeDescripcion = descripcionLimpia.Replace("'", "''");
-
-                        string consulta = $"UPDATE jobs SET job_desc = '{safeDescripcion}', min_lvl = {newMinLvl}, max_lvl = {newMaxLvl} WHERE job_id = {id}";
-                        bool resultado = datos.ejecutarABC(consulta);
-
-                        if (resultado)
-                        {
-                            MessageBox.Show("Registro actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            this.BeginInvoke(new MethodInvoker(() =>
-                            {
-                                ActualizarGrid();
-                            }));
-                        }
-                        else
-                        {
-                            MessageBox.Show("No se pudo actualizar el registro. Verifique los datos ingresados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                            this.BeginInvoke(new MethodInvoker(() =>
-                            {
-                                ActualizarGrid();
-                            }));
-                        }
-                    }
-                    else
-                    {
-                        this.BeginInvoke(new MethodInvoker(() =>
-                        {
-                            ActualizarGrid();
-                        }));
-                    }
-                }
-
-                originalRows.Remove(e.RowIndex);
-            }
-            catch
-            {
-                MessageBox.Show("Ocurrió un error al validar los datos. Verifique la información ingresada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                this.BeginInvoke(new MethodInvoker(() =>
-                {
-                    ActualizarGrid();
-                }));
-            }
-        }
-    }
-
-    public class OriginalRowData
-    {
-        public string JobDesc { get; set; }
-        public int MinLvl { get; set; }
-        public int MaxLvl { get; set; }
     }
 }

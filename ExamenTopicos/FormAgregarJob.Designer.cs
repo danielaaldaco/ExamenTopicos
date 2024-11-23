@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAgregarJob));
             label2 = new Label();
-            label3 = new Label();
             txtDescripcion = new TextBox();
             label4 = new Label();
             label5 = new Label();
@@ -47,24 +47,15 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(26, 79);
+            label2.Location = new Point(9, 21);
             label2.Name = "label2";
             label2.Size = new Size(69, 15);
             label2.TabIndex = 2;
             label2.Text = "Descripcion";
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(30, 24);
-            label3.Name = "label3";
-            label3.Size = new Size(407, 15);
-            label3.TabIndex = 4;
-            label3.Text = "Favor de rellenar los campos correspondientes para agregar el nuevo puesto";
-            // 
             // txtDescripcion
             // 
-            txtDescripcion.Location = new Point(117, 71);
+            txtDescripcion.Location = new Point(100, 13);
             txtDescripcion.Name = "txtDescripcion";
             txtDescripcion.Size = new Size(255, 23);
             txtDescripcion.TabIndex = 1;
@@ -73,7 +64,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(26, 122);
+            label4.Location = new Point(9, 64);
             label4.Name = "label4";
             label4.Size = new Size(79, 15);
             label4.TabIndex = 6;
@@ -82,7 +73,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(26, 168);
+            label5.Location = new Point(9, 110);
             label5.Name = "label5";
             label5.Size = new Size(81, 15);
             label5.TabIndex = 8;
@@ -91,7 +82,7 @@
             // nudMax
             // 
             nudMax.Increment = new decimal(new int[] { 5, 0, 0, 0 });
-            nudMax.Location = new Point(117, 168);
+            nudMax.Location = new Point(100, 110);
             nudMax.Maximum = new decimal(new int[] { 250, 0, 0, 0 });
             nudMax.Minimum = new decimal(new int[] { 15, 0, 0, 0 });
             nudMax.Name = "nudMax";
@@ -102,7 +93,7 @@
             // nudMin
             // 
             nudMin.Increment = new decimal(new int[] { 5, 0, 0, 0 });
-            nudMin.Location = new Point(117, 120);
+            nudMin.Location = new Point(100, 62);
             nudMin.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
             nudMin.Minimum = new decimal(new int[] { 10, 0, 0, 0 });
             nudMin.Name = "nudMin";
@@ -116,7 +107,7 @@
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(221, 230);
+            btnAceptar.Location = new Point(139, 167);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(97, 23);
             btnAceptar.TabIndex = 4;
@@ -126,7 +117,7 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(339, 230);
+            btnCancelar.Location = new Point(257, 167);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(98, 23);
             btnCancelar.TabIndex = 5;
@@ -138,7 +129,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(458, 284);
+            ClientSize = new Size(382, 215);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(nudMin);
@@ -146,11 +137,10 @@
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(txtDescripcion);
-            Controls.Add(label3);
             Controls.Add(label2);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAgregarJob";
-            Text = "FormAgregarJob";
-            Load += FormAgregarJob_Load;
+            Text = "Agregar puesto";
             ((System.ComponentModel.ISupportInitialize)nudMax).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudMin).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorProvider2).EndInit();
@@ -160,7 +150,6 @@
 
         #endregion
         private Label label2;
-        private Label label3;
         private TextBox txtDescripcion;
         private Label label4;
         private Label label5;
