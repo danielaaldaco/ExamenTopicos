@@ -271,5 +271,7 @@ namespace ExamenTopicos
                 MessageBox.Show($"Error en la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+         
     }
 }

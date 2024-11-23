@@ -86,7 +86,7 @@ namespace ExamenTopicos
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
                 return;
             }
-            FormVentas formVentas = new FormVentas();
+            FormVentas formVentas = new FormVentas(user.Rol);
             formVentas.Show();
         }
 
@@ -120,7 +120,8 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Detalle de Editoriales.", "Detalle Editorial", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormEditoriales formEditoriales = new FormEditoriales(user.Rol);
+            formEditoriales.Show();
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)
