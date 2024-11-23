@@ -232,5 +232,56 @@ namespace ExamenTopicos
                 }
             }
         }
+
+        private void FormDescuentos_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+                try
+                {
+                    string searchValue = txtBuscar.Text.Trim();
+                    string query = @"
+            SELECT 
+                d.discounttype AS 'Tipo de descuento',
+                s.stor_name AS 'Nombre',
+                d.lowqty AS 'Cantidad Mínima',
+                d.highqty AS 'Cantidad Máxima',
+                d.discount AS 'Descuento'
+            FROM discounts d
+            LEFT JOIN stores s ON d.stor_id = s.stor_id
+            WHERE 
+                d.discounttype LIKE @searchValue OR
+                s.stor_name LIKE @searchValue OR
+                CAST(d.lowqty AS NVARCHAR) LIKE @searchValue OR
+                CAST(d.highqty AS NVARCHAR) LIKE @searchValue OR
+                CAST(d.discount AS NVARCHAR) LIKE @searchValue";
+
+                    SqlParameter[] parametros = new SqlParameter[]
+                    {
+            new SqlParameter("@searchValue", $"%{searchValue}%")
+                    };
+
+                    ds = datos.consulta(query, parametros);
+
+                    if (ds != null && ds.Tables.Count > 0)
+                    {
+                        dgvDescuentos.DataSource = ds.Tables[0];
+                        ConfigurarColumnas(); // Reconfigurar las columnas, si es necesario
+                    }
+                    else
+                    {
+                        dgvDescuentos.DataSource = null; // Mostrar tabla vacía si no hay resultados
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocurrió un error al realizar la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            
+
+        }
     }
 }

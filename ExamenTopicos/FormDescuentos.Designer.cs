@@ -61,6 +61,7 @@
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(429, 23);
             txtBuscar.TabIndex = 5;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // dgvDescuentos
             // 
@@ -86,6 +87,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormDescuentos";
             Text = "Descuentos";
+            Load += FormDescuentos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDescuentos).EndInit();
             ResumeLayout(false);
             PerformLayout();
