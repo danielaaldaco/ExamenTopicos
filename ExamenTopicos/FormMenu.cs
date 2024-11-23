@@ -86,7 +86,7 @@ namespace ExamenTopicos
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
                 return;
             }
-            FormVentas formVentas = new FormVentas();
+            FormVentas formVentas = new FormVentas(user.Rol);
             formVentas.Show();
         }
 
