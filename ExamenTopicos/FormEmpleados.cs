@@ -194,7 +194,16 @@ namespace ExamenTopicos
             {
                 string columnName = dgvEmpleados.Columns[e.ColumnIndex].Name;
                 var row = dgvEmpleados.Rows[e.RowIndex];
+
+                // Recuperar todos los valores relevantes del registro
                 string empId = row.Cells["ID Empleado"]?.Value?.ToString();
+                string empName = row.Cells["Nombre"]?.Value?.ToString();
+                string empInitial = row.Cells["Inicial"]?.Value?.ToString();
+                string empLastName = row.Cells["Apellido"]?.Value?.ToString();
+                string empPosition = row.Cells["Puesto"]?.Value?.ToString();
+                string empLevel = row.Cells["Nivel Puesto"]?.Value?.ToString();
+                string empPublisher = row.Cells["Publicador"]?.Value?.ToString();
+                string empHireDate = row.Cells["Fecha Contratación"]?.Value?.ToString();
 
                 if (string.IsNullOrWhiteSpace(empId))
                 {
@@ -204,23 +213,32 @@ namespace ExamenTopicos
 
                 if (columnName == "Eliminar")
                 {
-                    var confirmResult = MessageBox.Show(
-                        $"¿Está seguro de eliminar al empleado con ID: {empId}?",
-                        "Confirmar Eliminación",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
+                    // Preparar los parámetros para la confirmación
+                    var parametrosYValores = new Dictionary<string, object>
+            {
+                { "ID Empleado", empId },
+                { "Nombre", empName },
+                { "Inicial", empInitial },
+                { "Apellido", empLastName },
+                { "Puesto", empPosition },
+                { "Nivel Puesto", empLevel },
+                { "Publicador", empPublisher },
+                { "Fecha Contratación", empHireDate }
+            };
 
-                    if (confirmResult == DialogResult.Yes)
+                    bool confirmado = Utils.MostrarConfirmacion("Confirmar Eliminación", parametrosYValores);
+
+                    if (confirmado)
                     {
                         try
                         {
                             string deleteQuery = @"
-                                DELETE FROM employee
-                                WHERE emp_id = @empId";
+                        DELETE FROM employee
+                        WHERE emp_id = @empId";
 
                             SqlParameter[] parametros = new SqlParameter[]
                             {
-                                new SqlParameter("@empId", empId)
+                        new SqlParameter("@empId", empId)
                             };
 
                             bool exito = datos.ejecutarABC(deleteQuery, parametros);

@@ -102,7 +102,7 @@ namespace ExamenTopicos
             return valor switch
             {
                 DateTime fecha => fecha.ToString("yyyy/MM/dd"),
-                decimal decimalValue => decimalValue.ToString("N2"), // Formato de número con 2 decimales
+                decimal decimalValue => decimalValue.ToString("N2"),
                 _ => valor?.ToString() ?? string.Empty
             };
         }
