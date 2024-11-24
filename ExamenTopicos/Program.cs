@@ -5,8 +5,7 @@ namespace ExamenTopicos
         [STAThread]
         static void Main()
         {
-            ApplicationConfiguration.Initialize();
-
+            ////ApplicationConfiguration.Initialize();
             /*
             FormLogin loginForm = new FormLogin();
 

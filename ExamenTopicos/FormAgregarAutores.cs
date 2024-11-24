@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarAutores : Form
+    public partial class FormAgregarAutores : BaseForm
     {
         private string operacion;
         private string autorId;

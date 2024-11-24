@@ -28,35 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnAgregar = new Button();
-            lblBuscar = new Label();
             txtBuscar = new TextBox();
             dgvInfoEdi = new DataGridView();
+            btnAgregar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvInfoEdi).BeginInit();
             SuspendLayout();
             // 
-            // btnAgregar
-            // 
-            btnAgregar.Location = new Point(505, 371);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
-            btnAgregar.TabIndex = 17;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
-            btnAgregar.Click += btnAgregar_Click;
-            // 
-            // lblBuscar
-            // 
-            lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(59, 46);
-            lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(147, 15);
-            lblBuscar.TabIndex = 16;
-            lblBuscar.Text = "Buscar detalles de editorial";
-            // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(212, 43);
+            txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtBuscar.Location = new Point(23, 15);
             txtBuscar.Margin = new Padding(3, 2, 3, 2);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(368, 23);
@@ -66,29 +47,42 @@
             // 
             dgvInfoEdi.AllowUserToAddRows = false;
             dgvInfoEdi.AllowUserToDeleteRows = false;
+            dgvInfoEdi.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvInfoEdi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvInfoEdi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInfoEdi.Location = new Point(61, 88);
+            dgvInfoEdi.Location = new Point(23, 56);
             dgvInfoEdi.Margin = new Padding(3, 2, 3, 2);
             dgvInfoEdi.MultiSelect = false;
             dgvInfoEdi.Name = "dgvInfoEdi";
             dgvInfoEdi.ReadOnly = true;
+            dgvInfoEdi.RowHeadersVisible = false;
             dgvInfoEdi.RowHeadersWidth = 51;
             dgvInfoEdi.RowTemplate.Height = 29;
-            dgvInfoEdi.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvInfoEdi.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvInfoEdi.Size = new Size(519, 262);
             dgvInfoEdi.TabIndex = 14;
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAgregar.Location = new Point(467, 15);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.TabIndex = 16;
+            btnAgregar.Text = "Agregar ";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click_1;
             // 
             // FormInfoEditorial
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(644, 450);
+            ClientSize = new Size(568, 341);
             Controls.Add(btnAgregar);
-            Controls.Add(lblBuscar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvInfoEdi);
             Name = "FormInfoEditorial";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormInfoEditorial";
             ((System.ComponentModel.ISupportInitialize)dgvInfoEdi).EndInit();
             ResumeLayout(false);
@@ -96,10 +90,8 @@
         }
 
         #endregion
-
-        private Button btnAgregar;
-        private Label lblBuscar;
         private TextBox txtBuscar;
         private DataGridView dgvInfoEdi;
+        private Button btnAgregar;
     }
 }
