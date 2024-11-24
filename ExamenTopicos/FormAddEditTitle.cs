@@ -173,7 +173,6 @@ namespace ExamenTopicos
                     txtRoyalty.Text = row["royalty"].ToString();
                     txtYtdSales.Text = row["ytd_sales"].ToString();
                     txtNotes.Text = row["notes"].ToString();
-                    dtpPubDate.Value = Convert.ToDateTime(row["pubdate"]);
 
                     string tipo = row["type"].ToString();
                     if (!string.IsNullOrEmpty(tipo))

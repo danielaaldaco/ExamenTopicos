@@ -115,7 +115,8 @@ namespace ExamenTopicos
 
         private void btnTiendas_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Tiendas.", "Tiendas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormTiendas formTiendas = new FormTiendas(user.Rol);
+            formTiendas.Show();
         }
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)

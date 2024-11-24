@@ -27,7 +27,6 @@
             // 
             // lblTitulo
             // 
-            //lblTitulo.Dock = DockStyle.Top;
             lblTitulo.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblTitulo.Location = new Point(0, 15);
             lblTitulo.Name = "lblTitulo";
@@ -52,7 +51,7 @@
             tableLayoutPanel.Size = new Size(418, 0);
             tableLayoutPanel.TabIndex = 1;
             // 
-            // btnAceptar
+            // btnEliminar
             // 
             btnEliminar.Anchor = AnchorStyles.Bottom;
             btnEliminar.BackColor = Color.FromArgb(34, 139, 34);
@@ -61,7 +60,7 @@
             btnEliminar.ForeColor = Color.White;
             btnEliminar.Location = new Point(3, 173);
             btnEliminar.Margin = new Padding(0, 27, 0, 27);
-            btnEliminar.Name = "btnAceptar";
+            btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(322, 53);
             btnEliminar.TabIndex = 2;
             btnEliminar.Text = "Confirmar";
@@ -90,6 +89,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            BackColor = Color.White;
             ClientSize = new Size(441, 227);
             Controls.Add(lblTitulo);
             Controls.Add(tableLayoutPanel);
