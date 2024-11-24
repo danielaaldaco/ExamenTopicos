@@ -28,41 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAgregarAutores));
             txtDireccion = new TextBox();
             txtNombre = new TextBox();
             label7 = new Label();
             btnCancelar = new Button();
             btnAceptar = new Button();
-            label5 = new Label();
             label3 = new Label();
             label4 = new Label();
             label2 = new Label();
             label1 = new Label();
             txtApellido = new TextBox();
-            mskTelefono = new MaskedTextBox();
-            textCiudad = new TextBox();
+            txtCiudad = new TextBox();
             Ciudad = new Label();
             txtEstado = new TextBox();
             label8 = new Label();
-            mskCP = new MaskedTextBox();
             label9 = new Label();
             rBtnSi = new RadioButton();
             rBtnNo = new RadioButton();
-            mskIdAutor = new MaskedTextBox();
             label6 = new Label();
+            txtIdAutor = new TextBox();
+            txtTelefono = new TextBox();
+            txtCP = new TextBox();
             SuspendLayout();
             // 
             // txtDireccion
             // 
-            txtDireccion.Location = new Point(167, 244);
+            txtDireccion.Location = new Point(132, 191);
             txtDireccion.Name = "txtDireccion";
             txtDireccion.Size = new Size(193, 23);
             txtDireccion.TabIndex = 4;
-            txtDireccion.TextChanged += txtCantidad_TextChanged;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(168, 152);
+            txtNombre.Location = new Point(133, 106);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(193, 23);
             txtNombre.TabIndex = 2;
@@ -70,7 +69,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(49, 199);
+            label7.Location = new Point(14, 146);
             label7.Name = "label7";
             label7.RightToLeft = RightToLeft.Yes;
             label7.Size = new Size(52, 15);
@@ -79,7 +78,7 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(615, 329);
+            btnCancelar.Location = new Point(227, 423);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(98, 23);
             btnCancelar.TabIndex = 11;
@@ -88,26 +87,18 @@
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(502, 329);
+            btnAceptar.Location = new Point(114, 423);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(97, 23);
             btnAceptar.TabIndex = 10;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            label5.Location = new Point(26, 22);
-            label5.Name = "label5";
-            label5.Size = new Size(687, 38);
-            label5.TabIndex = 43;
-            label5.Text = "Favor de rellene los campos correspondientes para agregar la información sobre el autor";
-            label5.TextAlign = ContentAlignment.MiddleCenter;
+            btnAceptar.Click += btnAceptar_Click_2;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(49, 155);
+            label3.Location = new Point(14, 109);
             label3.Name = "label3";
             label3.RightToLeft = RightToLeft.Yes;
             label3.Size = new Size(51, 15);
@@ -117,7 +108,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(49, 247);
+            label4.Location = new Point(14, 194);
             label4.Name = "label4";
             label4.Size = new Size(57, 15);
             label4.TabIndex = 41;
@@ -126,7 +117,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(401, 250);
+            label2.Location = new Point(15, 373);
             label2.Name = "label2";
             label2.RightToLeft = RightToLeft.Yes;
             label2.Size = new Size(106, 15);
@@ -138,7 +129,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(49, 115);
+            label1.Location = new Point(15, 68);
             label1.Name = "label1";
             label1.Size = new Size(87, 15);
             label1.TabIndex = 39;
@@ -146,30 +137,22 @@
             // 
             // txtApellido
             // 
-            txtApellido.Location = new Point(167, 112);
+            txtApellido.Location = new Point(133, 65);
             txtApellido.Name = "txtApellido";
             txtApellido.Size = new Size(194, 23);
             txtApellido.TabIndex = 1;
             // 
-            // mskTelefono
+            // txtCiudad
             // 
-            mskTelefono.Location = new Point(167, 196);
-            mskTelefono.Mask = "(999)000-0000";
-            mskTelefono.Name = "mskTelefono";
-            mskTelefono.Size = new Size(194, 23);
-            mskTelefono.TabIndex = 3;
-            // 
-            // textCiudad
-            // 
-            textCiudad.Location = new Point(519, 112);
-            textCiudad.Name = "textCiudad";
-            textCiudad.Size = new Size(193, 23);
-            textCiudad.TabIndex = 5;
+            txtCiudad.Location = new Point(133, 235);
+            txtCiudad.Name = "txtCiudad";
+            txtCiudad.Size = new Size(193, 23);
+            txtCiudad.TabIndex = 5;
             // 
             // Ciudad
             // 
             Ciudad.AutoSize = true;
-            Ciudad.Location = new Point(401, 115);
+            Ciudad.Location = new Point(15, 238);
             Ciudad.Name = "Ciudad";
             Ciudad.Size = new Size(45, 15);
             Ciudad.TabIndex = 49;
@@ -177,7 +160,7 @@
             // 
             // txtEstado
             // 
-            txtEstado.Location = new Point(519, 152);
+            txtEstado.Location = new Point(133, 275);
             txtEstado.Name = "txtEstado";
             txtEstado.Size = new Size(193, 23);
             txtEstado.TabIndex = 6;
@@ -185,24 +168,16 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(401, 155);
+            label8.Location = new Point(15, 278);
             label8.Name = "label8";
             label8.Size = new Size(42, 15);
             label8.TabIndex = 51;
             label8.Text = "Estado";
             // 
-            // mskCP
-            // 
-            mskCP.Location = new Point(519, 196);
-            mskCP.Mask = "00000";
-            mskCP.Name = "mskCP";
-            mskCP.Size = new Size(194, 23);
-            mskCP.TabIndex = 7;
-            // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(401, 199);
+            label9.Location = new Point(15, 322);
             label9.Name = "label9";
             label9.RightToLeft = RightToLeft.Yes;
             label9.Size = new Size(81, 15);
@@ -212,7 +187,7 @@
             // rBtnSi
             // 
             rBtnSi.AutoSize = true;
-            rBtnSi.Location = new Point(519, 248);
+            rBtnSi.Location = new Point(133, 371);
             rBtnSi.Name = "rBtnSi";
             rBtnSi.Size = new Size(34, 19);
             rBtnSi.TabIndex = 8;
@@ -223,7 +198,7 @@
             // rBtnNo
             // 
             rBtnNo.AutoSize = true;
-            rBtnNo.Location = new Point(572, 247);
+            rBtnNo.Location = new Point(186, 370);
             rBtnNo.Name = "rBtnNo";
             rBtnNo.Size = new Size(41, 19);
             rBtnNo.TabIndex = 9;
@@ -231,52 +206,65 @@
             rBtnNo.Text = "No";
             rBtnNo.UseVisualStyleBackColor = true;
             // 
-            // mskIdAutor
-            // 
-            mskIdAutor.Location = new Point(167, 73);
-            mskIdAutor.Mask = "000-00-0000";
-            mskIdAutor.Name = "mskIdAutor";
-            mskIdAutor.Size = new Size(153, 23);
-            mskIdAutor.TabIndex = 54;
-            // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(49, 81);
+            label6.Location = new Point(14, 28);
             label6.Name = "label6";
             label6.Size = new Size(51, 15);
             label6.TabIndex = 53;
             label6.Text = "ID Autor";
             // 
+            // txtIdAutor
+            // 
+            txtIdAutor.Location = new Point(131, 25);
+            txtIdAutor.Name = "txtIdAutor";
+            txtIdAutor.Size = new Size(194, 23);
+            txtIdAutor.TabIndex = 58;
+            // 
+            // txtTelefono
+            // 
+            txtTelefono.Location = new Point(133, 146);
+            txtTelefono.Name = "txtTelefono";
+            txtTelefono.Size = new Size(193, 23);
+            txtTelefono.TabIndex = 3;
+            // 
+            // txtCP
+            // 
+            txtCP.Location = new Point(133, 319);
+            txtCP.Name = "txtCP";
+            txtCP.Size = new Size(193, 23);
+            txtCP.TabIndex = 7;
+            // 
             // FormAgregarAutores
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 386);
-            Controls.Add(mskIdAutor);
+            ClientSize = new Size(361, 458);
+            Controls.Add(txtCP);
+            Controls.Add(txtTelefono);
+            Controls.Add(txtIdAutor);
             Controls.Add(label6);
             Controls.Add(rBtnNo);
             Controls.Add(rBtnSi);
-            Controls.Add(mskCP);
             Controls.Add(label9);
             Controls.Add(txtEstado);
             Controls.Add(label8);
-            Controls.Add(textCiudad);
+            Controls.Add(txtCiudad);
             Controls.Add(Ciudad);
-            Controls.Add(mskTelefono);
             Controls.Add(txtApellido);
             Controls.Add(txtDireccion);
             Controls.Add(txtNombre);
             Controls.Add(label7);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
-            Controls.Add(label5);
             Controls.Add(label3);
             Controls.Add(label4);
             Controls.Add(label2);
             Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAgregarAutores";
-            Text = "FormAgregarAutores";
+            Text = "Agregar autor";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -287,22 +275,21 @@
         private Label label7;
         private Button btnCancelar;
         private Button btnAceptar;
-        private Label label5;
         private Label label3;
         private Label label4;
         private Label label2;
         private Label label1;
         private TextBox txtApellido;
-        private MaskedTextBox mskTelefono;
-        private TextBox textCiudad;
+        private TextBox txtCiudad;
         private Label Ciudad;
         private TextBox txtEstado;
         private Label label8;
-        private MaskedTextBox mskCP;
         private Label label9;
         private RadioButton rBtnSi;
         private RadioButton rBtnNo;
-        private MaskedTextBox mskIdAutor;
         private Label label6;
+        private TextBox txtIdAutor;
+        private TextBox txtTelefono;
+        private TextBox txtCP;
     }
 }

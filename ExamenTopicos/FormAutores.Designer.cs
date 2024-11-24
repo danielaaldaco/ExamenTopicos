@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAutores));
             btnAgregar = new Button();
-            label1 = new Label();
             txtBuscar = new TextBox();
             dgvAutores = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvAutores).BeginInit();
@@ -37,50 +37,52 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(534, 375);
+            btnAgregar.BackColor = Color.FromArgb(242, 242, 242);
+            btnAgregar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            btnAgregar.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            btnAgregar.Location = new Point(600, 74);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.Size = new Size(77, 35);
             btnAgregar.TabIndex = 7;
             btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(32, 44);
-            label1.Name = "label1";
-            label1.Size = new Size(84, 15);
-            label1.TabIndex = 6;
-            label1.Text = "Buscar autores";
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(180, 41);
+            txtBuscar.BackColor = Color.FromArgb(242, 242, 242);
+            txtBuscar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            txtBuscar.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            txtBuscar.Location = new Point(12, 80);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(429, 23);
+            txtBuscar.Size = new Size(429, 24);
             txtBuscar.TabIndex = 5;
             // 
             // dgvAutores
             // 
+            dgvAutores.AllowUserToAddRows = false;
+            dgvAutores.AllowUserToDeleteRows = false;
             dgvAutores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvAutores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAutores.Location = new Point(32, 86);
+            dgvAutores.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            dgvAutores.Location = new Point(12, 122);
             dgvAutores.Name = "dgvAutores";
-            dgvAutores.Size = new Size(577, 253);
+            dgvAutores.ReadOnly = true;
+            dgvAutores.RowHeadersVisible = false;
+            dgvAutores.Size = new Size(665, 268);
             dgvAutores.TabIndex = 4;
             // 
             // FormAutores
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(662, 450);
+            ClientSize = new Size(706, 411);
             Controls.Add(btnAgregar);
-            Controls.Add(label1);
             Controls.Add(txtBuscar);
             Controls.Add(dgvAutores);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAutores";
-            Text = "FormAutores";
+            Text = "Autores";
             ((System.ComponentModel.ISupportInitialize)dgvAutores).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -89,7 +91,6 @@
         #endregion
 
         private Button btnAgregar;
-        private Label label1;
         private TextBox txtBuscar;
         private DataGridView dgvAutores;
     }

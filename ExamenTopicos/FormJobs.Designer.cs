@@ -57,6 +57,7 @@
             dgvPuestos.GridColor = SystemColors.MenuBar;
             dgvPuestos.Location = new Point(12, 55);
             dgvPuestos.Name = "dgvPuestos";
+            dgvPuestos.RowHeadersVisible = false;
             dgvPuestos.RowHeadersWidth = 51;
             dgvPuestos.Size = new Size(557, 235);
             dgvPuestos.TabIndex = 2;

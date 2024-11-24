@@ -157,12 +157,17 @@ namespace ExamenTopicos
                 var row = dgvPuestos.Rows[e.RowIndex];
                 string jobId = row.Cells["ID Puesto"]?.Value?.ToString(); // Obtiene el ID del puesto
 
-                // Depuración
-                Console.WriteLine($"Clic en columna: {columnName}, Job ID: {jobId}");
-
-                if (string.IsNullOrWhiteSpace(jobId)) // Verifica si el ID del puesto es válido
+                // Validar si el jobId es válido
+                if (string.IsNullOrWhiteSpace(jobId))
                 {
                     MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Verificar si el puesto corresponde al nivel básico
+                if (jobId == "1")
+                {
+                    MessageBox.Show("No se puede editar este puesto porque corresponde al nivel básico.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -180,7 +185,6 @@ namespace ExamenTopicos
                 }
             }
         }
-
 
 
         private void txtBuscar_TextChanged(object sender, EventArgs e)
