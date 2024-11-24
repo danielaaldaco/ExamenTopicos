@@ -17,7 +17,7 @@ namespace ExamenTopicos
         {
             Form mensajeForm = new Form
             {
-                Width = 400, 
+                Width = 400,
                 Height = 200,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 StartPosition = FormStartPosition.CenterScreen,
@@ -75,19 +75,19 @@ namespace ExamenTopicos
                 return;
             }
 
-            FormRegalias form = new FormRegalias ();
+            FormRegalias form = new FormRegalias();
             form.Show();
         }
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
-            //if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
-            //{
-            //    MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
-            //    return;
-            //}
-            //FormVentas formVentas = new FormVentas();
-            //formVentas.Show();
+            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
+            FormVentas formVentas = new FormVentas(user.Rol);
+            formVentas.Show();
         }
 
         private void btnEmpleados_Click(object sender, EventArgs e)
@@ -115,12 +115,14 @@ namespace ExamenTopicos
 
         private void btnTiendas_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Tiendas.", "Tiendas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormTiendas formTiendas = new FormTiendas(user.Rol);
+            formTiendas.Show();
         }
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bienvenido a la sección de Detalle de Editoriales.", "Detalle Editorial", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            FormEditoriales formEditoriales = new FormEditoriales(user.Rol);
+            formEditoriales.Show();
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)

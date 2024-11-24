@@ -27,7 +27,6 @@ namespace ExamenTopicos
 
             this.txtYtdSales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtYtdSales_KeyPress);
             this.txtYtdSales.TextChanged += new System.EventHandler(this.txtYtdSales_TextChanged);
-
         }
 
         private void ConfigurarFormulario()
@@ -66,7 +65,7 @@ namespace ExamenTopicos
             txtRoyalty.ReadOnly = false;
             txtYtdSales.ReadOnly = false;
             txtNotes.ReadOnly = false;
-            dtpPubDate.Enabled = false; // Bloquear la fecha en modo "Editar"
+            dtpPubDate.Enabled = false;
         }
 
         private void ConfigurarCamposAgregar()
@@ -80,15 +79,14 @@ namespace ExamenTopicos
             txtRoyalty.ReadOnly = false;
             txtYtdSales.ReadOnly = false;
             txtNotes.ReadOnly = false;
-            dtpPubDate.Enabled = true; // Permitir la edición de la fecha en modo "Agregar"
+            dtpPubDate.Enabled = true;
         }
 
         private void GenerarNuevoTitleId()
         {
             try
             {
-                // Asegúrate de que la longitud del ID sea consistente con la columna title_id
-                int maxIdLength = 6; // Ajusta según la longitud de la columna "title_id"
+                int maxIdLength = 6;
 
                 string query = "SELECT MAX(title_id) AS MaxId FROM titles";
                 DataSet ds = datos.consulta(query);
@@ -99,18 +97,18 @@ namespace ExamenTopicos
 
                     if (!string.IsNullOrEmpty(maxId) && maxId.Length == maxIdLength)
                     {
-                        string prefix = maxId.Substring(0, 2); // Por ejemplo, "TC"
+                        string prefix = maxId.Substring(0, 2);
                         int number = int.Parse(maxId.Substring(2)) + 1;
-                        txtTitleId.Text = $"{prefix}{number:D4}"; // Genera un ID con 2 letras y 4 números
+                        txtTitleId.Text = $"{prefix}{number:D4}";
                     }
                     else
                     {
-                        txtTitleId.Text = "TC0001"; // Valor inicial si no hay registros
+                        txtTitleId.Text = "TC0001";
                     }
                 }
                 else
                 {
-                    txtTitleId.Text = "TC0001"; // Valor inicial si no hay registros
+                    txtTitleId.Text = "TC0001";
                 }
             }
             catch (Exception ex)
@@ -175,16 +173,13 @@ namespace ExamenTopicos
                     txtRoyalty.Text = row["royalty"].ToString();
                     txtYtdSales.Text = row["ytd_sales"].ToString();
                     txtNotes.Text = row["notes"].ToString();
-                    dtpPubDate.Value = Convert.ToDateTime(row["pubdate"]);
 
-                    // Seleccionar el tipo en el ComboBox
                     string tipo = row["type"].ToString();
                     if (!string.IsNullOrEmpty(tipo))
                     {
                         cmbType.SelectedItem = tipo;
                     }
 
-                    // Seleccionar la editorial en el ComboBox
                     string pubId = row["pub_id"].ToString();
                     if (!string.IsNullOrEmpty(pubId))
                     {
@@ -266,7 +261,7 @@ namespace ExamenTopicos
                 return false;
             }
 
-            if (txtTitleId.Text.Length > 6) // Asegúrate de que coincida con la longitud permitida
+            if (txtTitleId.Text.Length > 6)
             {
                 MessageBox.Show("El ID del título no puede exceder 6 caracteres.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
@@ -293,21 +288,19 @@ namespace ExamenTopicos
                 ? rowView["type"].ToString()
                 : cmbType.SelectedItem?.ToString();
 
-            return new SqlParameter[]
-            {
-        new SqlParameter("@titleId", txtTitleId.Text),
-        new SqlParameter("@title", txtTitle.Text),
-        new SqlParameter("@type", tipoSeleccionado?.PadRight(12).Substring(0, 12)),
-        new SqlParameter("@pubId", cmbPubId.SelectedValue),
-        new SqlParameter("@price", decimal.Parse(txtPrice.Text)),
-        new SqlParameter("@advance", decimal.Parse(txtAdvance.Text)),
-        new SqlParameter("@royalty", int.Parse(txtRoyalty.Text)),
-        new SqlParameter("@ytdSales", int.Parse(txtYtdSales.Text)),
-        new SqlParameter("@notes", txtNotes.Text),
-        new SqlParameter("@pubdate", dtpPubDate.Value)
+            return new SqlParameter[] {
+                new SqlParameter("@titleId", txtTitleId.Text),
+                new SqlParameter("@title", txtTitle.Text),
+                new SqlParameter("@type", tipoSeleccionado?.PadRight(12).Substring(0, 12)),
+                new SqlParameter("@pubId", cmbPubId.SelectedValue),
+                new SqlParameter("@price", decimal.Parse(txtPrice.Text)),
+                new SqlParameter("@advance", decimal.Parse(txtAdvance.Text)),
+                new SqlParameter("@royalty", int.Parse(txtRoyalty.Text)),
+                new SqlParameter("@ytdSales", int.Parse(txtYtdSales.Text)),
+                new SqlParameter("@notes", txtNotes.Text),
+                new SqlParameter("@pubdate", dtpPubDate.Value)
             };
         }
-
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
@@ -321,10 +314,9 @@ namespace ExamenTopicos
 
         private void txtRoyalty_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permitir solo dígitos y la tecla de retroceso
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
-                e.Handled = true; // Bloquea el carácter no permitido
+                e.Handled = true;
             }
         }
 
@@ -334,29 +326,26 @@ namespace ExamenTopicos
             {
                 if (value < 1)
                 {
-                    txtRoyalty.Text = "1"; // Rango mínimo
+                    txtRoyalty.Text = "1";
                 }
                 else if (value > 100)
                 {
-                    txtRoyalty.Text = "100"; // Rango máximo
+                    txtRoyalty.Text = "100";
                 }
             }
             else
             {
-                // Si el texto no es numérico, restablecer a 1
                 txtRoyalty.Text = "1";
             }
 
-            // Mueve el cursor al final del texto
             txtRoyalty.SelectionStart = txtRoyalty.Text.Length;
         }
 
         private void txtYtdSales_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Permitir solo dígitos y la tecla de retroceso
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
-                e.Handled = true; // Bloquea el carácter no permitido
+                e.Handled = true;
             }
         }
 
@@ -366,21 +355,15 @@ namespace ExamenTopicos
             {
                 if (value < 1)
                 {
-                    txtYtdSales.Text = "1"; // Establece el mínimo permitido
+                    txtYtdSales.Text = "1";
                 }
             }
             else
             {
-                // Si el texto no es numérico, restablecer a 1
                 txtYtdSales.Text = "1";
             }
 
-            // Mueve el cursor al final del texto
             txtYtdSales.SelectionStart = txtYtdSales.Text.Length;
         }
-
-
-
-
     }
 }
