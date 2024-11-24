@@ -14,7 +14,7 @@ namespace ExamenTopicos
         private const string DANI = @"Data Source=DESKTOP-VR4NTPA;
                 Integrated Security=true;initial catalog=pubs";
 
-        String cadenaConexion = DANI;
+        String cadenaConexion = ALFREDO;
 
         SqlConnection conexion;
 

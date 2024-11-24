@@ -41,40 +41,44 @@ namespace ExamenTopicos
             dgvTitles.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvTitles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvTitles.ContextMenuStrip = contextMenuStrip1;
-            dgvTitles.Location = new Point(20, 60);
+            dgvTitles.Location = new Point(23, 80);
+            dgvTitles.Margin = new Padding(3, 4, 3, 4);
             dgvTitles.MultiSelect = false;
             dgvTitles.Name = "dgvTitles";
             dgvTitles.ReadOnly = true;
             dgvTitles.RowHeadersVisible = false;
+            dgvTitles.RowHeadersWidth = 51;
             dgvTitles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvTitles.Size = new Size(760, 380);
+            dgvTitles.Size = new Size(869, 507);
             dgvTitles.TabIndex = 0;
             dgvTitles.CellContentClick += dgvTitles_CellContentClick;
             // 
             // contextMenuStrip1
             // 
+            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { editarTituloToolStripMenuItem, eliminarToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(151, 48);
+            contextMenuStrip1.Size = new Size(175, 52);
             // 
             // editarTituloToolStripMenuItem
             // 
             editarTituloToolStripMenuItem.Name = "editarTituloToolStripMenuItem";
-            editarTituloToolStripMenuItem.Size = new Size(150, 22);
+            editarTituloToolStripMenuItem.Size = new Size(174, 24);
             editarTituloToolStripMenuItem.Text = "Editar Título";
             // 
             // eliminarToolStripMenuItem
             // 
             eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
-            eliminarToolStripMenuItem.Size = new Size(150, 22);
+            eliminarToolStripMenuItem.Size = new Size(174, 24);
             eliminarToolStripMenuItem.Text = "Eliminar Título";
             // 
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.Location = new Point(700, 20);
+            btnAgregar.Location = new Point(800, 27);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(80, 30);
+            btnAgregar.Size = new Size(91, 40);
             btnAgregar.TabIndex = 1;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -83,32 +87,35 @@ namespace ExamenTopicos
             // txtBuscar
             // 
             txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBuscar.Location = new Point(80, 25);
+            txtBuscar.Location = new Point(91, 33);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(600, 23);
+            txtBuscar.Size = new Size(685, 27);
             txtBuscar.TabIndex = 2;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(20, 28);
+            lblBuscar.Location = new Point(23, 37);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(45, 15);
+            lblBuscar.Size = new Size(55, 20);
             lblBuscar.TabIndex = 3;
             lblBuscar.Text = "Buscar:";
             // 
             // FormTitles
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 460);
+            ClientSize = new Size(914, 613);
             Controls.Add(lblBuscar);
             Controls.Add(txtBuscar);
             Controls.Add(btnAgregar);
             Controls.Add(dgvTitles);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormTitles";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Títulos";
             ((System.ComponentModel.ISupportInitialize)dgvTitles).EndInit();
             contextMenuStrip1.ResumeLayout(false);
