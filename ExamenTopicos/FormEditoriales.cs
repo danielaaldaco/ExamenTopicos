@@ -12,8 +12,7 @@ namespace ExamenTopicos
         private DataSet ds;
         private Datos datos = new Datos();
         private const int ActionColumnWidth = 30;
-        private const string placeholder = "Buscar por ID, Nombre...";
-        private bool isInitialLoad = true;
+        private const string placeholder = "Buscar por ID, Nombre, Ciudad, País...";
 
         public FormEditoriales(UserRole role)
         {
@@ -26,7 +25,6 @@ namespace ExamenTopicos
         private void FormEditoriales_Load(object sender, EventArgs e)
         {
             ActualizarGrid();
-            isInitialLoad = false;
         }
 
         private void ConfigurarAccesoPorRol(UserRole role)
@@ -38,6 +36,7 @@ namespace ExamenTopicos
                 case UserRole.Empleado:
                 case UserRole.GerenteVentas:
                 case UserRole.Administrador:
+                    btnAgregar.Visible = true;
                     break;
 
                 default:
@@ -164,9 +163,14 @@ namespace ExamenTopicos
                     {
                         using (var editarForm = new FormAddEditEditorial(Operacion.Editar, editorialId))
                         {
-                            if (editarForm.ShowDialog() == DialogResult.OK)
+                            editarForm.ShowDialog();
+                            if (placeholderActivo(txtBuscar.Text, placeholder))
                             {
                                 ActualizarGrid();
+                            }
+                            else
+                            {
+                                txtBuscar_TextChanged(txtBuscar, EventArgs.Empty);
                             }
                         }
                     }
@@ -174,17 +178,6 @@ namespace ExamenTopicos
                     {
                         MessageBox.Show("No se pudo obtener el ID de la editorial.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }
-            }
-        }
-
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            using (var agregarForm = new FormAddEditEditorial(Operacion.Agregar))
-            {
-                if (agregarForm.ShowDialog() == DialogResult.OK)
-                {
-                    ActualizarGrid();
                 }
             }
         }
@@ -236,6 +229,41 @@ namespace ExamenTopicos
             {
                 MessageBox.Show($"Error en la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            using (var agregarForm = new FormAddEditEditorial(Operacion.Agregar))
+            {
+                agregarForm.ShowDialog();
+                ActualizarGrid();
+            }
+        }
+
+        private string ObtenerNuevoIdDisponible()
+        {
+            try
+            {
+                string query = @"
+                    SELECT MIN(CAST(pub_id AS INT) + 1) AS NuevoId
+                    FROM publishers
+                    WHERE NOT EXISTS (
+                        SELECT 1 
+                        FROM publishers AS p2
+                        WHERE CAST(p2.pub_id AS INT) = CAST(publishers.pub_id AS INT) + 1)";
+
+                DataSet ds = datos.consulta(query);
+                if (ds != null && ds.Tables[0].Rows.Count > 0)
+                {
+                    return ds.Tables[0].Rows[0]["NuevoId"]?.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener el nuevo ID: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return "0000";
         }
     }
 }

@@ -63,8 +63,8 @@ namespace ExamenTopicos
 
         private void btnEditoriales_Click(object sender, EventArgs e)
         {
-            FormPublisher formPublisher = new FormPublisher();
-            formPublisher.Show();
+            FormEditoriales formEditoriales = new FormEditoriales(user.Rol);
+            formEditoriales.Show();
         }
 
         private void btnRegalias_Click(object sender, EventArgs e)
@@ -121,8 +121,8 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            FormEditoriales formEditoriales = new FormEditoriales(user.Rol);
-            formEditoriales.Show();
+            FormPublisher formPublisher = new FormPublisher();
+            formPublisher.Show();
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)
@@ -135,12 +135,6 @@ namespace ExamenTopicos
         {
             FormAutores formAutores = new FormAutores();
             formAutores.Show();
-        }
-
-        private void btnAgregarEditorial_Click(object sender, EventArgs e)
-        {
-            FormAgregarPub agregarPub = new FormAgregarPub();
-            agregarPub.Show();
         }
     }
 }

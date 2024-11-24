@@ -5,7 +5,6 @@
         private System.ComponentModel.IContainer components = null;
         private ComboBox cboPais;  // ComboBox para el País
         private ComboBox cboEstado;  // ComboBox para el Estado
-        private ComboBox cboEditorialId; // ComboBox para el ID de la Editorial (en lugar de TextBox)
         private TextBox txtNombre;  // TextBox para el Nombre de la Editorial
         private TextBox txtCiudad;  // TextBox para la Ciudad
         private Button btnAceptar;  // Botón Aceptar
@@ -22,7 +21,6 @@
             components = new System.ComponentModel.Container();
             cboPais = new ComboBox();
             cboEstado = new ComboBox();
-            cboEditorialId = new ComboBox();
             txtNombre = new TextBox();
             txtCiudad = new TextBox();
             btnAceptar = new Button();
@@ -33,6 +31,7 @@
             lblEstado = new Label();
             lblPais = new Label();
             errorProvider = new ErrorProvider(components);
+            lblID = new Label();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -42,7 +41,7 @@
             cboPais.Location = new Point(150, 150);
             cboPais.Name = "cboPais";
             cboPais.Size = new Size(200, 28);
-            cboPais.TabIndex = 0;
+            cboPais.TabIndex = 3;
             // 
             // cboEstado
             // 
@@ -50,44 +49,36 @@
             cboEstado.Location = new Point(150, 196);
             cboEstado.Name = "cboEstado";
             cboEstado.Size = new Size(200, 28);
-            cboEstado.TabIndex = 1;
-            // 
-            // cboEditorialId
-            // 
-            cboEditorialId.FormattingEnabled = true;
-            cboEditorialId.Location = new Point(150, 30);
-            cboEditorialId.Name = "cboEditorialId";
-            cboEditorialId.Size = new Size(200, 28);
-            cboEditorialId.TabIndex = 2;
+            cboEstado.TabIndex = 5;
             // 
             // txtNombre
             // 
             txtNombre.Location = new Point(150, 67);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(200, 27);
-            txtNombre.TabIndex = 3;
+            txtNombre.TabIndex = 1;
             // 
             // txtCiudad
             // 
             txtCiudad.Location = new Point(150, 107);
             txtCiudad.Name = "txtCiudad";
             txtCiudad.Size = new Size(200, 27);
-            txtCiudad.TabIndex = 4;
+            txtCiudad.TabIndex = 2;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(150, 230);
+            btnAceptar.Location = new Point(30, 251);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(75, 30);
+            btnAceptar.Size = new Size(143, 37);
             btnAceptar.TabIndex = 5;
             btnAceptar.Text = "Aceptar";
             btnAceptar.Click += btnAceptar_Click;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(275, 230);
+            btnCancelar.Location = new Point(207, 251);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 30);
+            btnCancelar.Size = new Size(143, 37);
             btnCancelar.TabIndex = 6;
             btnCancelar.Text = "Cancelar";
             btnCancelar.Click += btnCancelar_Click;
@@ -141,12 +132,21 @@
             // 
             errorProvider.ContainerControl = this;
             // 
+            // lblID
+            // 
+            lblID.AutoSize = true;
+            lblID.Location = new Point(150, 30);
+            lblID.Name = "lblID";
+            lblID.Size = new Size(50, 20);
+            lblID.TabIndex = 12;
+            lblID.Text = "label1";
+            // 
             // FormAddEditEditorial
             // 
-            ClientSize = new Size(379, 283);
+            ClientSize = new Size(379, 315);
+            Controls.Add(lblID);
             Controls.Add(cboPais);
             Controls.Add(cboEstado);
-            Controls.Add(cboEditorialId);
             Controls.Add(txtNombre);
             Controls.Add(txtCiudad);
             Controls.Add(btnAceptar);
@@ -157,10 +157,13 @@
             Controls.Add(lblEstado);
             Controls.Add(lblPais);
             Name = "FormAddEditEditorial";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Agregar/Editar Editorial";
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
+
+        private Label lblID;
     }
 }
