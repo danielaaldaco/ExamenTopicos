@@ -12,31 +12,25 @@ namespace ExamenTopicos
         private DataSet ds;
         private Datos datos = new Datos();
         private const int ActionColumnWidth = 30;
+        private const string placeholder = "Buscar por ID, Nombre...";
+        private bool isInitialLoad = true;
 
         public FormEditoriales(UserRole role)
         {
             InitializeComponent();
             ConfigurarAccesoPorRol(role);
-            this.Resize += FormEditoriales_Resize;
-            this.Load += FormEditoriales_Load; // Usar el evento Load para aplicar ajustes de tamaño
-            this.btnAgregar.Visible = false;
+            this.Load += FormEditoriales_Load;
+            activarPlaceholders(txtBuscar, placeholder);
         }
 
         private void FormEditoriales_Load(object sender, EventArgs e)
         {
-            // Actualizar la tabla y ajustar el tamaño una vez que todo está listo
             ActualizarGrid();
-            AjustarAnchoVentana();
-            AjustarAlturaVentana();
-
-            // Cambiar el tamaño de la ventana al valor deseado
-            this.Height = 400; // Cambia esto al valor que necesites
+            isInitialLoad = false;
         }
-
 
         private void ConfigurarAccesoPorRol(UserRole role)
         {
-            btnAgregar.Visible = false;
             dgvEditoriales.ReadOnly = true;
 
             switch (role)
@@ -44,11 +38,10 @@ namespace ExamenTopicos
                 case UserRole.Empleado:
                 case UserRole.GerenteVentas:
                 case UserRole.Administrador:
-                    btnAgregar.Visible = true;
                     break;
 
                 default:
-                    this.Close();
+                    Close();
                     break;
             }
         }
@@ -68,21 +61,31 @@ namespace ExamenTopicos
 
                 ds = datos.consulta(query);
 
-                if (ds != null && ds.Tables.Count > 0)
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvEditoriales.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
-                    ConfigurarColumnas();
                 }
                 else
                 {
-                    dgvEditoriales.DataSource = null;
+                    MostrarEncabezadoVacio();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void MostrarEncabezadoVacio()
+        {
+            DataTable emptyTable = new DataTable();
+            emptyTable.Columns.Add("ID Editorial");
+            emptyTable.Columns.Add("Nombre");
+            emptyTable.Columns.Add("Ciudad");
+            emptyTable.Columns.Add("Estado");
+            emptyTable.Columns.Add("País");
+            dgvEditoriales.DataSource = emptyTable;
         }
 
         private void ConfigurarColumnasGrid()
@@ -103,6 +106,7 @@ namespace ExamenTopicos
                 dgvEditoriales.Columns["País"].HeaderText = "País";
 
             AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            ConfigurarColumnas();
         }
 
         private void ConfigurarColumnas()
@@ -112,15 +116,15 @@ namespace ExamenTopicos
                 if (col.Name == "Editar")
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                    col.Width = 30;
+                    col.Width = ActionColumnWidth;
                 }
                 else if (col.Name == "Nombre")
                 {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells; // Ajusta al contenido mostrado
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
                 }
                 else
                 {
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Las demás columnas llenan el espacio restante
+                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
             }
         }
@@ -146,71 +150,6 @@ namespace ExamenTopicos
             }
         }
 
-        private void AjustarAnchoVentana()
-        {
-            int totalColumnWidth = 0;
-            foreach (DataGridViewColumn col in dgvEditoriales.Columns)
-            {
-                totalColumnWidth += col.Width;
-            }
-
-            int rowHeaderWidth = dgvEditoriales.RowHeadersVisible ? dgvEditoriales.RowHeadersWidth : 0;
-            int extraWidth = this.Width - dgvEditoriales.ClientSize.Width;
-            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
-
-            this.Width = newWidth + 20;
-
-            // Ajustar la altura
-            AjustarAlturaVentana();
-
-            ConfigurarColumnas();
-        }
-
-        private void AjustarAlturaVentana()
-        {
-            // Calcular el número de filas visibles, excluyendo la fila de "nueva entrada" si está habilitada
-            int rowCount = dgvEditoriales.Rows.Count;
-            if (dgvEditoriales.AllowUserToAddRows)
-            {
-                rowCount -= 1; // Excluir la fila de nueva entrada
-            }
-
-            // Calcular la altura total de las filas
-            int rowHeight = rowCount * dgvEditoriales.RowTemplate.Height;
-
-            // Obtener la altura del encabezado de las columnas
-            int headerHeight = dgvEditoriales.ColumnHeadersHeight;
-
-            // Calcular la altura total requerida para el DataGridView
-            int totalDgvHeight = rowHeight + headerHeight;
-
-            // Calcular la altura adicional del formulario (bordes, título, etc.)
-            int extraHeight = this.Height - this.ClientSize.Height;
-
-            // Calcular la altura total requerida para el formulario
-            int totalHeight = totalDgvHeight + extraHeight;
-
-            // Ajustar el formulario para no exceder la altura máxima (600 píxeles)
-            if (totalHeight > 600)
-            {
-                this.Height = 600;
-                dgvEditoriales.Height = 600 - extraHeight; // Ajustar el DataGridView para usar la barra de desplazamiento
-            }
-            else
-            {
-                this.Height = totalHeight; // Ajustar el formulario exactamente a las filas visibles
-                dgvEditoriales.Height = totalDgvHeight; // Ajustar el DataGridView para que no haya espacios vacíos
-            }
-        }
-
-
-
-
-        private void FormEditoriales_Resize(object sender, EventArgs e)
-        {
-            ConfigurarColumnas();
-        }
-
         private void dgvEditoriales_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -228,7 +167,6 @@ namespace ExamenTopicos
                             if (editarForm.ShowDialog() == DialogResult.OK)
                             {
                                 ActualizarGrid();
-                                AjustarAnchoVentana();
                             }
                         }
                     }
@@ -238,7 +176,6 @@ namespace ExamenTopicos
                     }
                 }
             }
-            ActualizarGrid();
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -248,7 +185,6 @@ namespace ExamenTopicos
                 if (agregarForm.ShowDialog() == DialogResult.OK)
                 {
                     ActualizarGrid();
-                    AjustarAnchoVentana();
                 }
             }
         }
@@ -258,34 +194,42 @@ namespace ExamenTopicos
             try
             {
                 string searchValue = txtBuscar.Text.Trim();
-                string query = @"
-                    SELECT 
-                        pub_id AS 'ID Editorial',
-                        pub_name AS 'Nombre',
-                        city AS 'Ciudad',
-                        state AS 'Estado',
-                        country AS 'País'
-                    FROM publishers
-                    WHERE 
-                        pub_name LIKE @searchValue OR 
-                        pub_id LIKE @searchValue";
-
-                SqlParameter[] parametros = new SqlParameter[]
+                if (placeholderActivo(searchValue, placeholder))
                 {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
-                };
-
-                ds = datos.consulta(query, parametros);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvEditoriales.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-                    ConfigurarColumnas();
+                    ActualizarGrid();
                 }
                 else
                 {
-                    dgvEditoriales.DataSource = null;
+                    string query = @"
+                        SELECT 
+                            pub_id AS 'ID Editorial',
+                            pub_name AS 'Nombre',
+                            city AS 'Ciudad',
+                            state AS 'Estado',
+                            country AS 'País'
+                        FROM publishers
+                        WHERE 
+                            pub_name LIKE @searchValue OR 
+                            pub_id LIKE @searchValue OR
+                            city LIKE @searchValue OR
+                            state LIKE @searchValue OR
+                            country LIKE @searchValue";
+
+                    SqlParameter[] parametros = {
+                        new SqlParameter("@searchValue", $"%{searchValue}%")
+                    };
+
+                    ds = datos.consulta(query, parametros);
+
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dgvEditoriales.DataSource = ds.Tables[0];
+                        ConfigurarColumnasGrid();
+                    }
+                    else
+                    {
+                        MostrarEncabezadoVacio();
+                    }
                 }
             }
             catch (Exception ex)

@@ -15,7 +15,8 @@ namespace ExamenTopicos
             InitializeComponent();
             this.ordNum = id;
             CargarDatosComboBox();
-            txtCantidad.KeyPress += txtCantidad_KeyPress;
+            ConfigurarEventos();
+            ConfigurarControles();
             this.Shown += FormAgregarVenta_Shown;
 
             if (string.IsNullOrEmpty(id))
@@ -23,7 +24,7 @@ namespace ExamenTopicos
                 this.Text = "Agregar Venta";
                 btnAceptar.Text = "Agregar";
                 GenerarIdAleatorio();
-                desbloquearCampos();
+                DesbloquearCampos();
                 cmbTienda.Focus();
             }
             else
@@ -31,8 +32,23 @@ namespace ExamenTopicos
                 this.Text = "Editar Venta";
                 btnAceptar.Text = "Actualizar";
                 CargarDatosVenta(id);
-                bloquearCampos();
+                BloquearCampos();
             }
+        }
+
+        private void ConfigurarEventos()
+        {
+            txtCantidad.KeyPress += TxtCantidad_KeyPress;
+            txtCantidad.TextChanged += Utils.agregarEvento;
+        }
+
+        private void ConfigurarControles()
+        {
+            cmbTienda.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTitulo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPago.DropDownStyle = ComboBoxStyle.DropDownList;
+            dtpFecha.Format = DateTimePickerFormat.Custom;
+            dtpFecha.CustomFormat = "dd/MM/yyyy"; // Formato de fecha personalizado
         }
 
         private void CargarDatosComboBox()
@@ -59,8 +75,10 @@ namespace ExamenTopicos
 
                 cmbPago.Items.Add("Contado");
                 cmbPago.Items.Add("Crédito");
-                cmbPago.Items.Add("Transferencia bancaria");
-                cmbPago.Items.Add("Tarjeta de crédito");
+                cmbPago.Items.Add("Net 30");
+                cmbPago.Items.Add("Net 60");
+                cmbPago.Items.Add("SPEI");
+                cmbPago.Items.Add("Tarjeta");
                 cmbPago.SelectedIndex = 0;
             }
             catch (Exception ex)
@@ -98,7 +116,7 @@ namespace ExamenTopicos
             }
         }
 
-        private void bloquearCampos()
+        private void BloquearCampos()
         {
             txtOrden.ReadOnly = true;
             txtOrden.TabStop = false;
@@ -107,7 +125,7 @@ namespace ExamenTopicos
             dtpFecha.Enabled = false;
         }
 
-        private void desbloquearCampos()
+        private void DesbloquearCampos()
         {
             txtOrden.ReadOnly = true;
             txtOrden.TabStop = false;
@@ -121,7 +139,7 @@ namespace ExamenTopicos
             txtOrden.Text = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
         }
 
-        private void txtCantidad_KeyPress(object sender, KeyPressEventArgs e)
+        private void TxtCantidad_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
@@ -137,7 +155,7 @@ namespace ExamenTopicos
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtCantidad.Text) || int.Parse(txtCantidad.Text) <= 0)
+            if (string.IsNullOrWhiteSpace(txtCantidad.Text) || !int.TryParse(txtCantidad.Text, out int cantidad) || cantidad <= 0)
             {
                 MessageBox.Show("La 'Cantidad' debe ser un número mayor a 0.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
@@ -151,7 +169,7 @@ namespace ExamenTopicos
 
             if (cmbTitulo.SelectedIndex == -1)
             {
-                MessageBox.Show("El campo 'ID Titulo' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("El campo 'ID Título' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 

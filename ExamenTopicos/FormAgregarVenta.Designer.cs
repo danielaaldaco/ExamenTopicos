@@ -46,21 +46,22 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(176, 377);
+            btnCancelar.Location = new Point(254, 380);
             btnCancelar.Margin = new Padding(3, 4, 3, 4);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(112, 31);
-            btnCancelar.TabIndex = 8;
+            btnCancelar.Size = new Size(110, 31);
+            btnCancelar.TabIndex = 7;
             btnCancelar.Text = "Cerrar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(15, 377);
+            btnAceptar.Location = new Point(73, 380);
             btnAceptar.Margin = new Padding(3, 4, 3, 4);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(111, 31);
-            btnAceptar.TabIndex = 7;
+            btnAceptar.Size = new Size(110, 31);
+            btnAceptar.TabIndex = 6;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
@@ -124,61 +125,61 @@
             // 
             // txtOrden
             // 
-            txtOrden.Location = new Point(149, 16);
+            txtOrden.Location = new Point(196, 12);
             txtOrden.Margin = new Padding(3, 4, 3, 4);
             txtOrden.Name = "txtOrden";
-            txtOrden.Size = new Size(138, 27);
+            txtOrden.Size = new Size(216, 27);
             txtOrden.TabIndex = 2;
             // 
             // txtCantidad
             // 
-            txtCantidad.Location = new Point(149, 192);
+            txtCantidad.Location = new Point(196, 188);
             txtCantidad.Margin = new Padding(3, 4, 3, 4);
             txtCantidad.Name = "txtCantidad";
-            txtCantidad.Size = new Size(138, 27);
-            txtCantidad.TabIndex = 4;
+            txtCantidad.Size = new Size(216, 27);
+            txtCantidad.TabIndex = 3;
             // 
             // cmbPago
             // 
             cmbPago.FormattingEnabled = true;
-            cmbPago.Location = new Point(149, 255);
+            cmbPago.Location = new Point(196, 251);
             cmbPago.Margin = new Padding(3, 4, 3, 4);
             cmbPago.Name = "cmbPago";
-            cmbPago.Size = new Size(138, 28);
-            cmbPago.TabIndex = 5;
+            cmbPago.Size = new Size(216, 28);
+            cmbPago.TabIndex = 4;
             // 
             // cmbTienda
             // 
             cmbTienda.FormattingEnabled = true;
-            cmbTienda.Location = new Point(149, 72);
+            cmbTienda.Location = new Point(196, 68);
             cmbTienda.Margin = new Padding(3, 4, 3, 4);
             cmbTienda.Name = "cmbTienda";
-            cmbTienda.Size = new Size(138, 28);
-            cmbTienda.TabIndex = 34;
+            cmbTienda.Size = new Size(216, 28);
+            cmbTienda.TabIndex = 1;
             // 
             // cmbTitulo
             // 
             cmbTitulo.FormattingEnabled = true;
-            cmbTitulo.Location = new Point(150, 318);
+            cmbTitulo.Location = new Point(196, 314);
             cmbTitulo.Margin = new Padding(3, 4, 3, 4);
             cmbTitulo.Name = "cmbTitulo";
-            cmbTitulo.Size = new Size(138, 28);
-            cmbTitulo.TabIndex = 35;
+            cmbTitulo.Size = new Size(216, 28);
+            cmbTitulo.TabIndex = 5;
             // 
             // dtpFecha
             // 
             dtpFecha.Format = DateTimePickerFormat.Short;
-            dtpFecha.Location = new Point(149, 132);
+            dtpFecha.Location = new Point(196, 128);
             dtpFecha.Margin = new Padding(3, 4, 3, 4);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(139, 27);
-            dtpFecha.TabIndex = 36;
+            dtpFecha.Size = new Size(216, 27);
+            dtpFecha.TabIndex = 2;
             // 
             // FormAgregarVenta
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(305, 424);
+            ClientSize = new Size(424, 424);
             Controls.Add(dtpFecha);
             Controls.Add(cmbTitulo);
             Controls.Add(cmbTienda);

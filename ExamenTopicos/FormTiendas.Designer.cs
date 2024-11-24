@@ -2,15 +2,8 @@
 {
     partial class FormTiendas
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,87 +13,76 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            lblBuscar = new Label();
+            dgvTiendas = new DataGridView();
             btnAgregar = new Button();
             txtBuscar = new TextBox();
-            dgvTiendas = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvTiendas).BeginInit();
             SuspendLayout();
-            // 
-            // lblBuscar
-            // 
-            lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(39, 45);
-            lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(78, 15);
-            lblBuscar.TabIndex = 12;
-            lblBuscar.Text = "Buscar tienda";
-            // 
-            // btnAgregar
-            // 
-            btnAgregar.Location = new Point(537, 45);
-            btnAgregar.Margin = new Padding(3, 2, 3, 2);
-            btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(88, 27);
-            btnAgregar.TabIndex = 11;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
-            btnAgregar.Click += btnAgregar_Click;
-            // 
-            // txtBuscar
-            // 
-            txtBuscar.Location = new Point(128, 43);
-            txtBuscar.Margin = new Padding(3, 2, 3, 2);
-            txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(311, 23);
-            txtBuscar.TabIndex = 10;
             // 
             // dgvTiendas
             // 
             dgvTiendas.AllowUserToAddRows = false;
             dgvTiendas.AllowUserToDeleteRows = false;
-            dgvTiendas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTiendas.AllowUserToResizeRows = false;
+            dgvTiendas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvTiendas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvTiendas.Location = new Point(39, 95);
-            dgvTiendas.Margin = new Padding(3, 2, 3, 2);
+            dgvTiendas.Location = new Point(12, 80);
+            dgvTiendas.Margin = new Padding(3, 4, 3, 4);
             dgvTiendas.MultiSelect = false;
             dgvTiendas.Name = "dgvTiendas";
             dgvTiendas.ReadOnly = true;
+            dgvTiendas.RowHeadersVisible = false;
             dgvTiendas.RowHeadersWidth = 51;
-            dgvTiendas.RowTemplate.Height = 29;
             dgvTiendas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvTiendas.Size = new Size(598, 262);
-            dgvTiendas.TabIndex = 9;
+            dgvTiendas.Size = new Size(988, 379);
+            dgvTiendas.TabIndex = 0;
+            dgvTiendas.CellContentClick += dgvTiendas_CellContentClick;
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAgregar.Location = new Point(909, 33);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(91, 27);
+            btnAgregar.TabIndex = 1;
+            btnAgregar.Text = "Agregar Tienda";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBuscar.ForeColor = Color.Gray;
+            txtBuscar.Location = new Point(12, 33);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(891, 27);
+            txtBuscar.TabIndex = 2;
+            txtBuscar.Text = "Buscar por Nombre, Ciudad, Estado...";
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // FormTiendas
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(705, 420);
-            Controls.Add(lblBuscar);
-            Controls.Add(btnAgregar);
+            ClientSize = new Size(1012, 472);
             Controls.Add(txtBuscar);
+            Controls.Add(btnAgregar);
             Controls.Add(dgvTiendas);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormTiendas";
-            Text = "FormTiendas";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Gestión de Tiendas";
             ((System.ComponentModel.ISupportInitialize)dgvTiendas).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
-        #endregion
-
-        private Label lblBuscar;
+        private DataGridView dgvTiendas;
         private Button btnAgregar;
         private TextBox txtBuscar;
-        private DataGridView dgvTiendas;
     }
 }

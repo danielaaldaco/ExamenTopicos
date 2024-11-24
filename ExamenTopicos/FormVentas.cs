@@ -12,7 +12,7 @@ namespace ExamenTopicos
         private DataSet ds;
         private UserRole userRole;
         private Datos datos = new Datos();
-
+        const string placeholder = "Buscar por Tienda, Orden, Título...";
         private const int ActionColumnWidth = 30;
 
         public FormVentas(UserRole role)
@@ -23,7 +23,19 @@ namespace ExamenTopicos
             ActualizarGrid();
             AjustarAnchoVentana();
             this.Resize += FormVentas_Resize;
-            activarPlaceholders(txtBuscar, "Buscar por Tienda, Orden, Título...");
+            activarPlaceholders(txtBuscar, placeholder);
+            ConfigurarDataGridView();
+        }
+
+        private void ConfigurarDataGridView()
+        {
+            dgvVentas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVentas.ColumnHeaderMouseClick += (sender, e) =>
+            {
+                dgvVentas.ClearSelection();
+            };
+            dgvVentas.EnableHeadersVisualStyles = false;
+            dgvVentas.ColumnHeadersDefaultCellStyle.SelectionBackColor = dgvVentas.ColumnHeadersDefaultCellStyle.BackColor;
         }
 
         private void ConfigurarAccesoPorRol()
@@ -78,15 +90,23 @@ namespace ExamenTopicos
 
                 ds = datos.consulta(query);
 
-                if (ds != null && ds.Tables.Count > 0)
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvVentas.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
                     ConfigurarColumnas();
+                    EliminarHoraDeFecha(dgvVentas, "Fecha Orden");
                 }
                 else
                 {
-                    dgvVentas.DataSource = null;
+                    crearHeader(dgvVentas,
+                        "ID Tienda",
+                        "Nombre Tienda",
+                        "Número de Orden",
+                        "Fecha Orden",
+                        "Cantidad",
+                        "Condiciones de Pago",
+                        "Título de Venta");
                 }
             }
             catch (Exception ex)
@@ -94,6 +114,7 @@ namespace ExamenTopicos
                 MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void ConfigurarColumnasGrid()
         {
@@ -187,9 +208,11 @@ namespace ExamenTopicos
             try
             {
                 string searchValue = txtBuscar.Text.Trim();
-                if (string.IsNullOrWhiteSpace(searchValue) || searchValue == "Buscar por Tienda, Orden, Título...")
+
+                string query;
+                if (placeholderActivo(searchValue, placeholder))
                 {
-                    string query = @"
+                    query = @"
                         SELECT 
                             s.stor_id AS 'ID Tienda',
                             st.stor_name AS 'Nombre Tienda',
@@ -201,12 +224,10 @@ namespace ExamenTopicos
                         FROM sales s
                         INNER JOIN stores st ON s.stor_id = st.stor_id
                         INNER JOIN titles t ON s.title_id = t.title_id";
-
-                    ds = datos.consulta(query);
                 }
                 else
                 {
-                    string query = @"
+                    query = @"
                         SELECT 
                             s.stor_id AS 'ID Tienda',
                             st.stor_name AS 'Nombre Tienda',
@@ -226,57 +247,31 @@ namespace ExamenTopicos
                             OR s.ord_date LIKE @searchValue
                             OR CAST(s.qty AS VARCHAR) LIKE @searchValue
                             OR s.payterms LIKE @searchValue)";
-
-                    SqlParameter[] parametros = new SqlParameter[] {
-                        new SqlParameter("@searchValue", $"%{searchValue}%")
-                    };
-
-                    ds = datos.consulta(query, parametros);
                 }
 
-                if (ds != null && ds.Tables.Count > 0)
+                SqlParameter[] parametros = { new SqlParameter("@searchValue", $"%{searchValue}%") };
+                ds = datos.consulta(query, parametros);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvVentas.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
-                    AgregarColumnasPersonalizadas();
                 }
                 else
                 {
-                    dgvVentas.DataSource = null;
+                    crearHeader(dgvVentas,
+                        "ID Tienda",
+                        "Nombre Tienda",
+                        "Número de Orden",
+                        "Fecha Orden",
+                        "Cantidad",
+                        "Condiciones de Pago",
+                        "Título de Venta");
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error en la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void AgregarColumnasPersonalizadas()
-        {
-            if (!dgvVentas.Columns.Contains("Editar"))
-            {
-                DataGridViewImageColumn lapizColumn = new DataGridViewImageColumn
-                {
-                    Name = "Editar",
-                    HeaderText = "",
-                    Image = Properties.Resources.lapiz,
-                    ImageLayout = DataGridViewImageCellLayout.Zoom,
-                    Width = 30
-                };
-                dgvVentas.Columns.Insert(0, lapizColumn);
-            }
-
-            if (!dgvVentas.Columns.Contains("Eliminar"))
-            {
-                DataGridViewImageColumn eliminarColumn = new DataGridViewImageColumn
-                {
-                    Name = "Eliminar",
-                    HeaderText = "",
-                    Image = Properties.Resources.mdi__garbage,
-                    ImageLayout = DataGridViewImageCellLayout.Zoom,
-                    Width = 30
-                };
-                dgvVentas.Columns.Add(eliminarColumn);
             }
         }
 
@@ -297,16 +292,16 @@ namespace ExamenTopicos
                 if (columnName == "Eliminar")
                 {
                     var parametrosYValores = new Dictionary<string, object>
-            {
-                { "Número de Orden", ordNum },
-                { "Nombre de la Tienda", storName },
-                { "Título de Venta", title },
-                { "Fecha de la Orden", ordDate },
-                { "Cantidad", qty },
-                { "Condiciones de Pago", payTerms }
-            };
+                    {
+                        { "Número de Orden", ordNum },
+                        { "Nombre de la Tienda", storName },
+                        { "Título de Venta", title },
+                        { "Fecha de la Orden", ordDate },
+                        { "Cantidad", qty },
+                        { "Condiciones de Pago", payTerms }
+                    };
 
-                    bool confirmado = Utils.MostrarConfirmacion("Confirmar Eliminación", parametrosYValores);
+                    bool confirmado = confirmarEliminacion(parametrosYValores);
 
                     if (confirmado)
                     {
@@ -325,9 +320,7 @@ namespace ExamenTopicos
             try
             {
                 string query = "DELETE FROM sales WHERE ord_num = @ordNum";
-                SqlParameter[] parametros = new SqlParameter[] {
-                    new SqlParameter("@ordNum", ordNum)
-                };
+                SqlParameter[] parametros = { new SqlParameter("@ordNum", ordNum) };
 
                 bool exito = datos.ejecutarABC(query, parametros);
 

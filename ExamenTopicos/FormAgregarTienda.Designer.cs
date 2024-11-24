@@ -2,15 +2,8 @@
 {
     partial class FormAgregarTienda
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,199 +13,185 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            toolTip = new ToolTip(components);
             label6 = new Label();
-            mskCP = new MaskedTextBox();
-            label9 = new Label();
-            txtEstado = new TextBox();
-            label8 = new Label();
-            textCiudad = new TextBox();
-            Ciudad = new Label();
-            txtDireccion = new TextBox();
-            txtNombre = new TextBox();
-            label5 = new Label();
+            txtIdTienda = new TextBox();
             label3 = new Label();
+            txtNombre = new TextBox();
             label4 = new Label();
-            textBox1 = new TextBox();
-            btnCancelar = new Button();
+            txtDireccion = new TextBox();
+            lblCiudad = new Label();
+            txtCiudad = new TextBox();
+            label8 = new Label();
+            txtEstado = new TextBox();
+            label9 = new Label();
+            mskCP = new MaskedTextBox();
             btnAceptar = new Button();
+            btnCancelar = new Button();
             SuspendLayout();
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(36, 96);
+            label6.Location = new Point(20, 20);
             label6.Name = "label6";
-            label6.Size = new Size(56, 15);
-            label6.TabIndex = 73;
+            label6.Size = new Size(73, 20);
+            label6.TabIndex = 0;
             label6.Text = "ID Tienda";
+            toolTip.SetToolTip(label6, "Ingrese el ID único de la tienda.");
             // 
-            // mskCP
+            // txtIdTienda
             // 
-            mskCP.Location = new Point(154, 294);
-            mskCP.Mask = "00000";
-            mskCP.Name = "mskCP";
-            mskCP.Size = new Size(194, 23);
-            mskCP.TabIndex = 61;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(36, 297);
-            label9.Name = "label9";
-            label9.RightToLeft = RightToLeft.Yes;
-            label9.Size = new Size(81, 15);
-            label9.TabIndex = 72;
-            label9.Text = "Codigo postal";
-            // 
-            // txtEstado
-            // 
-            txtEstado.Location = new Point(154, 250);
-            txtEstado.Name = "txtEstado";
-            txtEstado.Size = new Size(193, 23);
-            txtEstado.TabIndex = 60;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(36, 253);
-            label8.Name = "label8";
-            label8.Size = new Size(42, 15);
-            label8.TabIndex = 71;
-            label8.Text = "Estado";
-            // 
-            // textCiudad
-            // 
-            textCiudad.Location = new Point(154, 210);
-            textCiudad.Name = "textCiudad";
-            textCiudad.Size = new Size(193, 23);
-            textCiudad.TabIndex = 59;
-            // 
-            // Ciudad
-            // 
-            Ciudad.AutoSize = true;
-            Ciudad.Location = new Point(36, 213);
-            Ciudad.Name = "Ciudad";
-            Ciudad.Size = new Size(45, 15);
-            Ciudad.TabIndex = 70;
-            Ciudad.Text = "Ciudad";
-            // 
-            // txtDireccion
-            // 
-            txtDireccion.Location = new Point(154, 170);
-            txtDireccion.Name = "txtDireccion";
-            txtDireccion.Size = new Size(193, 23);
-            txtDireccion.TabIndex = 58;
-            // 
-            // txtNombre
-            // 
-            txtNombre.Location = new Point(154, 130);
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(193, 23);
-            txtNombre.TabIndex = 56;
-            // 
-            // label5
-            // 
-            label5.Location = new Point(12, 9);
-            label5.Name = "label5";
-            label5.Size = new Size(389, 69);
-            label5.TabIndex = 68;
-            label5.Text = "Favor de rellene los campos correspondientes para agregar la información sobre el autor";
-            label5.TextAlign = ContentAlignment.MiddleCenter;
+            txtIdTienda.AcceptsTab = true;
+            txtIdTienda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtIdTienda.Location = new Point(141, 17);
+            txtIdTienda.Name = "txtIdTienda";
+            txtIdTienda.ReadOnly = true;
+            txtIdTienda.Size = new Size(247, 27);
+            txtIdTienda.TabIndex = 0;
+            toolTip.SetToolTip(txtIdTienda, "Ejemplo: T001");
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(35, 133);
+            label3.Location = new Point(20, 70);
             label3.Name = "label3";
-            label3.RightToLeft = RightToLeft.Yes;
-            label3.Size = new Size(51, 15);
-            label3.TabIndex = 67;
+            label3.Size = new Size(64, 20);
+            label3.TabIndex = 1;
             label3.Text = "Nombre";
+            toolTip.SetToolTip(label3, "Ingrese el nombre de la tienda.");
+            // 
+            // txtNombre
+            // 
+            txtNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtNombre.Location = new Point(141, 67);
+            txtNombre.Name = "txtNombre";
+            txtNombre.Size = new Size(247, 27);
+            txtNombre.TabIndex = 1;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(36, 173);
+            label4.Location = new Point(20, 120);
             label4.Name = "label4";
-            label4.Size = new Size(57, 15);
-            label4.TabIndex = 66;
+            label4.Size = new Size(72, 20);
+            label4.TabIndex = 2;
             label4.Text = "Dirección";
             // 
-            // textBox1
+            // txtDireccion
             // 
-            textBox1.Location = new Point(154, 93);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(193, 23);
-            textBox1.TabIndex = 75;
+            txtDireccion.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtDireccion.Location = new Point(141, 117);
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.Size = new Size(247, 27);
+            txtDireccion.TabIndex = 2;
             // 
-            // btnCancelar
+            // lblCiudad
             // 
-            btnCancelar.Location = new Point(291, 362);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(98, 23);
-            btnCancelar.TabIndex = 77;
-            btnCancelar.Text = "Cerrar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            lblCiudad.AutoSize = true;
+            lblCiudad.Location = new Point(20, 170);
+            lblCiudad.Name = "lblCiudad";
+            lblCiudad.Size = new Size(56, 20);
+            lblCiudad.TabIndex = 3;
+            lblCiudad.Text = "Ciudad";
+            // 
+            // txtCiudad
+            // 
+            txtCiudad.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtCiudad.Location = new Point(141, 167);
+            txtCiudad.Name = "txtCiudad";
+            txtCiudad.Size = new Size(247, 27);
+            txtCiudad.TabIndex = 3;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(20, 220);
+            label8.Name = "label8";
+            label8.Size = new Size(54, 20);
+            label8.TabIndex = 4;
+            label8.Text = "Estado";
+            // 
+            // txtEstado
+            // 
+            txtEstado.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtEstado.Location = new Point(141, 217);
+            txtEstado.Name = "txtEstado";
+            txtEstado.Size = new Size(247, 27);
+            txtEstado.TabIndex = 4;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(20, 270);
+            label9.Name = "label9";
+            label9.Size = new Size(101, 20);
+            label9.TabIndex = 5;
+            label9.Text = "Código Postal";
+            // 
+            // mskCP
+            // 
+            mskCP.Location = new Point(141, 263);
+            mskCP.Mask = "00000";
+            mskCP.Name = "mskCP";
+            mskCP.Size = new Size(139, 27);
+            mskCP.TabIndex = 5;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(178, 362);
+            btnAceptar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnAceptar.Location = new Point(57, 330);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(97, 23);
-            btnAceptar.TabIndex = 76;
+            btnAceptar.Size = new Size(110, 40);
+            btnAceptar.TabIndex = 6;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.Click += btnAceptar_Click;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnCancelar.Location = new Point(250, 330);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(110, 40);
+            btnCancelar.TabIndex = 7;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // FormAgregarTienda
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(413, 406);
-            Controls.Add(btnCancelar);
-            Controls.Add(btnAceptar);
-            Controls.Add(textBox1);
+            ClientSize = new Size(418, 382);
             Controls.Add(label6);
-            Controls.Add(mskCP);
-            Controls.Add(label9);
-            Controls.Add(txtEstado);
-            Controls.Add(label8);
-            Controls.Add(textCiudad);
-            Controls.Add(Ciudad);
-            Controls.Add(txtDireccion);
-            Controls.Add(txtNombre);
-            Controls.Add(label5);
+            Controls.Add(txtIdTienda);
             Controls.Add(label3);
+            Controls.Add(txtNombre);
             Controls.Add(label4);
+            Controls.Add(txtDireccion);
+            Controls.Add(lblCiudad);
+            Controls.Add(txtCiudad);
+            Controls.Add(label8);
+            Controls.Add(txtEstado);
+            Controls.Add(label9);
+            Controls.Add(mskCP);
+            Controls.Add(btnAceptar);
+            Controls.Add(btnCancelar);
             Name = "FormAgregarTienda";
-            Text = "FormAgregarTienda";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Agregar Tienda";
             ResumeLayout(false);
             PerformLayout();
         }
 
-        #endregion
-
-        private Label label6;
+        private Label label6, label3, label4, lblCiudad, label8, label9;
+        private TextBox txtIdTienda, txtNombre, txtDireccion, txtCiudad, txtEstado;
         private MaskedTextBox mskCP;
-        private Label label9;
-        private TextBox txtEstado;
-        private Label label8;
-        private TextBox textCiudad;
-        private Label Ciudad;
-        private TextBox txtDireccion;
-        private TextBox txtNombre;
-        private Label label5;
-        private Label label3;
-        private Label label4;
-        private TextBox textBox1;
-        private Button btnCancelar;
-        private Button btnAceptar;
+        private Button btnAceptar, btnCancelar;
+        private ToolTip toolTip;
     }
 }
