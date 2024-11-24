@@ -5,7 +5,7 @@
         private System.ComponentModel.IContainer components = null;
         private Label lblTitulo;
         private TableLayoutPanel tableLayoutPanel;
-        private Button btnAceptar;
+        private Button btnEliminar;
         private Button btnCancelar;
 
         protected override void Dispose(bool disposing)
@@ -19,79 +19,88 @@
 
         private void InitializeComponent()
         {
-            this.lblTitulo = new Label();
-            this.tableLayoutPanel = new TableLayoutPanel();
-            this.btnAceptar = new Button();
-            this.btnCancelar = new Button();
-            this.SuspendLayout();
-
+            lblTitulo = new Label();
+            tableLayoutPanel = new TableLayoutPanel();
+            btnEliminar = new Button();
+            btnCancelar = new Button();
+            SuspendLayout();
+            // 
             // lblTitulo
-            this.lblTitulo.Dock = DockStyle.Top;
-            this.lblTitulo.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point);
-            this.lblTitulo.Location = new Point(0, 0);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new Size(500, 40);
-            this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "Confirmar Acción";
-            this.lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
-
+            // 
+            lblTitulo.Dock = DockStyle.Top;
+            lblTitulo.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitulo.Location = new Point(0, 0);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(441, 53);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "Confirmar Acción";
+            lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // tableLayoutPanel
-            this.tableLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            this.tableLayoutPanel.AutoSize = true;
-            this.tableLayoutPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel.ColumnCount = 2;
-            this.tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            this.tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            this.tableLayoutPanel.Location = new Point(20, 50);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 1;
-            this.tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            this.tableLayoutPanel.Size = new Size(460, 80);
-            this.tableLayoutPanel.TabIndex = 1;
-
+            // 
+            tableLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel.AutoSize = true;
+            tableLayoutPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            tableLayoutPanel.ColumnCount = 2;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.Location = new Point(11, 67);
+            tableLayoutPanel.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 1;
+            tableLayoutPanel.RowStyles.Add(new RowStyle());
+            tableLayoutPanel.Size = new Size(418, 0);
+            tableLayoutPanel.TabIndex = 1;
+            // 
             // btnAceptar
-            this.btnAceptar.FlatStyle = FlatStyle.Flat;
-            this.btnAceptar.BackColor = Color.FromArgb(34, 139, 34);
-            this.btnAceptar.ForeColor = Color.White;
-            this.btnAceptar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            this.btnAceptar.Anchor = AnchorStyles.Bottom;
-            this.btnAceptar.Location = new Point(80, tableLayoutPanel.Bottom + 20);
-            this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new Size(120, 40);
-            this.btnAceptar.TabIndex = 2;
-            this.btnAceptar.Text = "Aceptar";
-            this.btnAceptar.UseVisualStyleBackColor = true;
-            this.btnAceptar.Click += new EventHandler(this.BtnAceptar_Click);
-
+            // 
+            btnEliminar.Anchor = AnchorStyles.Bottom;
+            btnEliminar.BackColor = Color.FromArgb(34, 139, 34);
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.Font = new Font("Segoe UI", 12F);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(3, 173);
+            btnEliminar.Margin = new Padding(0, 27, 0, 27);
+            btnEliminar.Name = "btnAceptar";
+            btnEliminar.Size = new Size(322, 53);
+            btnEliminar.TabIndex = 2;
+            btnEliminar.Text = "Confirmar";
+            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += BtnAceptar_Click;
+            // 
             // btnCancelar
-            this.btnCancelar.FlatStyle = FlatStyle.Flat;
-            this.btnCancelar.BackColor = Color.FromArgb(220, 50, 50);
-            this.btnCancelar.ForeColor = Color.White;
-            this.btnCancelar.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            this.btnCancelar.Anchor = AnchorStyles.Bottom;
-            this.btnCancelar.Location = new Point(300, tableLayoutPanel.Bottom + 20);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new Size(120, 40);
-            this.btnCancelar.TabIndex = 3;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new EventHandler(this.BtnCancelar_Click);
-
+            // 
+            btnCancelar.Anchor = AnchorStyles.Bottom;
+            btnCancelar.BackColor = Color.FromArgb(220, 50, 50);
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Font = new Font("Segoe UI", 12F);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(326, 173);
+            btnCancelar.Margin = new Padding(0, 27, 0, 27);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(322, 53);
+            btnCancelar.TabIndex = 3;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += BtnCancelar_Click;
+            // 
             // FormConfirmacion
-            this.AutoScaleDimensions = new SizeF(7F, 15F);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(500, btnCancelar.Bottom + 60);
-            this.Controls.Add(this.lblTitulo);
-            this.Controls.Add(this.tableLayoutPanel);
-            this.Controls.Add(this.btnAceptar);
-            this.Controls.Add(this.btnCancelar);
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Name = "FormConfirmacion";
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.AutoSize = true;
-            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            ClientSize = new Size(441, 227);
+            Controls.Add(lblTitulo);
+            Controls.Add(tableLayoutPanel);
+            Controls.Add(btnEliminar);
+            Controls.Add(btnCancelar);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "FormConfirmacion";
+            StartPosition = FormStartPosition.CenterScreen;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         private void ConfigurarFormulario(string titulo, Dictionary<string, object> parametrosYValores)
@@ -124,7 +133,7 @@
 
                 var labelValue = new Label
                 {
-                    Text = FormatearValor(detalle.Value),
+                    Text = FormatearValor(detalle.Key, detalle.Value),
                     Font = new Font("Segoe UI", 11, FontStyle.Regular),
                     AutoSize = true,
                     Anchor = AnchorStyles.Left,
@@ -134,20 +143,50 @@
                 tableLayoutPanel.Controls.Add(labelKey);
                 tableLayoutPanel.Controls.Add(labelValue);
             }
+
+            AjustarTamanoFormulario();
         }
 
         private void ReubicarBotones()
         {
-            btnAceptar.Location = new Point(80, tableLayoutPanel.Bottom + 20);
-            btnCancelar.Location = new Point(300, tableLayoutPanel.Bottom + 20);
-            this.ClientSize = new Size(500, btnCancelar.Bottom + 60);
+            // Obtener la posición inicial de la tabla (inicio de la columna de texto)
+            int inicioTabla = tableLayoutPanel.Left + tableLayoutPanel.Padding.Left;
+
+            // Calcular el espacio disponible para los botones
+            int espacioDisponible = tableLayoutPanel.Width;
+            int buttonWidth = espacioDisponible / 2 - 20; // Botones con márgenes de 10 píxeles entre ellos
+
+            // Ajustar tamaño de los botones
+            btnEliminar.Width = buttonWidth;
+            btnCancelar.Width = buttonWidth;
+
+            // Posicionar botones
+            btnEliminar.Location = new Point(inicioTabla, tableLayoutPanel.Bottom + 20); // Alinear con el texto de la tabla
+            btnCancelar.Location = new Point(btnEliminar.Right + 20, tableLayoutPanel.Bottom + 20);
         }
 
-        private string FormatearValor(object valor)
+
+
+
+        private void AjustarTamanoFormulario()
         {
+            int requiredWidth = tableLayoutPanel.PreferredSize.Width + 20;
+            int requiredHeight = tableLayoutPanel.Bottom + btnEliminar.Height + 40;
+
+            this.ClientSize = new Size(requiredWidth, requiredHeight);
+        }
+
+        private string FormatearValor(string key, object valor)
+        {
+            if (key.ToLower().Contains("fecha"))
+            {
+                if (DateTime.TryParse(valor.ToString(), out DateTime fecha))
+                {
+                    return fecha.ToString("dd/MM/yyyy");
+                }
+            }
             return valor switch
             {
-                DateTime fecha => fecha.ToString("dd/MM/yyyy hh:mm:ss tt"),
                 decimal decimalValue => decimalValue.ToString("N2"),
                 _ => valor?.ToString() ?? string.Empty
             };
