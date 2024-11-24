@@ -58,6 +58,68 @@ namespace ExamenTopicos
             }
         }
 
+        public static void activarPlaceholders(TextBox txtBuscar, string texto)
+        {
+            txtBuscar.Enter += (sender, e) =>
+            {
+                if (txtBuscar.Text == texto)
+                {
+                    txtBuscar.Text = "";
+                    txtBuscar.ForeColor = Color.Black;
+                }
+            };
+            txtBuscar.Leave += (sender, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtBuscar.Text))
+                {
+                    txtBuscar.Text = texto;
+                    txtBuscar.ForeColor = Color.Gray;
+                }
+            };
+        }
+
+        public static string GenerarMensajeConParametros(Dictionary<string, object> parametrosYValores)
+        {
+            if (parametrosYValores == null || parametrosYValores.Count == 0)
+                throw new ArgumentException("El diccionario de parámetros no puede estar vacío.");
+
+            var mensaje = new StringBuilder();
+            int maxKeyLength = parametrosYValores.Keys.Max(k => k.Length);
+
+            foreach (var parametro in parametrosYValores)
+            {
+                string clave = parametro.Key.PadRight(maxKeyLength);
+                string valor = FormatearValor(parametro.Value);
+
+                mensaje.AppendLine($"{clave}: {valor}");
+            }
+
+            return mensaje.ToString();
+        }
+
+        private static string FormatearValor(object valor)
+        {
+            return valor switch
+            {
+                DateTime fecha => fecha.ToString("yyyy/MM/dd"),
+                decimal decimalValue => decimalValue.ToString("N2"), // Formato de número con 2 decimales
+                _ => valor?.ToString() ?? string.Empty
+            };
+        }
+
+        public static bool MostrarConfirmacion(string titulo, Dictionary<string, object> parametrosYValores)
+        {
+            if (string.IsNullOrWhiteSpace(titulo))
+                throw new ArgumentException("El título no puede estar vacío.", nameof(titulo));
+
+            string mensaje = GenerarMensajeConParametros(parametrosYValores);
+
+            using (var formConfirmacion = new FormConfirmacion(titulo, parametrosYValores))
+            {
+                return formConfirmacion.ShowDialog() == DialogResult.OK;
+            }
+        }
+
         public enum Operacion
         {
             Agregar,
