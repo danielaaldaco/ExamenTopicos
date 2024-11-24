@@ -226,7 +226,7 @@ namespace ExamenTopicos
                 { "Fecha Contratación", empHireDate }
             };
 
-                    bool confirmado = Utils.MostrarConfirmacion("Confirmar Eliminación", parametrosYValores);
+                    bool confirmado = Utils.confirmarEliminacion(parametrosYValores);
 
                     if (confirmado)
                     {

@@ -27,13 +27,13 @@
             // 
             // lblTitulo
             // 
-            lblTitulo.Dock = DockStyle.Top;
+            //lblTitulo.Dock = DockStyle.Top;
             lblTitulo.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            lblTitulo.Location = new Point(0, 0);
+            lblTitulo.Location = new Point(0, 15);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(441, 53);
+            lblTitulo.Size = new Size(441, 50);
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "Confirmar Acción";
+            lblTitulo.Text = "¿Confirmar Eliminación?";
             lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel
@@ -44,7 +44,7 @@
             tableLayoutPanel.ColumnCount = 2;
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel.Location = new Point(11, 67);
+            tableLayoutPanel.Location = new Point(11, 65);
             tableLayoutPanel.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel.Name = "tableLayoutPanel";
             tableLayoutPanel.RowCount = 1;
@@ -103,10 +103,8 @@
             PerformLayout();
         }
 
-        private void ConfigurarFormulario(string titulo, Dictionary<string, object> parametrosYValores)
+        private void ConfigurarFormulario(Dictionary<string, object> parametrosYValores)
         {
-            this.Text = titulo;
-            lblTitulo.Text = titulo;
             ConfigurarTablaDetalles(parametrosYValores);
             ReubicarBotones();
         }
@@ -149,24 +147,18 @@
 
         private void ReubicarBotones()
         {
-            // Obtener la posición inicial de la tabla (inicio de la columna de texto)
-            int inicioTabla = tableLayoutPanel.Left + tableLayoutPanel.Padding.Left;
+            int margenIzquierdo = tableLayoutPanel.Left + tableLayoutPanel.Padding.Left;
+            int margenDerecho = tableLayoutPanel.Right - tableLayoutPanel.Padding.Right;
 
-            // Calcular el espacio disponible para los botones
-            int espacioDisponible = tableLayoutPanel.Width;
-            int buttonWidth = espacioDisponible / 2 - 20; // Botones con márgenes de 10 píxeles entre ellos
+            int espacioDisponible = margenDerecho - margenIzquierdo;
+            int buttonWidth = (espacioDisponible / 2) - 10;
 
-            // Ajustar tamaño de los botones
             btnEliminar.Width = buttonWidth;
             btnCancelar.Width = buttonWidth;
 
-            // Posicionar botones
-            btnEliminar.Location = new Point(inicioTabla, tableLayoutPanel.Bottom + 20); // Alinear con el texto de la tabla
-            btnCancelar.Location = new Point(btnEliminar.Right + 20, tableLayoutPanel.Bottom + 20);
+            btnCancelar.Location = new Point(margenDerecho - buttonWidth, tableLayoutPanel.Bottom + 20);
+            btnEliminar.Location = new Point(margenIzquierdo, tableLayoutPanel.Bottom + 20);
         }
-
-
-
 
         private void AjustarTamanoFormulario()
         {

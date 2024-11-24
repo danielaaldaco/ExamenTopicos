@@ -107,14 +107,11 @@ namespace ExamenTopicos
             };
         }
 
-        public static bool MostrarConfirmacion(string titulo, Dictionary<string, object> parametrosYValores)
+        public static bool confirmarEliminacion(Dictionary<string, object> parametrosYValores)
         {
-            if (string.IsNullOrWhiteSpace(titulo))
-                throw new ArgumentException("El título no puede estar vacío.", nameof(titulo));
-
             string mensaje = GenerarMensajeConParametros(parametrosYValores);
 
-            using (var formConfirmacion = new FormConfirmacion(titulo, parametrosYValores))
+            using (var formConfirmacion = new FormConfirmacion(parametrosYValores))
             {
                 return formConfirmacion.ShowDialog() == DialogResult.OK;
             }

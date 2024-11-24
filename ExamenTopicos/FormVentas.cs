@@ -306,7 +306,7 @@ namespace ExamenTopicos
                 { "Condiciones de Pago", payTerms }
             };
 
-                    bool confirmado = Utils.MostrarConfirmacion("Confirmar Eliminación", parametrosYValores);
+                    bool confirmado = Utils.confirmarEliminacion(parametrosYValores);
 
                     if (confirmado)
                     {
