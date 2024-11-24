@@ -81,13 +81,13 @@ namespace ExamenTopicos
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
-            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
-            {
-                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
-                return;
-            }
-            FormVentas formVentas = new FormVentas(user.Rol);
-            formVentas.Show();
+            //if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            //{
+            //    MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+            //    return;
+            //}
+            //FormVentas formVentas = new FormVentas();
+            //formVentas.Show();
         }
 
         private void btnEmpleados_Click(object sender, EventArgs e)
@@ -120,8 +120,7 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            FormEditoriales formEditoriales = new FormEditoriales(user.Rol);
-            formEditoriales.Show();
+            MessageBox.Show("Bienvenido a la sección de Detalle de Editoriales.", "Detalle Editorial", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)
