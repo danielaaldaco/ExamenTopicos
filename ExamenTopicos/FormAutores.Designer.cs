@@ -37,6 +37,7 @@
             // 
             // btnAgregar
             // 
+            btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAgregar.BackColor = Color.FromArgb(242, 242, 242);
             btnAgregar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             btnAgregar.ForeColor = Color.FromArgb(222, 0, 0, 0);
@@ -50,6 +51,7 @@
             // 
             // txtBuscar
             // 
+            txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtBuscar.BackColor = Color.FromArgb(242, 242, 242);
             txtBuscar.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
             txtBuscar.ForeColor = Color.FromArgb(222, 0, 0, 0);
@@ -62,6 +64,7 @@
             // 
             dgvAutores.AllowUserToAddRows = false;
             dgvAutores.AllowUserToDeleteRows = false;
+            dgvAutores.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvAutores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvAutores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvAutores.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
@@ -82,6 +85,7 @@
             Controls.Add(dgvAutores);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAutores";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Autores";
             ((System.ComponentModel.ISupportInitialize)dgvAutores).EndInit();
             ResumeLayout(false);

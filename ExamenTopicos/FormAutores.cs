@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAutores : Form
+    public partial class FormAutores : BaseForm
     {
         private DataSet ds;
         private Datos datos = new Datos();

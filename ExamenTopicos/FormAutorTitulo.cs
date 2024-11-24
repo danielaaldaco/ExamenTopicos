@@ -8,7 +8,7 @@ using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
-    public partial class FormAutorTitulo : Form
+    public partial class FormAutorTitulo : BaseForm
     {
         private DataSet ds;
         private UserRole userRole;
