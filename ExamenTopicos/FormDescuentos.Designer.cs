@@ -72,6 +72,7 @@
             dgvDescuentos.Location = new Point(12, 55);
             dgvDescuentos.Name = "dgvDescuentos";
             dgvDescuentos.ReadOnly = true;
+            dgvDescuentos.RowHeadersVisible = false;
             dgvDescuentos.Size = new Size(577, 253);
             dgvDescuentos.TabIndex = 4;
             // 

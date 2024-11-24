@@ -50,6 +50,7 @@ namespace ExamenTopicos
             dgvEmpleados.Margin = new Padding(4);
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.ReadOnly = true;
+            dgvEmpleados.RowHeadersVisible = false;
             dgvEmpleados.RowHeadersWidth = 51;
             dgvEmpleados.Size = new Size(593, 459);
             dgvEmpleados.TabIndex = 0;

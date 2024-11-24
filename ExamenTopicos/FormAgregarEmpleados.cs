@@ -186,13 +186,13 @@ namespace ExamenTopicos
             try
             {
                 string query = @"
-                    SELECT emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date
-                    FROM employee
-                    WHERE emp_id = @empId";
+            SELECT emp_id, fname, minit, lname, job_id, job_lvl, pub_id, hire_date
+            FROM employee
+            WHERE emp_id = @empId";
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                    new SqlParameter("@empId", empId)
+            new SqlParameter("@empId", empId)
                 };
 
                 DataSet ds = datos.consulta(query, parametros);
@@ -200,12 +200,23 @@ namespace ExamenTopicos
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     var row = ds.Tables[0].Rows[0];
+
+                    // Detectar si el puesto es el nivel básico
+                    int jobId = Convert.ToInt32(row["job_id"]);
+                    if (jobId == 1)
+                    {
+                        MessageBox.Show("No se puede editar este registro porque corresponde al puesto básico.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        this.Close(); // Cerrar el formulario
+                        return;
+                    }
+
+                    // Cargar los datos en los controles
                     mskIdEmpleado.Text = row["emp_id"].ToString();
                     txtNombre.Text = row["fname"].ToString();
                     mskInicialSNombre.Text = row["minit"]?.ToString();
                     txtApellido.Text = row["lname"].ToString();
 
-                    cmbPuesto.SelectedValue = row["job_id"];
+                    cmbPuesto.SelectedValue = jobId;
                     cmbEditorial.SelectedValue = row["pub_id"];
 
                     nudNivel.Value = Convert.ToInt32(row["job_lvl"]);
