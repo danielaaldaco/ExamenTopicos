@@ -75,7 +75,7 @@ namespace ExamenTopicos
                 return;
             }
 
-            FormRegalias form = new FormRegalias();
+            FormRegalias form = new FormRegalias(user.Rol);
             form.Show();
         }
 

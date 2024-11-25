@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
 
@@ -15,22 +12,39 @@ namespace ExamenTopicos
         private DataSet ds;
         private UserRole userRole;
         private Datos datos = new Datos();
-        private const int ActionColumnWidth = 30; // Ancho fijo para la columna de acción
+        private const int ActionColumnWidth = 30;
+        private const string placeholder = "Buscar por ID, Descripción, Nivel...";
 
         public FormJobs(UserRole role)
         {
             InitializeComponent();
+            activarPlaceholders(txtBuscar, placeholder);
             this.userRole = role;
             ConfigurarAccesoPorRol();
             ActualizarGrid();
-
-            // Ajustar las columnas dinámicas al redimensionar el formulario
+            AjustarAnchoVentana();
             this.Resize += FormJobs_Resize;
-
-            // Asegurar que el evento esté asociado
+            this.Load += FormJobs_Load;
+            this.PreviewKeyDown += FormJobs_PreviewKeyDown;
             this.dgvPuestos.CellContentClick += dgvPuestos_CellContentClick;
+            this.txtBuscar.TextChanged += txtBuscar_TextChanged;
+            this.Width = 600;
         }
 
+        private void FormJobs_Load(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+            this.Focus();
+        }
+
+        private void FormJobs_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab && !e.Shift)
+            {
+                txtBuscar.Focus();
+                e.IsInputKey = true;
+            }
+        }
 
         private void ConfigurarAccesoPorRol()
         {
@@ -49,17 +63,12 @@ namespace ExamenTopicos
                     break;
 
                 case UserRole.GerenteVentas:
-                    dgvPuestos.ReadOnly = false;
-                    btnAgregar.Visible = true;
-                    break;
-
                 case UserRole.Administrador:
-                    btnAgregar.Visible = true;
                     dgvPuestos.ReadOnly = false;
+                    btnAgregar.Visible = true;
                     break;
 
                 default:
-                    MessageBox.Show("Rol no reconocido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Close();
                     break;
             }
@@ -69,17 +78,28 @@ namespace ExamenTopicos
         {
             try
             {
-                string query = "SELECT job_id AS 'ID Puesto', job_desc AS 'Descripción', min_lvl AS 'Nivel Mínimo', max_lvl AS 'Nivel Máximo' FROM jobs";
+                string query = @"
+                    SELECT 
+                        job_id AS 'ID Puesto',
+                        job_desc AS 'Descripción',
+                        min_lvl AS 'Nivel Mínimo',
+                        max_lvl AS 'Nivel Máximo'
+                    FROM jobs";
                 ds = datos.consulta(query);
 
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvPuestos.DataSource = ds.Tables[0];
                     ConfigurarColumnas();
                 }
                 else
                 {
-                    dgvPuestos.DataSource = null;
+                    crearHeader(dgvPuestos,
+                        "ID Puesto",
+                        "Descripción",
+                        "Nivel Mínimo",
+                        "Nivel Máximo");
+                    ConfigurarColumnas();
                 }
             }
             catch (Exception ex)
@@ -90,7 +110,11 @@ namespace ExamenTopicos
 
         private void ConfigurarColumnas()
         {
-            // Solo agregar columna de edición
+            if (dgvPuestos.Columns.Contains("Editar"))
+            {
+                dgvPuestos.Columns.Remove("Editar");
+            }
+
             AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
 
             foreach (DataGridViewColumn col in dgvPuestos.Columns)
@@ -99,18 +123,15 @@ namespace ExamenTopicos
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     col.Width = ActionColumnWidth;
-                    col.ReadOnly = false; // Asegurarse de que no sea de solo lectura
                 }
                 else
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    // La propiedad ReadOnly se manejará en ConfigurarAccesoPorRol
                 }
             }
 
             dgvPuestos.RowTemplate.Height = ActionColumnWidth;
         }
-
 
         private void AgregarColumnaIcono(string nombre, Image imagen, int ancho, int posicion)
         {
@@ -133,6 +154,23 @@ namespace ExamenTopicos
             }
         }
 
+        private void AjustarAnchoVentana()
+        {
+            int totalColumnWidth = 0;
+            foreach (DataGridViewColumn col in dgvPuestos.Columns)
+            {
+                totalColumnWidth += col.Width;
+            }
+
+            int rowHeaderWidth = dgvPuestos.RowHeadersVisible ? dgvPuestos.RowHeadersWidth : 0;
+            int extraWidth = this.Width - dgvPuestos.ClientSize.Width;
+            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
+
+            this.Width = newWidth + 20;
+
+            ConfigurarColumnas();
+        }
+
         private void FormJobs_Resize(object sender, EventArgs e)
         {
             ConfigurarColumnas();
@@ -151,77 +189,87 @@ namespace ExamenTopicos
 
         private void dgvPuestos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Validar que se selecciona una fila y columna válidas
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                string columnName = dgvPuestos.Columns[e.ColumnIndex].Name; // Nombre de la columna clickeada
+                string columnName = dgvPuestos.Columns[e.ColumnIndex].Name;
                 var row = dgvPuestos.Rows[e.RowIndex];
-                string jobId = row.Cells["ID Puesto"]?.Value?.ToString(); // Obtiene el ID del puesto
+                string jobId = row.Cells["ID Puesto"]?.Value?.ToString();
 
-                // Validar si el jobId es válido
                 if (string.IsNullOrWhiteSpace(jobId))
                 {
+                    crearHeader(dgvPuestos,
+                        "ID Puesto",
+                        "Descripción",
+                        "Nivel Mínimo",
+                        "Nivel Máximo");
+                    ConfigurarColumnas();
                     MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Verificar si el puesto corresponde al nivel básico
-                if (jobId == "1")
+                if (columnName == "Editar")
                 {
-                    MessageBox.Show("No se puede editar este puesto porque corresponde al nivel básico.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (columnName == "Editar") // Si se presionó el ícono de "Editar"
-                {
-                    // Abre el formulario de edición
-                    using (var editarForm = new FormAgregarJob(Operacion.Editar, jobId)) // Pasar el ID del puesto al formulario
+                    using (var editarForm = new FormAgregarJob(Operacion.Editar, jobId))
                     {
-                        if (editarForm.ShowDialog() == DialogResult.OK) // Si se confirma la edición
+                        if (editarForm.ShowDialog() == DialogResult.OK)
                         {
-                            ActualizarGrid(); // Refresca el DataGridView
-                            ConfigurarColumnas(); // Ajusta las columnas si es necesario
+                            ActualizarGrid();
+                            ConfigurarColumnas();
                         }
                     }
                 }
             }
         }
 
-
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             try
             {
                 string searchValue = txtBuscar.Text.Trim();
-                string query = @"
-                    SELECT 
-                        job_id AS 'ID Puesto', 
-                        job_desc AS 'Descripción', 
-                        min_lvl AS 'Nivel Mínimo', 
-                        max_lvl AS 'Nivel Máximo'
-                    FROM jobs
-                    WHERE CAST(job_id AS VARCHAR) LIKE @searchValue OR 
-                          job_desc LIKE @searchValue";
-
-                SqlParameter[] parametros = new SqlParameter[]
+                if (placeholderActivo(searchValue, placeholder))
                 {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
-                };
-
-                ds = datos.consulta(query, parametros);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvPuestos.DataSource = ds.Tables[0];
-                    ConfigurarColumnas();
+                    ActualizarGrid();
                 }
                 else
                 {
-                    dgvPuestos.DataSource = null;
+                    string query = @"
+                        SELECT 
+                            job_id AS 'ID Puesto', 
+                            job_desc AS 'Descripción', 
+                            min_lvl AS 'Nivel Mínimo', 
+                            max_lvl AS 'Nivel Máximo'
+                        FROM jobs
+                        WHERE CAST(job_id AS VARCHAR) LIKE @searchValue OR 
+                              job_desc LIKE @searchValue OR
+                              CAST(min_lvl AS VARCHAR) LIKE @searchValue OR
+                              CAST(max_lvl AS VARCHAR) LIKE @searchValue";
+
+                    SqlParameter[] parametros = new SqlParameter[]
+                    {
+                        new SqlParameter("@searchValue", $"%{searchValue}%")
+                    };
+
+                    ds = datos.consulta(query, parametros);
+
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dgvPuestos.DataSource = ds.Tables[0];
+                        ConfigurarColumnas();
+                    }
+                    else
+                    {
+                        crearHeader(dgvPuestos,
+                            "ID Puesto",
+                            "Descripción",
+                            "Nivel Mínimo",
+                            "Nivel Máximo");
+                        ConfigurarColumnas();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al realizar la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocurrió un error al realizar la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

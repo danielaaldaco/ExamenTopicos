@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -12,9 +13,8 @@ namespace ExamenTopicos
         private DataSet ds;
         private UserRole userRole;
         private Datos datos = new Datos();
-
-        // Tamaño fijo para las columnas de acción
         private const int ActionColumnWidth = 30;
+        private const string placeholder = "Buscar por Nombre, Apellido, Puesto, Fecha...";
 
         public FormEmpleados(UserRole role)
         {
@@ -23,9 +23,9 @@ namespace ExamenTopicos
             ConfigurarAccesoPorRol();
             ActualizarGrid();
             AjustarAnchoVentana();
-
-            // Suscribirse al evento Resize para ajustar las columnas dinámicas proporcionalmente
             this.Resize += FormEmpleados_Resize;
+            activarPlaceholders(txtBuscar, placeholder);
+            this.Focus();
         }
 
         private void ConfigurarAccesoPorRol()
@@ -58,7 +58,7 @@ namespace ExamenTopicos
 
                 default:
                     MessageBox.Show("Rol no reconocido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
+                    Close();
                     break;
             }
         }
@@ -83,21 +83,38 @@ namespace ExamenTopicos
 
                 ds = datos.consulta(query);
 
-                if (ds != null && ds.Tables.Count > 0)
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvEmpleados.DataSource = ds.Tables[0];
+                    dgvEmpleados.AllowUserToAddRows = false;
                     ConfigurarColumnasGrid();
                     ConfigurarColumnas();
                 }
                 else
                 {
-                    dgvEmpleados.DataSource = null;
+                    MostrarEncabezadoVacio();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void MostrarEncabezadoVacio()
+        {
+            DataTable emptyTable = new DataTable();
+            emptyTable.Columns.Add("ID Empleado");
+            emptyTable.Columns.Add("Nombre");
+            emptyTable.Columns.Add("Inicial");
+            emptyTable.Columns.Add("Apellido");
+            emptyTable.Columns.Add("Puesto");
+            emptyTable.Columns.Add("Nivel Puesto");
+            emptyTable.Columns.Add("Publicador");
+            emptyTable.Columns.Add("Fecha Contratación");
+            dgvEmpleados.DataSource = emptyTable;
+            ConfigurarColumnasGrid();
+            ConfigurarColumnas();
         }
 
         private void ConfigurarColumnasGrid()
@@ -166,7 +183,7 @@ namespace ExamenTopicos
             int extraWidth = this.Width - dgvEmpleados.ClientSize.Width;
             int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
 
-            this.Width = newWidth + this.Width - dgvEmpleados.Width + 20;
+            this.Width = newWidth + 20;
 
             ConfigurarColumnas();
         }
@@ -195,7 +212,6 @@ namespace ExamenTopicos
                 string columnName = dgvEmpleados.Columns[e.ColumnIndex].Name;
                 var row = dgvEmpleados.Rows[e.RowIndex];
 
-                // Recuperar todos los valores relevantes del registro
                 string empId = row.Cells["ID Empleado"]?.Value?.ToString();
                 string empName = row.Cells["Nombre"]?.Value?.ToString();
                 string empInitial = row.Cells["Inicial"]?.Value?.ToString();
@@ -213,18 +229,17 @@ namespace ExamenTopicos
 
                 if (columnName == "Eliminar")
                 {
-                    // Preparar los parámetros para la confirmación
                     var parametrosYValores = new Dictionary<string, object>
-            {
-                { "ID Empleado", empId },
-                { "Nombre", empName },
-                { "Inicial", empInitial },
-                { "Apellido", empLastName },
-                { "Puesto", empPosition },
-                { "Nivel Puesto", empLevel },
-                { "Publicador", empPublisher },
-                { "Fecha Contratación", empHireDate }
-            };
+                    {
+                        { "ID Empleado", empId },
+                        { "Nombre", empName },
+                        { "Inicial", empInitial },
+                        { "Apellido", empLastName },
+                        { "Puesto", empPosition },
+                        { "Nivel Puesto", empLevel },
+                        { "Publicador", empPublisher },
+                        { "Fecha Contratación", empHireDate }
+                    };
 
                     bool confirmado = Utils.confirmarEliminacion(parametrosYValores);
 
@@ -233,12 +248,12 @@ namespace ExamenTopicos
                         try
                         {
                             string deleteQuery = @"
-                        DELETE FROM employee
-                        WHERE emp_id = @empId";
+                                DELETE FROM employee
+                                WHERE emp_id = @empId";
 
                             SqlParameter[] parametros = new SqlParameter[]
                             {
-                        new SqlParameter("@empId", empId)
+                                new SqlParameter("@empId", empId)
                             };
 
                             bool exito = datos.ejecutarABC(deleteQuery, parametros);
@@ -289,52 +304,58 @@ namespace ExamenTopicos
             try
             {
                 string searchValue = txtBuscar.Text.Trim();
-                string query = @"
-                    SELECT 
-                        e.emp_id AS 'ID Empleado', 
-                        e.fname AS 'Nombre', 
-                        e.minit AS 'Inicial', 
-                        e.lname AS 'Apellido', 
-                        j.job_desc AS 'Puesto', 
-                        e.job_lvl AS 'Nivel Puesto', 
-                        p.pub_name AS 'Publicador', 
-                        e.hire_date AS 'Fecha Contratación'
-                    FROM employee e
-                    INNER JOIN jobs j ON e.job_id = j.job_id
-                    INNER JOIN publishers p ON e.pub_id = p.pub_id
-                    WHERE CAST(e.emp_id AS NVARCHAR) LIKE @searchValue OR 
-                          e.fname LIKE @searchValue OR 
-                          e.lname LIKE @searchValue OR 
-                          j.job_desc LIKE @searchValue OR 
-                          p.pub_name LIKE @searchValue";
-
-                SqlParameter[] parametros = new SqlParameter[]
+                if (placeholderActivo(searchValue, placeholder))
                 {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
-                };
-
-                ds = datos.consulta(query, parametros);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvEmpleados.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-                    ConfigurarColumnas();
+                    ActualizarGrid();
                 }
                 else
                 {
-                    dgvEmpleados.DataSource = null;
+                    string query = @"
+                SELECT 
+                    e.emp_id AS 'ID Empleado', 
+                    e.fname AS 'Nombre', 
+                    e.minit AS 'Inicial', 
+                    e.lname AS 'Apellido', 
+                    j.job_desc AS 'Puesto', 
+                    e.job_lvl AS 'Nivel Puesto', 
+                    p.pub_name AS 'Publicador', 
+                    e.hire_date AS 'Fecha Contratación'
+                FROM employee e
+                INNER JOIN jobs j ON e.job_id = j.job_id
+                INNER JOIN publishers p ON e.pub_id = p.pub_id
+                WHERE 
+                    CAST(e.emp_id AS NVARCHAR) LIKE @searchValue OR 
+                    e.fname LIKE @searchValue OR 
+                    e.minit LIKE @searchValue OR 
+                    e.lname LIKE @searchValue OR 
+                    j.job_desc LIKE @searchValue OR 
+                    e.job_lvl LIKE @searchValue OR 
+                    p.pub_name LIKE @searchValue OR 
+                    CAST(e.hire_date AS NVARCHAR) LIKE @searchValue";
+
+                    SqlParameter[] parametros = new SqlParameter[]
+                    {
+                new SqlParameter("@searchValue", $"%{searchValue}%")
+                    };
+
+                    ds = datos.consulta(query, parametros);
+
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dgvEmpleados.DataSource = ds.Tables[0];
+                        ConfigurarColumnasGrid();
+                        ConfigurarColumnas();
+                    }
+                    else
+                    {
+                        MostrarEncabezadoVacio();
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ocurrió un error al realizar la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error en la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void FormEmpleados_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

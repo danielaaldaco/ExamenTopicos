@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDescuentos));
             btnAgregar = new Button();
-            label1 = new Label();
             txtBuscar = new TextBox();
             dgvDescuentos = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvDescuentos).BeginInit();
@@ -38,28 +37,21 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(514, 325);
+            btnAgregar.Location = new Point(587, 24);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.Size = new Size(86, 27);
             btnAgregar.TabIndex = 7;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(29, 18);
-            label1.Name = "label1";
-            label1.Size = new Size(42, 15);
-            label1.TabIndex = 6;
-            label1.Text = "Buscar";
-            // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(77, 15);
+            txtBuscar.Location = new Point(14, 20);
+            txtBuscar.Margin = new Padding(3, 4, 3, 4);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(429, 23);
+            txtBuscar.Size = new Size(567, 27);
             txtBuscar.TabIndex = 5;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
@@ -69,24 +61,27 @@
             dgvDescuentos.AllowUserToDeleteRows = false;
             dgvDescuentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDescuentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDescuentos.Location = new Point(12, 55);
+            dgvDescuentos.Location = new Point(14, 73);
+            dgvDescuentos.Margin = new Padding(3, 4, 3, 4);
             dgvDescuentos.Name = "dgvDescuentos";
             dgvDescuentos.ReadOnly = true;
             dgvDescuentos.RowHeadersVisible = false;
-            dgvDescuentos.Size = new Size(577, 253);
+            dgvDescuentos.RowHeadersWidth = 51;
+            dgvDescuentos.Size = new Size(659, 337);
             dgvDescuentos.TabIndex = 4;
             // 
             // FormDescuentos
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(604, 363);
+            ClientSize = new Size(690, 428);
             Controls.Add(btnAgregar);
-            Controls.Add(label1);
             Controls.Add(txtBuscar);
             Controls.Add(dgvDescuentos);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormDescuentos";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Descuentos";
             Load += FormDescuentos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDescuentos).EndInit();
@@ -97,7 +92,6 @@
         #endregion
 
         private Button btnAgregar;
-        private Label label1;
         private TextBox txtBuscar;
         private DataGridView dgvDescuentos;
     }

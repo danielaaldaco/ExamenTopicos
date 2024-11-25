@@ -15,7 +15,6 @@
 
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             dgvVentas = new DataGridView();
             btnAgregar = new Button();
             txtBuscar = new TextBox();
@@ -44,12 +43,12 @@
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.Location = new Point(801, 33);
+            btnAgregar.Location = new Point(784, 33);
             btnAgregar.Margin = new Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(91, 27);
+            btnAgregar.Size = new Size(108, 27);
             btnAgregar.TabIndex = 1;
-            btnAgregar.Text = "Agregar Venta";
+            btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
@@ -60,7 +59,7 @@
             txtBuscar.Location = new Point(23, 33);
             txtBuscar.Margin = new Padding(3, 4, 3, 4);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(753, 27);
+            txtBuscar.Size = new Size(755, 27);
             txtBuscar.TabIndex = 2;
             txtBuscar.Text = "Buscar por Tienda, Orden, Título...";
             txtBuscar.TextChanged += txtBuscar_TextChanged;

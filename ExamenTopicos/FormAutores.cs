@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
@@ -10,19 +11,35 @@ namespace ExamenTopicos
     {
         private DataSet ds;
         private Datos datos = new Datos();
-        private const int ActionColumnWidth = 30; // Ancho fijo para la columna de acción
+        private const int ActionColumnWidth = 30;
+        private const string placeholder = "Buscar por ID, Apellido, Nombre...";
 
         public FormAutores()
         {
             InitializeComponent();
             ActualizarGrid();
-
-            // Ajustar las columnas dinámicas al redimensionar el formulario
+            AjustarAnchoVentana();
             this.Resize += FormAutores_Resize;
-
-            // Asociar el evento de clic en las celdas
+            activarPlaceholders(txtBuscar, placeholder);
+            this.Load += FormAutores_Load;
+            this.PreviewKeyDown += FormAutores_PreviewKeyDown;
             this.dgvAutores.CellContentClick += dgvAutores_CellContentClick;
-            this.txtBuscar.TextChanged += txtBuscar_TextChanged; // Asegurar que el evento esté asociado
+            this.txtBuscar.TextChanged += txtBuscar_TextChanged;
+        }
+
+        private void FormAutores_Load(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+            this.Focus();
+        }
+
+        private void FormAutores_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab && !e.Shift)
+            {
+                txtBuscar.Focus();
+                e.IsInputKey = true;
+            }
         }
 
         private void ActualizarGrid()
@@ -44,25 +61,39 @@ namespace ExamenTopicos
 
                 ds = datos.consulta(query);
 
-                if (ds != null && ds.Tables[0].Rows.Count > 0)
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvAutores.DataSource = ds.Tables[0];
                     ConfigurarColumnas();
                 }
                 else
                 {
-                    dgvAutores.DataSource = null;
+                    crearHeader(dgvAutores,
+                        "ID Autor",
+                        "Apellido",
+                        "Nombre",
+                        "Teléfono",
+                        "Dirección",
+                        "Ciudad",
+                        "Estado",
+                        "Código Postal",
+                        "Contrato");
+                    ConfigurarColumnas();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Error al actualizar la tabla: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al actualizar la tabla.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ConfigurarColumnas()
         {
-            // Agregar columna de edición al principio
+            if (dgvAutores.Columns.Contains("Editar"))
+            {
+                dgvAutores.Columns.Remove("Editar");
+            }
+
             AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
 
             foreach (DataGridViewColumn col in dgvAutores.Columns)
@@ -71,7 +102,6 @@ namespace ExamenTopicos
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     col.Width = ActionColumnWidth;
-                    col.ReadOnly = false; // Asegurarse de que no sea de solo lectura
                 }
                 else
                 {
@@ -96,11 +126,28 @@ namespace ExamenTopicos
                     Resizable = DataGridViewTriState.False
                 };
 
-                if (posicion >= 0 && posicion <= dgvAutores.Columns.Count)
+                if (posicion >= 0 && posicion < dgvAutores.Columns.Count)
                     dgvAutores.Columns.Insert(posicion, columna);
                 else
                     dgvAutores.Columns.Add(columna);
             }
+        }
+
+        private void AjustarAnchoVentana()
+        {
+            int totalColumnWidth = 0;
+            foreach (DataGridViewColumn col in dgvAutores.Columns)
+            {
+                totalColumnWidth += col.Width;
+            }
+
+            int rowHeaderWidth = dgvAutores.RowHeadersVisible ? dgvAutores.RowHeadersWidth : 0;
+            int extraWidth = this.Width - dgvAutores.ClientSize.Width;
+            int newWidth = totalColumnWidth + rowHeaderWidth + extraWidth;
+
+            this.Width = newWidth + 20;
+
+            ConfigurarColumnas();
         }
 
         private void FormAutores_Resize(object sender, EventArgs e)
@@ -121,21 +168,31 @@ namespace ExamenTopicos
 
         private void dgvAutores_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Validar que se selecciona una fila y columna válidas
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                string columnName = dgvAutores.Columns[e.ColumnIndex].Name; // Nombre de la columna clickeada
+                string columnName = dgvAutores.Columns[e.ColumnIndex].Name;
                 var row = dgvAutores.Rows[e.RowIndex];
-                string auId = row.Cells["ID Autor"]?.Value?.ToString(); // Obtiene el ID del autor
+                string auId = row.Cells["ID Autor"]?.Value?.ToString();
 
                 if (string.IsNullOrWhiteSpace(auId))
                 {
-                    MessageBox.Show("No se pudo obtener la información del registro seleccionado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    crearHeader(dgvAutores,
+                        "ID Autor",
+                        "Apellido",
+                        "Nombre",
+                        "Teléfono",
+                        "Dirección",
+                        "Ciudad",
+                        "Estado",
+                        "Código Postal",
+                        "Contrato");
+                    ConfigurarColumnas();
+                    MessageBox.Show("No se pudo obtener el ID del autor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                if (columnName == "Editar") // Si se presionó el ícono de "Editar"
+                if (columnName == "Editar")
                 {
-                    // Obtener los valores necesarios
                     string auLname = row.Cells["Apellido"]?.Value?.ToString();
                     string auFname = row.Cells["Nombre"]?.Value?.ToString();
                     string phone = row.Cells["Teléfono"]?.Value?.ToString();
@@ -145,12 +202,11 @@ namespace ExamenTopicos
                     string zip = row.Cells["Código Postal"]?.Value?.ToString();
                     bool contract = Convert.ToBoolean(row.Cells["Contrato"]?.Value);
 
-                    // Abrir el formulario de edición
                     using (var editarForm = new FormAgregarAutores("Editar", auId, auLname, auFname, phone, address, city, state, zip, contract))
                     {
                         if (editarForm.ShowDialog() == DialogResult.OK)
                         {
-                            ActualizarGrid(); // Refrescar la tabla
+                            ActualizarGrid();
                         }
                     }
                 }
@@ -162,49 +218,91 @@ namespace ExamenTopicos
             try
             {
                 string searchValue = txtBuscar.Text.Trim();
-                string query = @"
-                    SELECT 
-                        au_id AS 'ID Autor',
-                        au_lname AS 'Apellido',
-                        au_fname AS 'Nombre',
-                        phone AS 'Teléfono',
-                        address AS 'Dirección',
-                        city AS 'Ciudad',
-                        state AS 'Estado',
-                        zip AS 'Código Postal',
-                        contract AS 'Contrato'
-                    FROM authors
-                    WHERE 
-                        au_id LIKE @searchValue OR
-                        au_lname LIKE @searchValue OR
-                        au_fname LIKE @searchValue OR
-                        phone LIKE @searchValue OR
-                        address LIKE @searchValue OR
-                        city LIKE @searchValue OR
-                        state LIKE @searchValue OR
-                        zip LIKE @searchValue";
-
-                SqlParameter[] parametros = new SqlParameter[]
+                if (placeholderActivo(searchValue, placeholder))
                 {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
-                };
-
-                ds = datos.consulta(query, parametros);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvAutores.DataSource = ds.Tables[0];
-                    ConfigurarColumnas();
+                    ActualizarGrid();
                 }
                 else
                 {
-                    dgvAutores.DataSource = null;
+                    string query = @"
+                        SELECT 
+                            au_id AS 'ID Autor',
+                            au_lname AS 'Apellido',
+                            au_fname AS 'Nombre',
+                            phone AS 'Teléfono',
+                            address AS 'Dirección',
+                            city AS 'Ciudad',
+                            state AS 'Estado',
+                            zip AS 'Código Postal',
+                            contract AS 'Contrato'
+                        FROM authors
+                        WHERE 
+                            au_id LIKE @searchValue OR
+                            au_lname LIKE @searchValue OR
+                            au_fname LIKE @searchValue OR
+                            phone LIKE @searchValue OR
+                            address LIKE @searchValue OR
+                            city LIKE @searchValue OR
+                            state LIKE @searchValue OR
+                            zip LIKE @searchValue OR
+                            CAST(contract AS NVARCHAR) LIKE @searchValue";
+
+                    SqlParameter[] parametros = new SqlParameter[]
+                    {
+                        new SqlParameter("@searchValue", $"%{searchValue}%")
+                    };
+
+                    ds = datos.consulta(query, parametros);
+
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dgvAutores.DataSource = ds.Tables[0];
+                        ConfigurarColumnas();
+                    }
+                    else
+                    {
+                        crearHeader(dgvAutores,
+                            "ID Autor",
+                            "Apellido",
+                            "Nombre",
+                            "Teléfono",
+                            "Dirección",
+                            "Ciudad",
+                            "Estado",
+                            "Código Postal",
+                            "Contrato");
+                        ConfigurarColumnas();
+                    }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show($"Ocurrió un error al realizar la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ocurrió un error al realizar la búsqueda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void activarPlaceholders(TextBox textBox, string placeholderText)
+        {
+            textBox.Text = placeholderText;
+            textBox.ForeColor = Color.Gray;
+
+            textBox.Enter += (sender, e) =>
+            {
+                if (textBox.Text == placeholderText)
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            };
+
+            textBox.Leave += (sender, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Text = placeholderText;
+                    textBox.ForeColor = Color.Gray;
+                }
+            };
         }
     }
 }
