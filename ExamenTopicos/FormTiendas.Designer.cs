@@ -48,7 +48,7 @@
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(91, 27);
             btnAgregar.TabIndex = 1;
-            btnAgregar.Text = "Agregar Tienda";
+            btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 

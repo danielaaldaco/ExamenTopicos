@@ -13,6 +13,7 @@ namespace ExamenTopicos
         private UserRole userRole;
         private Datos datos = new Datos();
         private const int ActionColumnWidth = 30;
+        private const string placeholder = "Buscar por Título, Tipo, Editorial, Precio...";
 
         public FormTitles(UserRole role)
         {
@@ -22,6 +23,24 @@ namespace ExamenTopicos
             ActualizarGrid();
             AjustarAnchoVentana();
             this.Resize += FormTitles_Resize;
+            activarPlaceholders(txtBuscar, placeholder);
+            this.Load += FormTitles_Load;
+            this.PreviewKeyDown += FormTitles_PreviewKeyDown;
+        }
+
+        private void FormTitles_Load(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+            this.Focus();
+        }
+
+        private void FormTitles_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Tab && !e.Shift)
+            {
+                txtBuscar.Focus();
+                e.IsInputKey = true;
+            }
         }
 
         private void ConfigurarAccesoPorRol()
@@ -35,6 +54,10 @@ namespace ExamenTopicos
                 case UserRole.GerenteVentas:
                 case UserRole.Administrador:
                     btnAgregar.Visible = true;
+                    if (userRole == UserRole.GerenteVentas || userRole == UserRole.Administrador)
+                    {
+                        dgvTitles.ReadOnly = false;
+                    }
                     break;
 
                 default:
@@ -56,7 +79,7 @@ namespace ExamenTopicos
                         t.price AS 'Precio',
                         t.advance AS 'Anticipo',
                         t.royalty AS 'Regalías',
-                        t.ytd_sales AS 'Ventas YTD',
+                        t.ytd_sales AS 'Ventas Totales',
                         t.notes AS 'Notas',
                         t.pubdate AS 'Fecha de Publicación'
                     FROM 
@@ -66,7 +89,7 @@ namespace ExamenTopicos
 
                 ds = datos.consulta(query);
 
-                if (ds != null && ds.Tables.Count > 0)
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     dgvTitles.DataSource = ds.Tables[0];
                     ConfigurarColumnasGrid();
@@ -74,7 +97,18 @@ namespace ExamenTopicos
                 }
                 else
                 {
-                    dgvTitles.DataSource = null;
+                    crearHeader(dgvTitles,
+                        "ID Título",
+                        "Título",
+                        "Tipo",
+                        "Editorial",
+                        "Precio",
+                        "Anticipo",
+                        "Regalías",
+                        "Ventas Totales",
+                        "Notas",
+                        "Fecha de Publicación");
+                    ConfigurarColumnas();
                 }
             }
             catch (Exception ex)
@@ -106,8 +140,8 @@ namespace ExamenTopicos
             if (dgvTitles.Columns.Contains("Regalías"))
                 dgvTitles.Columns["Regalías"].HeaderText = "Regalías";
 
-            if (dgvTitles.Columns.Contains("Ventas YTD"))
-                dgvTitles.Columns["Ventas YTD"].HeaderText = "Ventas Totales";
+            if (dgvTitles.Columns.Contains("Ventas Totales"))
+                dgvTitles.Columns["Ventas Totales"].HeaderText = "Ventas Totales";
 
             if (dgvTitles.Columns.Contains("Notas"))
                 dgvTitles.Columns["Notas"].HeaderText = "Notas";
@@ -118,6 +152,11 @@ namespace ExamenTopicos
 
         private void ConfigurarColumnas()
         {
+            if (dgvTitles.Columns.Contains("Editar"))
+            {
+                dgvTitles.Columns.Remove("Editar");
+            }
+
             if (userRole == UserRole.GerenteVentas || userRole == UserRole.Administrador)
             {
                 AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
@@ -217,6 +256,18 @@ namespace ExamenTopicos
                     }
                     else
                     {
+                        crearHeader(dgvTitles,
+                            "ID Título",
+                            "Título",
+                            "Tipo",
+                            "Editorial",
+                            "Precio",
+                            "Anticipo",
+                            "Regalías",
+                            "Ventas Totales",
+                            "Notas",
+                            "Fecha de Publicación");
+                        ConfigurarColumnas();
                         MessageBox.Show("No se pudo obtener el ID del título.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -228,42 +279,68 @@ namespace ExamenTopicos
             try
             {
                 string searchValue = txtBuscar.Text.Trim();
-                string query = @"
-                    SELECT 
-                        t.title_id AS 'ID Título',
-                        t.title AS 'Título',
-                        t.type AS 'Tipo',
-                        p.pub_name AS 'Editorial',
-                        t.price AS 'Precio',
-                        t.advance AS 'Anticipo',
-                        t.royalty AS 'Regalías',
-                        t.ytd_sales AS 'Ventas YTD',
-                        t.notes AS 'Notas',
-                        t.pubdate AS 'Fecha de Publicación'
-                    FROM 
-                        titles t
-                    LEFT JOIN 
-                        publishers p ON t.pub_id = p.pub_id
-                    WHERE 
-                        t.title LIKE @searchValue 
-                        OR t.title_id LIKE @searchValue";
-
-                SqlParameter[] parametros = new SqlParameter[]
+                if (placeholderActivo(searchValue, placeholder))
                 {
-                    new SqlParameter("@searchValue", $"%{searchValue}%")
-                };
-
-                ds = datos.consulta(query, parametros);
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    dgvTitles.DataSource = ds.Tables[0];
-                    ConfigurarColumnasGrid();
-                    ConfigurarColumnas();
+                    ActualizarGrid();
                 }
                 else
                 {
-                    dgvTitles.DataSource = null;
+                    string query = @"
+                        SELECT 
+                            t.title_id AS 'ID Título',
+                            t.title AS 'Título',
+                            t.type AS 'Tipo',
+                            p.pub_name AS 'Editorial',
+                            t.price AS 'Precio',
+                            t.advance AS 'Anticipo',
+                            t.royalty AS 'Regalías',
+                            t.ytd_sales AS 'Ventas Totales',
+                            t.notes AS 'Notas',
+                            t.pubdate AS 'Fecha de Publicación'
+                        FROM 
+                            titles t
+                        LEFT JOIN 
+                            publishers p ON t.pub_id = p.pub_id
+                        WHERE 
+                            t.title LIKE @searchValue 
+                            OR t.title_id LIKE @searchValue
+                            OR t.type LIKE @searchValue
+                            OR p.pub_name LIKE @searchValue
+                            OR CAST(t.price AS NVARCHAR) LIKE @searchValue
+                            OR CAST(t.advance AS NVARCHAR) LIKE @searchValue
+                            OR CAST(t.royalty AS NVARCHAR) LIKE @searchValue
+                            OR CAST(t.ytd_sales AS NVARCHAR) LIKE @searchValue
+                            OR t.notes LIKE @searchValue
+                            OR CAST(t.pubdate AS NVARCHAR) LIKE @searchValue";
+
+                    SqlParameter[] parametros = new SqlParameter[]
+                    {
+                        new SqlParameter("@searchValue", $"%{searchValue}%")
+                    };
+
+                    ds = datos.consulta(query, parametros);
+
+                    if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                    {
+                        dgvTitles.DataSource = ds.Tables[0];
+                        ConfigurarColumnasGrid();
+                        ConfigurarColumnas();
+                    }
+                    else
+                    {
+                        crearHeader(dgvTitles,
+                            "ID Título",
+                            "Título",
+                            "Tipo",
+                            "Editorial",
+                            "Precio",
+                            "Anticipo",
+                            "Regalías",
+                            "Ventas Totales",
+                            "Notas",
+                            "Fecha de Publicación");
+                        ConfigurarColumnas();
+                    }
                 }
             }
             catch (Exception ex)
@@ -272,6 +349,28 @@ namespace ExamenTopicos
             }
         }
 
-         
+        private void activarPlaceholders(TextBox textBox, string placeholderText)
+        {
+            textBox.Text = placeholderText;
+            textBox.ForeColor = Color.Gray;
+
+            textBox.Enter += (sender, e) =>
+            {
+                if (textBox.Text == placeholderText)
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            };
+
+            textBox.Leave += (sender, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Text = placeholderText;
+                    textBox.ForeColor = Color.Gray;
+                }
+            };
+        }
     }
 }

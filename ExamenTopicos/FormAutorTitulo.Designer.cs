@@ -103,7 +103,6 @@ namespace ExamenTopicos
             eliminarToolStripMenuItem.Name = "eliminarToolStripMenuItem";
             eliminarToolStripMenuItem.Size = new Size(117, 22);
             eliminarToolStripMenuItem.Text = "Eliminar";
-            eliminarToolStripMenuItem.Click += eliminarToolStripMenuItem_Click;
             // 
             // FormAutorTitulo
             // 
@@ -118,7 +117,6 @@ namespace ExamenTopicos
             Name = "FormAutorTitulo";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Autores y Títulos";
-            Load += FormAutorTitulo_Load;
             ((System.ComponentModel.ISupportInitialize)dgvAutoresTitulos).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
