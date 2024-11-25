@@ -86,6 +86,8 @@
             btnCancelar.Size = new Size(98, 23);
             btnCancelar.TabIndex = 41;
             btnCancelar.Text = "Cerrar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click_1;
             // 
@@ -118,7 +120,7 @@
             btnImagen.TabIndex = 43;
             btnImagen.Text = "Subir imagen";
             btnImagen.UseVisualStyleBackColor = true;
-            btnImagen.Click += btnImagen_Click_1;
+            btnImagen.Click += btnImagen_Click;
             // 
             // label2
             // 

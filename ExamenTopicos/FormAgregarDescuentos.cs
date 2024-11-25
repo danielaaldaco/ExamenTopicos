@@ -11,10 +11,9 @@ namespace ExamenTopicos
     public partial class FormAgregarDescuentos : MetroForm
     {
         private Operacion operacion;
-        private string discountType; // ID del descuento
+        private string discountType;
         private Datos datos = new Datos();
 
-        // Constructor original
         public FormAgregarDescuentos(Operacion operacion, string discountType = null)
         {
             InitializeComponent();
@@ -26,10 +25,12 @@ namespace ExamenTopicos
             if (operacion == Operacion.Editar)
             {
                 CargarDatosDescuento(discountType);
+                this.txtDescripcion.Enabled = false;
+                this.cmbIdTienda.Focus();
+                this.Shown += FormAgregarDescuentos_Shown;
             }
         }
 
-        // Constructor adicional para inicializar con valores
         public FormAgregarDescuentos(Operacion operacion, string discountType, string storId, decimal lowQty, decimal highQty, decimal discount)
         {
             InitializeComponent();
@@ -39,13 +40,17 @@ namespace ExamenTopicos
             ConfigurarFormulario();
             CargarComboTienda();
 
-            // Establecer valores iniciales en los campos
             txtDescripcion.Text = discountType;
-            txtDescripcion.ReadOnly = true; // Solo lectura en modo edición
+            txtDescripcion.ReadOnly = true;
             cmbIdTienda.SelectedValue = storId;
             nudMin.Value = AjustarValorDentroRango(nudMin, lowQty);
             nudMax.Value = AjustarValorDentroRango(nudMax, highQty);
             nudDescuento.Value = AjustarValorDentroRango(nudDescuento, discount);
+        }
+
+        private void FormAgregarDescuentos_Shown(object sender, EventArgs e)
+        {
+            cmbIdTienda.Focus();
         }
 
         private void ConfigurarFormulario()
@@ -60,6 +65,8 @@ namespace ExamenTopicos
                 this.Text = "Agregar Descuento";
                 btnAceptar.Text = "Agregar";
             }
+
+            cmbIdTienda.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void CargarComboTienda()
@@ -74,7 +81,7 @@ namespace ExamenTopicos
                     cmbIdTienda.DataSource = ds.Tables[0];
                     cmbIdTienda.DisplayMember = "stor_name";
                     cmbIdTienda.ValueMember = "stor_id";
-                    cmbIdTienda.SelectedIndex = -1; // Sin selección inicial
+                    cmbIdTienda.SelectedIndex = -1;
                 }
                 else
                 {
@@ -108,12 +115,9 @@ namespace ExamenTopicos
                     var row = ds.Tables[0].Rows[0];
                     txtDescripcion.Text = row["discounttype"].ToString();
                     cmbIdTienda.SelectedValue = row["stor_id"].ToString();
-
                     nudMin.Value = AjustarValorDentroRango(nudMin, Convert.ToDecimal(row["lowqty"]));
                     nudMax.Value = AjustarValorDentroRango(nudMax, Convert.ToDecimal(row["highqty"]));
                     nudDescuento.Value = AjustarValorDentroRango(nudDescuento, Convert.ToDecimal(row["discount"]));
-
-                    txtDescripcion.ReadOnly = true; // No se permite cambiar el discountType en modo edición
                 }
                 else
                 {
@@ -194,7 +198,6 @@ namespace ExamenTopicos
 
         private void btnAceptar_Click_1(object sender, EventArgs e)
         {
-
             if (!ValidarCampos())
                 return;
 

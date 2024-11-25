@@ -41,7 +41,7 @@
             txtBuscar.Location = new Point(23, 72);
             txtBuscar.Margin = new Padding(3, 2, 3, 2);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(548, 23);
+            txtBuscar.Size = new Size(368, 23);
             txtBuscar.TabIndex = 15;
             // 
             // dgvInfoEdi
@@ -60,43 +60,37 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvInfoEdi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvInfoEdi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInfoEdi.Location = new Point(23, 113);
+            dgvInfoEdi.Location = new Point(23, 56);
             dgvInfoEdi.Margin = new Padding(3, 2, 3, 2);
             dgvInfoEdi.MultiSelect = false;
             dgvInfoEdi.Name = "dgvInfoEdi";
             dgvInfoEdi.ReadOnly = true;
             dgvInfoEdi.RowHeadersVisible = false;
             dgvInfoEdi.RowHeadersWidth = 51;
-            dgvInfoEdi.RowTemplate.Height = 29;
             dgvInfoEdi.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvInfoEdi.Size = new Size(699, 315);
+            dgvInfoEdi.Size = new Size(519, 262);
             dgvInfoEdi.TabIndex = 14;
             // 
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.BackColor = SystemColors.ControlDark;
-            btnAgregar.FlatAppearance.BorderColor = SystemColors.ControlDark;
-            btnAgregar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
-            btnAgregar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
-            btnAgregar.FlatStyle = FlatStyle.Flat;
-            btnAgregar.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnAgregar.Location = new Point(577, 72);
+            btnAgregar.Location = new Point(467, 15);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(145, 23);
+            btnAgregar.Size = new Size(75, 23);
             btnAgregar.TabIndex = 16;
             btnAgregar.Text = "Agregar ";
-            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click_1;
             // 
             // FormInfoEditorial
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(748, 451);
+            ClientSize = new Size(568, 341);
             Controls.Add(btnAgregar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvInfoEdi);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormInfoEditorial";
             Text = "Detalles de editorial";
             ((System.ComponentModel.ISupportInitialize)dgvInfoEdi).EndInit();

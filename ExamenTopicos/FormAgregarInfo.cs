@@ -15,24 +15,23 @@ namespace ExamenTopicos
         private Datos datos = new Datos();
         private byte[] logoActual;
 
-        public FormAgregarInfo(string operacion, string pubId = null, string informacion = null, byte[] logo = null)
+        public FormAgregarInfo(string pubId = null)
         {
             InitializeComponent();
-
-            this.operacion = operacion;
             this.pubId = pubId;
-            this.logoActual = logo;
-
+            operacion = string.IsNullOrEmpty(pubId) ? "Agregar" : "Editar";
             ConfigurarFormulario();
 
             if (operacion == "Agregar")
             {
-                CargarEditorialesSinInfo(); // Cargar solo las editoriales sin detalles
+                CargarEditorialesSinInfo();
             }
-            else if (operacion == "Editar")
+            else
             {
-                ConfigurarCamposEditar(informacion, logo);
+                CargarDatosEditorial();
             }
+
+            txtDetalles.Focus();
         }
 
         private void ConfigurarFormulario()
@@ -41,7 +40,7 @@ namespace ExamenTopicos
             {
                 this.Text = "Editar Información Editorial";
                 btnAceptar.Text = "Actualizar";
-                cmbEditorial.Enabled = false; // No permitir cambiar la editorial al editar
+                cmbEditorial.Enabled = false;
             }
             else
             {
@@ -51,111 +50,116 @@ namespace ExamenTopicos
             }
         }
 
-        private void ConfigurarCamposEditar(string informacion, byte[] logo)
+        private void CargarEditorialesSinInfo()
         {
-            // Cargar información existente en los campos
-            cmbEditorial.Items.Add(pubId); // Agregar la editorial actual al ComboBox
-            cmbEditorial.SelectedIndex = 0;
-            txtDetalles.Text = informacion;
-
-            // Mostrar la imagen actual en el PictureBox si existe
-            if (logo != null)
+            string query = @"
+                SELECT pub_id, pub_name
+                FROM publishers
+                WHERE pub_id NOT IN (SELECT pub_id FROM pub_info)";
+            DataSet ds = datos.consulta(query);
+            if (ds != null && ds.Tables.Count > 0)
             {
-                using (MemoryStream ms = new MemoryStream(logo))
+                cmbEditorial.DataSource = ds.Tables[0];
+                cmbEditorial.DisplayMember = "pub_name";
+                cmbEditorial.ValueMember = "pub_id";
+                cmbEditorial.SelectedIndex = -1;
+
+                if (ds.Tables[0].Rows.Count == 0)
                 {
-                    picBox.Image = Image.FromStream(ms);
+                    MessageBox.Show("Todas las editoriales ya tienen información registrada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
                 }
             }
         }
 
-        private void CargarEditorialesSinInfo()
+        private void CargarDatosEditorial()
         {
-            try
+            string query = @"
+        SELECT pu.pub_name, p.pr_info, p.logo 
+        FROM pub_info p
+        INNER JOIN publishers pu ON p.pub_id = pu.pub_id
+        WHERE p.pub_id = @pubId";
+            SqlParameter[] parametros = { new SqlParameter("@pubId", pubId) };
+            DataSet ds = datos.consulta(query, parametros);
+
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
-                string query = @"
-                    SELECT pub_id, pub_name
-                    FROM publishers
-                    WHERE pub_id NOT IN (SELECT pub_id FROM pub_info)";
+                DataRow row = ds.Tables[0].Rows[0];
 
-                DataSet ds = datos.consulta(query);
-
-                if (ds != null && ds.Tables.Count > 0)
+                if (row["pr_info"] != DBNull.Value)
                 {
-                    cmbEditorial.DataSource = ds.Tables[0];
-                    cmbEditorial.DisplayMember = "pub_name";
-                    cmbEditorial.ValueMember = "pub_id";
-                    cmbEditorial.SelectedIndex = -1; // Sin selección inicial
+                    string info = row["pr_info"].ToString();
+                    string[] partes = info.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    txtDetalles.Text = partes.Length > 0 ? partes[0] : info;
+                }
 
-                    if (ds.Tables[0].Rows.Count == 0)
+                if (row["logo"] != DBNull.Value)
+                {
+                    logoActual = (byte[])row["logo"];
+                    using (MemoryStream ms = new MemoryStream(logoActual))
                     {
-                        MessageBox.Show("Todas las editoriales ya tienen información registrada.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.Close();
+                        picBox.Image = Image.FromStream(ms);
                     }
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Error al cargar editoriales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se encontró la información de la editorial seleccionada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
         }
 
 
-
-
-        private void btnImagen_Click_1(object sender, EventArgs e)
+        private void btnImagen_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            using (OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp",
                 Title = "Seleccionar imagen"
-            };
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            })
             {
-                string filePath = openFileDialog.FileName;
-
-                // Mostrar la imagen en el PictureBox
-                picBox.Image = Image.FromFile(filePath);
-
-                // Convertir la imagen a un arreglo de bytes
-                logoActual = File.ReadAllBytes(filePath);
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    picBox.Image = Image.FromFile(filePath);
+                    logoActual = File.ReadAllBytes(filePath);
+                }
             }
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            try
+            if (ValidarCampos())
             {
                 string query;
-
-                // Validar que se haya seleccionado una editorial al agregar
-                if (operacion == "Agregar" && cmbEditorial.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Seleccione una editorial antes de guardar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                SqlParameter[] parametros;
 
                 if (operacion == "Agregar")
                 {
                     query = @"
                         INSERT INTO pub_info (pub_id, pr_info, logo)
-                        VALUES (@pub_id, @pr_info, @logo)";
+                        VALUES (@pubId, @prInfo, @logo)";
+                    parametros = new SqlParameter[]
+                    {
+                        new SqlParameter("@pubId", cmbEditorial.SelectedValue.ToString()),
+                        new SqlParameter("@prInfo", txtDetalles.Text.Trim()),
+                        new SqlParameter("@logo", (object)logoActual ?? DBNull.Value)
+                    };
                 }
-                else // Editar
+                else
                 {
                     query = @"
                         UPDATE pub_info
-                        SET pr_info = @pr_info,
+                        SET pr_info = @prInfo,
                             logo = @logo
-                        WHERE pub_id = @pub_id";
+                        WHERE pub_id = @pubId";
+                    parametros = new SqlParameter[]
+                    {
+                        new SqlParameter("@pubId", pubId),
+                        new SqlParameter("@prInfo", txtDetalles.Text.Trim()),
+                        new SqlParameter("@logo", (object)logoActual ?? DBNull.Value)
+                    };
                 }
-
-                SqlParameter[] parametros = new SqlParameter[]
-                {
-                    new SqlParameter("@pub_id", operacion == "Agregar" ? cmbEditorial.SelectedValue.ToString() : pubId),
-                    new SqlParameter("@pr_info", txtDetalles.Text.Trim()),
-                    new SqlParameter("@logo", logoActual ?? (object)DBNull.Value)
-                };
 
                 bool resultado = datos.ejecutarABC(query, parametros);
 
@@ -170,14 +174,26 @@ namespace ExamenTopicos
                     MessageBox.Show("No se pudo guardar la información. Verifique los datos ingresados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
         }
 
-        private void btnCancelar_Click_1(object sender, EventArgs e)
+        private bool ValidarCampos()
+        {
+            if (operacion == "Agregar" && cmbEditorial.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione una editorial antes de guardar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDetalles.Text) || txtDetalles.Text.Length > 200)
+            {
+                MessageBox.Show("La información es obligatoria y no debe exceder los 200 caracteres.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
