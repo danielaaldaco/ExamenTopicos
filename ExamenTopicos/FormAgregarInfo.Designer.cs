@@ -81,7 +81,7 @@
             btnCancelar.TabIndex = 41;
             btnCancelar.Text = "Cerrar";
             btnCancelar.UseVisualStyleBackColor = true;
-            btnCancelar.Click += btnCancelar_Click_1;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // btnAceptar
             // 
@@ -106,7 +106,7 @@
             btnImagen.TabIndex = 43;
             btnImagen.Text = "Subir imagen";
             btnImagen.UseVisualStyleBackColor = true;
-            btnImagen.Click += btnImagen_Click_1;
+            btnImagen.Click += btnImagen_Click;
             // 
             // label2
             // 
