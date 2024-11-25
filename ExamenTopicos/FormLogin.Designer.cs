@@ -36,7 +36,7 @@
             label2.AutoSize = true;
             label2.Location = new Point(287, 29);
             label2.Name = "label2";
-            label2.Size = new Size(0, 15);
+            label2.Size = new Size(0, 20);
             label2.TabIndex = 6;
             // 
             // label3
@@ -73,7 +73,7 @@
             // 
             txtUsuario.Location = new Point(138, 195);
             txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(179, 23);
+            txtUsuario.Size = new Size(179, 27);
             txtUsuario.TabIndex = 10;
             // 
             // lblContrasena
@@ -93,7 +93,7 @@
             txtContrasena.Location = new Point(138, 245);
             txtContrasena.Name = "txtContrasena";
             txtContrasena.PasswordChar = '*';
-            txtContrasena.Size = new Size(179, 23);
+            txtContrasena.Size = new Size(179, 27);
             txtContrasena.TabIndex = 12;
             // 
             // btnLogin
@@ -104,6 +104,7 @@
             btnLogin.Size = new Size(311, 30);
             btnLogin.TabIndex = 13;
             btnLogin.Text = "Iniciar Sesión";
+            btnLogin.Click += btnLogin_Click_1;
             // 
             // FormLogin
             // 

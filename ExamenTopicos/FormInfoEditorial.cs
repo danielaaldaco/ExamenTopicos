@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using MetroFramework.Forms;
+using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
