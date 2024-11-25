@@ -211,11 +211,18 @@ namespace ExamenTopicos
                 {
                     using (var editarForm = new FormAgregarJob(Operacion.Editar, jobId))
                     {
-                        if (editarForm.ShowDialog() == DialogResult.OK)
+                        try
                         {
-                            ActualizarGrid();
-                            ConfigurarColumnas();
+                            if (editarForm.ShowDialog() == DialogResult.OK)
+                            {
+                                ActualizarGrid();
+                                ConfigurarColumnas();
+                            }
+                        } catch (Exception)
+                        {
+
                         }
+                        
                     }
                 }
             }

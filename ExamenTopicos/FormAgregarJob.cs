@@ -11,8 +11,8 @@ namespace ExamenTopicos
 {
     public partial class FormAgregarJob : Form
     {
-        private Operacion operacion;  // Define si es agregar o editar
-        private string jobId;         // ID del puesto para editar (opcional en agregar)
+        private Operacion operacion;
+        private string jobId;
         private Datos datos = new Datos();
 
         public FormAgregarJob(Operacion operacion, string jobId = null)

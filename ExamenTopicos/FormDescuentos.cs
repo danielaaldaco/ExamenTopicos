@@ -207,6 +207,10 @@ namespace ExamenTopicos
                 string columnName = dgvDescuentos.Columns[e.ColumnIndex].Name;
                 var row = dgvDescuentos.Rows[e.RowIndex];
                 string discountType = row.Cells["Tipo de descuento"]?.Value?.ToString();
+                string discountName = row.Cells["Nombre"]?.Value?.ToString();
+                string minAmount = row.Cells["Cantidad Mínima"]?.Value?.ToString();
+                string maxAmount = row.Cells["Cantidad Máxima"]?.Value?.ToString();
+                string discountValue = row.Cells["Descuento"]?.Value?.ToString();
 
                 if (string.IsNullOrWhiteSpace(discountType))
                 {
@@ -223,12 +227,11 @@ namespace ExamenTopicos
 
                 if (columnName == "Editar")
                 {
-                    string storName = row.Cells["Nombre"]?.Value?.ToString();
                     int lowQty = row.Cells["Cantidad Mínima"]?.Value == DBNull.Value ? 0 : Convert.ToInt32(row.Cells["Cantidad Mínima"]?.Value);
                     int highQty = row.Cells["Cantidad Máxima"]?.Value == DBNull.Value ? 0 : Convert.ToInt32(row.Cells["Cantidad Máxima"]?.Value);
                     decimal discount = row.Cells["Descuento"]?.Value == DBNull.Value ? 0 : Convert.ToDecimal(row.Cells["Descuento"]?.Value);
 
-                    using (var editarForm = new FormAgregarDescuentos(Operacion.Editar, discountType, storName, lowQty, highQty, discount))
+                    using (var editarForm = new FormAgregarDescuentos(Operacion.Editar, discountType, discountName, lowQty, highQty, discount))
                     {
                         if (editarForm.ShowDialog() == DialogResult.OK)
                         {
@@ -238,13 +241,20 @@ namespace ExamenTopicos
                 }
                 else if (columnName == "Eliminar")
                 {
-                    var confirmResult = MessageBox.Show(
-                        $"¿Está seguro de eliminar el descuento de tipo: {discountType}?",
-                        "Confirmar Eliminación",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
+                    // Recolectar los datos del descuento en un diccionario
+                    var parametrosYValores = new Dictionary<string, object>
+            {
+                { "Tipo de descuento", discountType },
+                { "Nombre", discountName },
+                { "Cantidad Mínima", minAmount },
+                { "Cantidad Máxima", maxAmount },
+                { "Descuento", discountValue }
+            };
 
-                    if (confirmResult == DialogResult.Yes)
+                    // Mostrar la confirmación personalizada
+                    bool confirmado = Utils.confirmarEliminacion(parametrosYValores);
+
+                    if (confirmado)
                     {
                         try
                         {
@@ -252,7 +262,7 @@ namespace ExamenTopicos
 
                             SqlParameter[] parametros = new SqlParameter[]
                             {
-                                new SqlParameter("@discountType", discountType)
+                        new SqlParameter("@discountType", discountType)
                             };
 
                             bool exito = datos.ejecutarABC(deleteQuery, parametros);
@@ -261,15 +271,16 @@ namespace ExamenTopicos
                             {
                                 MessageBox.Show("Descuento eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 ActualizarGrid();
+                                AjustarAnchoVentana(); // Si es necesario ajustar la ventana después de eliminar
                             }
                             else
                             {
                                 MessageBox.Show("No se pudo eliminar el registro. Inténtelo nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Error al eliminar el registro.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Error al eliminar el registro: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
