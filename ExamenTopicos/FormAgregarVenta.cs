@@ -2,10 +2,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarVenta : Form
+    public partial class FormAgregarVenta : MetroForm
     {
         private Datos datos = new Datos();
         private string ordNum;

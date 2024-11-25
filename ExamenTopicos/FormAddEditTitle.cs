@@ -3,10 +3,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAddEditTitle : Form
+    public partial class FormAddEditTitle : MetroForm
     {
         private Operacion operacion;
         private string titleId;
@@ -364,6 +365,11 @@ namespace ExamenTopicos
             }
 
             txtYtdSales.SelectionStart = txtYtdSales.Text.Length;
+        }
+
+        private void bntCerrar_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

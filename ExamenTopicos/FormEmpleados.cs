@@ -5,10 +5,11 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormEmpleados : Form
+    public partial class FormEmpleados : MetroForm
     {
         private DataSet ds;
         private UserRole userRole;
@@ -31,7 +32,6 @@ namespace ExamenTopicos
         private void ConfigurarAccesoPorRol()
         {
             btnAgregar.Visible = false;
-            eliminarToolStripMenuItem.Visible = false;
             dgvEmpleados.ReadOnly = true;
 
             switch (userRole)
@@ -52,7 +52,6 @@ namespace ExamenTopicos
 
                 case UserRole.Administrador:
                     btnAgregar.Visible = true;
-                    eliminarToolStripMenuItem.Visible = true;
                     dgvEmpleados.ReadOnly = false;
                     break;
 
