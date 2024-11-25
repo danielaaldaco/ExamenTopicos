@@ -10,7 +10,6 @@ namespace ExamenTopicos
         private DataGridView dgvAutoresTitulos;
         private Button btnAgregar;
         private TextBox txtBuscar;
-        private Label lblBuscar;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem eliminarToolStripMenuItem;
 
@@ -33,11 +32,11 @@ namespace ExamenTopicos
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAutorTitulo));
             dgvAutoresTitulos = new DataGridView();
             btnAgregar = new Button();
             txtBuscar = new TextBox();
-            lblBuscar = new Label();
             contextMenuStrip1 = new ContextMenuStrip(components);
             eliminarToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dgvAutoresTitulos).BeginInit();
@@ -50,46 +49,52 @@ namespace ExamenTopicos
             dgvAutoresTitulos.AllowUserToDeleteRows = false;
             dgvAutoresTitulos.AllowUserToResizeRows = false;
             dgvAutoresTitulos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvAutoresTitulos.BackgroundColor = Color.White;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvAutoresTitulos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvAutoresTitulos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAutoresTitulos.Location = new Point(20, 60);
+            dgvAutoresTitulos.Location = new Point(20, 110);
             dgvAutoresTitulos.MultiSelect = false;
             dgvAutoresTitulos.Name = "dgvAutoresTitulos";
             dgvAutoresTitulos.ReadOnly = true;
             dgvAutoresTitulos.RowHeadersVisible = false;
             dgvAutoresTitulos.RowHeadersWidth = 51;
             dgvAutoresTitulos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvAutoresTitulos.Size = new Size(760, 284);
+            dgvAutoresTitulos.Size = new Size(760, 344);
             dgvAutoresTitulos.TabIndex = 0;
             dgvAutoresTitulos.CellContentClick += dgvAutoresTitulos_CellContentClick;
             // 
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.Location = new Point(700, 20);
+            btnAgregar.BackColor = SystemColors.ControlDark;
+            btnAgregar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnAgregar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnAgregar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAgregar.Location = new Point(630, 68);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(80, 30);
+            btnAgregar.Size = new Size(150, 25);
             btnAgregar.TabIndex = 1;
             btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
             // txtBuscar
             // 
             txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBuscar.Location = new Point(80, 25);
+            txtBuscar.Location = new Point(23, 68);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(600, 23);
+            txtBuscar.Size = new Size(601, 23);
             txtBuscar.TabIndex = 2;
             txtBuscar.TextChanged += txtBuscar_TextChanged;
-            // 
-            // lblBuscar
-            // 
-            lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(20, 28);
-            lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(45, 15);
-            lblBuscar.TabIndex = 3;
-            lblBuscar.Text = "Buscar:";
             // 
             // contextMenuStrip1
             // 
@@ -108,15 +113,14 @@ namespace ExamenTopicos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 354);
-            Controls.Add(lblBuscar);
+            ClientSize = new Size(800, 464);
             Controls.Add(txtBuscar);
             Controls.Add(btnAgregar);
             Controls.Add(dgvAutoresTitulos);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormAutorTitulo";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Autores y Títulos";
+            Load += FormAutorTitulo_Load;
             ((System.ComponentModel.ISupportInitialize)dgvAutoresTitulos).EndInit();
             contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);

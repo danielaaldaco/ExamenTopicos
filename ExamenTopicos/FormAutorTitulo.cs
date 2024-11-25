@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroFramework.Forms;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -7,7 +8,7 @@ using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
-    public partial class FormAutorTitulo : BaseForm
+    public partial class FormAutorTitulo : MetroForm
     {
         private DataSet ds;
         private UserRole userRole;
@@ -356,6 +357,11 @@ namespace ExamenTopicos
                     textBox.ForeColor = Color.Gray;
                 }
             };
+        }
+
+        private void FormAutorTitulo_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

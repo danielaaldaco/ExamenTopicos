@@ -4,10 +4,11 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarInfo : Form
+    public partial class FormAgregarInfo : MetroForm
     {
         private string operacion;
         private string pubId;

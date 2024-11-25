@@ -14,7 +14,6 @@ namespace ExamenTopicos
             this.user = user;
 
             // Configuración de la imagen de fondo
-            this.BackgroundImage = Properties.Resources.libros; // Cambia por la ruta de tu imagen
             this.BackgroundImageLayout = ImageLayout.Stretch;
 
             
@@ -129,7 +128,7 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            FormPublisher formPublisher = new FormPublisher();
+            FormInfoEditorial formPublisher = new FormInfoEditorial();
             formPublisher.Show();
         }
 

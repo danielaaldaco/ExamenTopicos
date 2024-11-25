@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             txtBuscar = new TextBox();
             dgvInfoEdi = new DataGridView();
             btnAgregar = new Button();
@@ -37,10 +38,10 @@
             // txtBuscar
             // 
             txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtBuscar.Location = new Point(23, 15);
+            txtBuscar.Location = new Point(23, 72);
             txtBuscar.Margin = new Padding(3, 2, 3, 2);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(368, 23);
+            txtBuscar.Size = new Size(548, 23);
             txtBuscar.TabIndex = 15;
             // 
             // dgvInfoEdi
@@ -49,8 +50,17 @@
             dgvInfoEdi.AllowUserToDeleteRows = false;
             dgvInfoEdi.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvInfoEdi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvInfoEdi.BackgroundColor = Color.White;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvInfoEdi.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvInfoEdi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInfoEdi.Location = new Point(23, 56);
+            dgvInfoEdi.Location = new Point(23, 113);
             dgvInfoEdi.Margin = new Padding(3, 2, 3, 2);
             dgvInfoEdi.MultiSelect = false;
             dgvInfoEdi.Name = "dgvInfoEdi";
@@ -59,31 +69,36 @@
             dgvInfoEdi.RowHeadersWidth = 51;
             dgvInfoEdi.RowTemplate.Height = 29;
             dgvInfoEdi.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvInfoEdi.Size = new Size(519, 262);
+            dgvInfoEdi.Size = new Size(699, 315);
             dgvInfoEdi.TabIndex = 14;
             // 
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.Location = new Point(467, 15);
+            btnAgregar.BackColor = SystemColors.ControlDark;
+            btnAgregar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnAgregar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnAgregar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnAgregar.FlatStyle = FlatStyle.Flat;
+            btnAgregar.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnAgregar.Location = new Point(577, 72);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.Size = new Size(145, 23);
             btnAgregar.TabIndex = 16;
             btnAgregar.Text = "Agregar ";
-            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click_1;
             // 
             // FormInfoEditorial
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(568, 341);
+            ClientSize = new Size(748, 451);
             Controls.Add(btnAgregar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvInfoEdi);
             Name = "FormInfoEditorial";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormInfoEditorial";
+            Text = "Detalles de editorial";
             ((System.ComponentModel.ISupportInitialize)dgvInfoEdi).EndInit();
             ResumeLayout(false);
             PerformLayout();
