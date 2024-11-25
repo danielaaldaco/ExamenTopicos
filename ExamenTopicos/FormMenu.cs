@@ -121,8 +121,8 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            FormPublisher formPublisher = new FormPublisher();
-            formPublisher.Show();
+            FormInfoEditorial form = new FormInfoEditorial();
+            form.Show();
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)

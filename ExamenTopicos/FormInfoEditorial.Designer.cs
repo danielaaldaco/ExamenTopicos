@@ -37,10 +37,9 @@
             // txtBuscar
             // 
             txtBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtBuscar.Location = new Point(23, 15);
-            txtBuscar.Margin = new Padding(3, 2, 3, 2);
+            txtBuscar.Location = new Point(12, 20);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(368, 23);
+            txtBuscar.Size = new Size(848, 27);
             txtBuscar.TabIndex = 15;
             // 
             // dgvInfoEdi
@@ -50,37 +49,37 @@
             dgvInfoEdi.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvInfoEdi.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvInfoEdi.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInfoEdi.Location = new Point(23, 56);
-            dgvInfoEdi.Margin = new Padding(3, 2, 3, 2);
+            dgvInfoEdi.Location = new Point(12, 58);
             dgvInfoEdi.MultiSelect = false;
             dgvInfoEdi.Name = "dgvInfoEdi";
             dgvInfoEdi.ReadOnly = true;
             dgvInfoEdi.RowHeadersVisible = false;
             dgvInfoEdi.RowHeadersWidth = 51;
-            dgvInfoEdi.RowTemplate.Height = 29;
             dgvInfoEdi.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dgvInfoEdi.Size = new Size(519, 262);
+            dgvInfoEdi.Size = new Size(940, 509);
             dgvInfoEdi.TabIndex = 14;
             // 
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAgregar.Location = new Point(467, 15);
+            btnAgregar.Location = new Point(866, 20);
+            btnAgregar.Margin = new Padding(3, 4, 3, 4);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(75, 23);
+            btnAgregar.Size = new Size(86, 31);
             btnAgregar.TabIndex = 16;
             btnAgregar.Text = "Agregar ";
             btnAgregar.UseVisualStyleBackColor = true;
-            btnAgregar.Click += btnAgregar_Click_1;
+            btnAgregar.Click += btnAgregar_Click;
             // 
             // FormInfoEditorial
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(568, 341);
+            ClientSize = new Size(964, 579);
             Controls.Add(btnAgregar);
             Controls.Add(txtBuscar);
             Controls.Add(dgvInfoEdi);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "FormInfoEditorial";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormInfoEditorial";
