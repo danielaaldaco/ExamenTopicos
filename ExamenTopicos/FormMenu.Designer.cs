@@ -44,7 +44,7 @@
             // btnPuestos
             // 
             btnPuestos.BackColor = Color.WhiteSmoke;
-            btnPuestos.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnPuestos.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnPuestos.FlatAppearance.BorderSize = 3;
             btnPuestos.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnPuestos.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -66,7 +66,7 @@
             // btnEditoriales
             // 
             btnEditoriales.BackColor = Color.WhiteSmoke;
-            btnEditoriales.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnEditoriales.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnEditoriales.FlatAppearance.BorderSize = 3;
             btnEditoriales.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnEditoriales.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -87,7 +87,7 @@
             // btnDescuentos
             // 
             btnDescuentos.BackColor = Color.WhiteSmoke;
-            btnDescuentos.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnDescuentos.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnDescuentos.FlatAppearance.BorderSize = 3;
             btnDescuentos.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnDescuentos.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -108,7 +108,7 @@
             // btnTiendas
             // 
             btnTiendas.BackColor = Color.WhiteSmoke;
-            btnTiendas.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnTiendas.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnTiendas.FlatAppearance.BorderSize = 3;
             btnTiendas.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnTiendas.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -130,7 +130,7 @@
             // btnVentas
             // 
             btnVentas.BackColor = Color.WhiteSmoke;
-            btnVentas.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnVentas.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnVentas.FlatAppearance.BorderSize = 3;
             btnVentas.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnVentas.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -152,7 +152,7 @@
             // btnEmpleados
             // 
             btnEmpleados.BackColor = Color.WhiteSmoke;
-            btnEmpleados.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnEmpleados.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnEmpleados.FlatAppearance.BorderSize = 3;
             btnEmpleados.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnEmpleados.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -174,7 +174,7 @@
             // btnTitulos
             // 
             btnTitulos.BackColor = Color.WhiteSmoke;
-            btnTitulos.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnTitulos.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnTitulos.FlatAppearance.BorderSize = 3;
             btnTitulos.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnTitulos.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -196,7 +196,7 @@
             // btnRegalias
             // 
             btnRegalias.BackColor = Color.WhiteSmoke;
-            btnRegalias.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnRegalias.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnRegalias.FlatAppearance.BorderSize = 3;
             btnRegalias.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnRegalias.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -218,7 +218,7 @@
             // btnAutores
             // 
             btnAutores.BackColor = Color.WhiteSmoke;
-            btnAutores.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnAutores.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnAutores.FlatAppearance.BorderSize = 3;
             btnAutores.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnAutores.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -240,7 +240,7 @@
             // btnInfoEditorial
             // 
             btnInfoEditorial.BackColor = Color.WhiteSmoke;
-            btnInfoEditorial.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnInfoEditorial.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnInfoEditorial.FlatAppearance.BorderSize = 3;
             btnInfoEditorial.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnInfoEditorial.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
@@ -262,7 +262,7 @@
             // btnAutoresLibros
             // 
             btnAutoresLibros.BackColor = Color.WhiteSmoke;
-            btnAutoresLibros.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnAutoresLibros.FlatAppearance.BorderColor = Color.DarkOliveGreen;
             btnAutoresLibros.FlatAppearance.BorderSize = 3;
             btnAutoresLibros.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnAutoresLibros.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
