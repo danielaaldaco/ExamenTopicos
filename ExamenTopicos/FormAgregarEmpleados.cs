@@ -5,10 +5,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarEmpleados : Form
+    public partial class FormAgregarEmpleados : MetroForm
     {
         private Operacion operacion;
         private string empId;

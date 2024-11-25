@@ -53,83 +53,83 @@ namespace ExamenTopicos
             // lblIdEmpleado
             // 
             lblIdEmpleado.AutoSize = true;
-            lblIdEmpleado.Location = new Point(16, 23);
-            lblIdEmpleado.Margin = new Padding(5, 0, 5, 0);
+            lblIdEmpleado.Location = new Point(16, 71);
+            lblIdEmpleado.Margin = new Padding(4, 0, 4, 0);
             lblIdEmpleado.Name = "lblIdEmpleado";
-            lblIdEmpleado.Size = new Size(99, 20);
+            lblIdEmpleado.Size = new Size(77, 15);
             lblIdEmpleado.TabIndex = 0;
             lblIdEmpleado.Text = "ID Empleado:";
             // 
             // mskIdEmpleado
             // 
-            mskIdEmpleado.Location = new Point(160, 19);
-            mskIdEmpleado.Margin = new Padding(5, 5, 5, 5);
+            mskIdEmpleado.Location = new Point(142, 68);
+            mskIdEmpleado.Margin = new Padding(4, 4, 4, 4);
             mskIdEmpleado.Name = "mskIdEmpleado";
-            mskIdEmpleado.Size = new Size(265, 27);
+            mskIdEmpleado.Size = new Size(232, 23);
             mskIdEmpleado.TabIndex = 1;
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(16, 69);
-            lblNombre.Margin = new Padding(5, 0, 5, 0);
+            lblNombre.Location = new Point(16, 106);
+            lblNombre.Margin = new Padding(4, 0, 4, 0);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(67, 20);
+            lblNombre.Size = new Size(54, 15);
             lblNombre.TabIndex = 2;
             lblNombre.Text = "Nombre:";
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(160, 65);
-            txtNombre.Margin = new Padding(5, 5, 5, 5);
+            txtNombre.Location = new Point(142, 103);
+            txtNombre.Margin = new Padding(4, 4, 4, 4);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(265, 27);
+            txtNombre.Size = new Size(232, 23);
             txtNombre.TabIndex = 3;
             // 
             // lblInicial
             // 
             lblInicial.AutoSize = true;
-            lblInicial.Location = new Point(16, 115);
-            lblInicial.Margin = new Padding(5, 0, 5, 0);
+            lblInicial.Location = new Point(16, 140);
+            lblInicial.Margin = new Padding(4, 0, 4, 0);
             lblInicial.Name = "lblInicial";
-            lblInicial.Size = new Size(51, 20);
+            lblInicial.Size = new Size(41, 15);
             lblInicial.TabIndex = 4;
             lblInicial.Text = "Inicial:";
             // 
             // mskInicialSNombre
             // 
-            mskInicialSNombre.Location = new Point(160, 111);
-            mskInicialSNombre.Margin = new Padding(5, 5, 5, 5);
+            mskInicialSNombre.Location = new Point(142, 137);
+            mskInicialSNombre.Margin = new Padding(4, 4, 4, 4);
             mskInicialSNombre.Mask = "A";
             mskInicialSNombre.Name = "mskInicialSNombre";
-            mskInicialSNombre.Size = new Size(25, 27);
+            mskInicialSNombre.Size = new Size(22, 23);
             mskInicialSNombre.TabIndex = 5;
             // 
             // lblApellido
             // 
             lblApellido.AutoSize = true;
-            lblApellido.Location = new Point(16, 163);
-            lblApellido.Margin = new Padding(5, 0, 5, 0);
+            lblApellido.Location = new Point(16, 176);
+            lblApellido.Margin = new Padding(4, 0, 4, 0);
             lblApellido.Name = "lblApellido";
-            lblApellido.Size = new Size(69, 20);
+            lblApellido.Size = new Size(54, 15);
             lblApellido.TabIndex = 6;
             lblApellido.Text = "Apellido:";
             // 
             // txtApellido
             // 
-            txtApellido.Location = new Point(160, 157);
-            txtApellido.Margin = new Padding(5, 5, 5, 5);
+            txtApellido.Location = new Point(142, 172);
+            txtApellido.Margin = new Padding(4, 4, 4, 4);
             txtApellido.Name = "txtApellido";
-            txtApellido.Size = new Size(265, 27);
+            txtApellido.Size = new Size(232, 23);
             txtApellido.TabIndex = 7;
             // 
             // lblPuesto
             // 
             lblPuesto.AutoSize = true;
-            lblPuesto.Location = new Point(16, 208);
-            lblPuesto.Margin = new Padding(5, 0, 5, 0);
+            lblPuesto.Location = new Point(16, 210);
+            lblPuesto.Margin = new Padding(4, 0, 4, 0);
             lblPuesto.Name = "lblPuesto";
-            lblPuesto.Size = new Size(56, 20);
+            lblPuesto.Size = new Size(46, 15);
             lblPuesto.TabIndex = 8;
             lblPuesto.Text = "Puesto:";
             // 
@@ -137,10 +137,10 @@ namespace ExamenTopicos
             // 
             cmbPuesto.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPuesto.FormattingEnabled = true;
-            cmbPuesto.Location = new Point(160, 203);
-            cmbPuesto.Margin = new Padding(5, 5, 5, 5);
+            cmbPuesto.Location = new Point(142, 206);
+            cmbPuesto.Margin = new Padding(4, 4, 4, 4);
             cmbPuesto.Name = "cmbPuesto";
-            cmbPuesto.Size = new Size(265, 28);
+            cmbPuesto.Size = new Size(232, 23);
             cmbPuesto.TabIndex = 9;
             cmbPuesto.SelectedIndexChanged += cmbPuesto_SelectedIndexChanged;
             cmbPuesto.Click += cmbPuesto_Click;
@@ -148,31 +148,31 @@ namespace ExamenTopicos
             // lblNivel
             // 
             lblNivel.AutoSize = true;
-            lblNivel.Location = new Point(16, 253);
-            lblNivel.Margin = new Padding(5, 0, 5, 0);
+            lblNivel.Location = new Point(16, 244);
+            lblNivel.Margin = new Padding(4, 0, 4, 0);
             lblNivel.Name = "lblNivel";
-            lblNivel.Size = new Size(94, 20);
+            lblNivel.Size = new Size(76, 15);
             lblNivel.TabIndex = 10;
             lblNivel.Text = "Nivel Puesto:";
             // 
             // nudNivel
             // 
-            nudNivel.Location = new Point(160, 251);
-            nudNivel.Margin = new Padding(5, 5, 5, 5);
+            nudNivel.Location = new Point(142, 242);
+            nudNivel.Margin = new Padding(4, 4, 4, 4);
             nudNivel.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
             nudNivel.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudNivel.Name = "nudNivel";
-            nudNivel.Size = new Size(80, 27);
+            nudNivel.Size = new Size(70, 23);
             nudNivel.TabIndex = 11;
             nudNivel.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // lblEditorial
             // 
             lblEditorial.AutoSize = true;
-            lblEditorial.Location = new Point(16, 300);
-            lblEditorial.Margin = new Padding(5, 0, 5, 0);
+            lblEditorial.Location = new Point(16, 279);
+            lblEditorial.Margin = new Padding(4, 0, 4, 0);
             lblEditorial.Name = "lblEditorial";
-            lblEditorial.Size = new Size(68, 20);
+            lblEditorial.Size = new Size(53, 15);
             lblEditorial.TabIndex = 12;
             lblEditorial.Text = "Editorial:";
             // 
@@ -180,58 +180,70 @@ namespace ExamenTopicos
             // 
             cmbEditorial.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbEditorial.FormattingEnabled = true;
-            cmbEditorial.Location = new Point(160, 295);
-            cmbEditorial.Margin = new Padding(5, 5, 5, 5);
+            cmbEditorial.Location = new Point(142, 275);
+            cmbEditorial.Margin = new Padding(4, 4, 4, 4);
             cmbEditorial.Name = "cmbEditorial";
-            cmbEditorial.Size = new Size(265, 28);
+            cmbEditorial.Size = new Size(232, 23);
             cmbEditorial.TabIndex = 13;
             // 
             // lblFechaContratacion
             // 
             lblFechaContratacion.AutoSize = true;
-            lblFechaContratacion.Location = new Point(16, 347);
-            lblFechaContratacion.Margin = new Padding(5, 0, 5, 0);
+            lblFechaContratacion.Location = new Point(16, 314);
+            lblFechaContratacion.Margin = new Padding(4, 0, 4, 0);
             lblFechaContratacion.Name = "lblFechaContratacion";
-            lblFechaContratacion.Size = new Size(139, 20);
+            lblFechaContratacion.Size = new Size(113, 15);
             lblFechaContratacion.TabIndex = 14;
             lblFechaContratacion.Text = "Fecha Contratación:";
             // 
             // dtpFecha
             // 
             dtpFecha.Format = DateTimePickerFormat.Short;
-            dtpFecha.Location = new Point(160, 341);
-            dtpFecha.Margin = new Padding(5, 5, 5, 5);
+            dtpFecha.Location = new Point(142, 310);
+            dtpFecha.Margin = new Padding(4, 4, 4, 4);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(132, 27);
+            dtpFecha.Size = new Size(116, 23);
             dtpFecha.TabIndex = 15;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(160, 400);
-            btnAceptar.Margin = new Padding(5, 5, 5, 5);
+            btnAceptar.BackColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatStyle = FlatStyle.Flat;
+            btnAceptar.Location = new Point(78, 363);
+            btnAceptar.Margin = new Padding(4, 4, 4, 4);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(101, 35);
+            btnAceptar.Size = new Size(88, 26);
             btnAceptar.TabIndex = 16;
             btnAceptar.Text = "Agregar";
-            btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.UseVisualStyleBackColor = false;
             btnAceptar.Click += btnAceptar_Click;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(327, 400);
-            btnCancelar.Margin = new Padding(5, 5, 5, 5);
+            btnCancelar.BackColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Location = new Point(224, 363);
+            btnCancelar.Margin = new Padding(4, 4, 4, 4);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(101, 35);
+            btnCancelar.Size = new Size(88, 26);
             btnCancelar.TabIndex = 17;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // FormAgregarEmpleados
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(445, 463);
+            ClientSize = new Size(389, 407);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(dtpFecha);
@@ -251,8 +263,9 @@ namespace ExamenTopicos
             Controls.Add(mskIdEmpleado);
             Controls.Add(lblIdEmpleado);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(5, 5, 5, 5);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "FormAgregarEmpleados";
+            Padding = new Padding(18, 45, 18, 15);
             Text = "Agregar Empleado";
             Shown += FormAgregarEmpleados_Shown_1;
             ((System.ComponentModel.ISupportInitialize)nudNivel).EndInit();

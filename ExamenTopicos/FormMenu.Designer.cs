@@ -43,8 +43,9 @@
             // 
             // btnPuestos
             // 
-            btnPuestos.BackColor = Color.LavenderBlush;
-            btnPuestos.FlatAppearance.BorderColor = Color.Snow;
+            btnPuestos.BackColor = Color.WhiteSmoke;
+            btnPuestos.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnPuestos.FlatAppearance.BorderSize = 3;
             btnPuestos.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnPuestos.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnPuestos.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -52,7 +53,7 @@
             btnPuestos.Font = new Font("Tahoma", 9.75F);
             btnPuestos.ForeColor = Color.Black;
             btnPuestos.Image = Properties.Resources.icons8_work_50;
-            btnPuestos.Location = new Point(13, 24);
+            btnPuestos.Location = new Point(15, 67);
             btnPuestos.Name = "btnPuestos";
             btnPuestos.Size = new Size(201, 186);
             btnPuestos.TabIndex = 0;
@@ -64,8 +65,9 @@
             // 
             // btnEditoriales
             // 
-            btnEditoriales.BackColor = Color.LavenderBlush;
-            btnEditoriales.FlatAppearance.BorderColor = Color.Snow;
+            btnEditoriales.BackColor = Color.WhiteSmoke;
+            btnEditoriales.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnEditoriales.FlatAppearance.BorderSize = 3;
             btnEditoriales.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnEditoriales.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnEditoriales.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -73,7 +75,7 @@
             btnEditoriales.Font = new Font("Tahoma", 9.75F);
             btnEditoriales.ForeColor = Color.Black;
             btnEditoriales.Image = Properties.Resources.icons8_books_50;
-            btnEditoriales.Location = new Point(13, 225);
+            btnEditoriales.Location = new Point(15, 268);
             btnEditoriales.Name = "btnEditoriales";
             btnEditoriales.Size = new Size(201, 85);
             btnEditoriales.TabIndex = 1;
@@ -84,8 +86,9 @@
             // 
             // btnDescuentos
             // 
-            btnDescuentos.BackColor = Color.LavenderBlush;
-            btnDescuentos.FlatAppearance.BorderColor = Color.Snow;
+            btnDescuentos.BackColor = Color.WhiteSmoke;
+            btnDescuentos.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnDescuentos.FlatAppearance.BorderSize = 3;
             btnDescuentos.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnDescuentos.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnDescuentos.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -93,7 +96,7 @@
             btnDescuentos.Font = new Font("Tahoma", 9.75F);
             btnDescuentos.ForeColor = Color.Black;
             btnDescuentos.Image = Properties.Resources.icons8_discount_50;
-            btnDescuentos.Location = new Point(13, 329);
+            btnDescuentos.Location = new Point(15, 372);
             btnDescuentos.Name = "btnDescuentos";
             btnDescuentos.Size = new Size(201, 85);
             btnDescuentos.TabIndex = 2;
@@ -104,8 +107,9 @@
             // 
             // btnTiendas
             // 
-            btnTiendas.BackColor = Color.LavenderBlush;
-            btnTiendas.FlatAppearance.BorderColor = Color.Snow;
+            btnTiendas.BackColor = Color.WhiteSmoke;
+            btnTiendas.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnTiendas.FlatAppearance.BorderSize = 3;
             btnTiendas.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnTiendas.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnTiendas.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -113,7 +117,7 @@
             btnTiendas.Font = new Font("Tahoma", 9.75F);
             btnTiendas.ForeColor = Color.Black;
             btnTiendas.Image = Properties.Resources.icons8_store_50;
-            btnTiendas.Location = new Point(239, 24);
+            btnTiendas.Location = new Point(241, 67);
             btnTiendas.Name = "btnTiendas";
             btnTiendas.Size = new Size(99, 85);
             btnTiendas.TabIndex = 3;
@@ -125,8 +129,9 @@
             // 
             // btnVentas
             // 
-            btnVentas.BackColor = Color.LavenderBlush;
-            btnVentas.FlatAppearance.BorderColor = Color.Snow;
+            btnVentas.BackColor = Color.WhiteSmoke;
+            btnVentas.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnVentas.FlatAppearance.BorderSize = 3;
             btnVentas.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnVentas.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnVentas.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -134,7 +139,7 @@
             btnVentas.Font = new Font("Tahoma", 9.75F);
             btnVentas.ForeColor = Color.Black;
             btnVentas.Image = Properties.Resources.icons8_sales_48;
-            btnVentas.Location = new Point(344, 24);
+            btnVentas.Location = new Point(346, 67);
             btnVentas.Name = "btnVentas";
             btnVentas.Size = new Size(99, 85);
             btnVentas.TabIndex = 4;
@@ -146,8 +151,9 @@
             // 
             // btnEmpleados
             // 
-            btnEmpleados.BackColor = Color.LavenderBlush;
-            btnEmpleados.FlatAppearance.BorderColor = Color.Snow;
+            btnEmpleados.BackColor = Color.WhiteSmoke;
+            btnEmpleados.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnEmpleados.FlatAppearance.BorderSize = 3;
             btnEmpleados.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnEmpleados.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnEmpleados.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -155,7 +161,7 @@
             btnEmpleados.Font = new Font("Tahoma", 9.75F);
             btnEmpleados.ForeColor = Color.Black;
             btnEmpleados.Image = Properties.Resources.icons8_management_50;
-            btnEmpleados.Location = new Point(239, 125);
+            btnEmpleados.Location = new Point(241, 168);
             btnEmpleados.Name = "btnEmpleados";
             btnEmpleados.Size = new Size(201, 85);
             btnEmpleados.TabIndex = 5;
@@ -167,8 +173,9 @@
             // 
             // btnTitulos
             // 
-            btnTitulos.BackColor = Color.LavenderBlush;
-            btnTitulos.FlatAppearance.BorderColor = Color.Snow;
+            btnTitulos.BackColor = Color.WhiteSmoke;
+            btnTitulos.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnTitulos.FlatAppearance.BorderSize = 3;
             btnTitulos.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnTitulos.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnTitulos.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -176,7 +183,7 @@
             btnTitulos.Font = new Font("Tahoma", 9.75F);
             btnTitulos.ForeColor = Color.Black;
             btnTitulos.Image = Properties.Resources.icons8_editor_64;
-            btnTitulos.Location = new Point(239, 228);
+            btnTitulos.Location = new Point(241, 271);
             btnTitulos.Name = "btnTitulos";
             btnTitulos.Size = new Size(201, 186);
             btnTitulos.TabIndex = 6;
@@ -188,8 +195,9 @@
             // 
             // btnRegalias
             // 
-            btnRegalias.BackColor = Color.LavenderBlush;
-            btnRegalias.FlatAppearance.BorderColor = Color.Snow;
+            btnRegalias.BackColor = Color.WhiteSmoke;
+            btnRegalias.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnRegalias.FlatAppearance.BorderSize = 3;
             btnRegalias.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnRegalias.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnRegalias.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -197,7 +205,7 @@
             btnRegalias.Font = new Font("Tahoma", 9.75F);
             btnRegalias.ForeColor = Color.Black;
             btnRegalias.Image = Properties.Resources.icons8_cash_60;
-            btnRegalias.Location = new Point(461, 24);
+            btnRegalias.Location = new Point(463, 67);
             btnRegalias.Name = "btnRegalias";
             btnRegalias.Size = new Size(119, 186);
             btnRegalias.TabIndex = 7;
@@ -209,8 +217,9 @@
             // 
             // btnAutores
             // 
-            btnAutores.BackColor = Color.LavenderBlush;
-            btnAutores.FlatAppearance.BorderColor = Color.Snow;
+            btnAutores.BackColor = Color.WhiteSmoke;
+            btnAutores.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnAutores.FlatAppearance.BorderSize = 3;
             btnAutores.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnAutores.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnAutores.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -218,7 +227,7 @@
             btnAutores.Font = new Font("Tahoma", 9.75F);
             btnAutores.ForeColor = Color.Black;
             btnAutores.Image = Properties.Resources.icons8_book_and_pencil_48;
-            btnAutores.Location = new Point(593, 24);
+            btnAutores.Location = new Point(595, 67);
             btnAutores.Name = "btnAutores";
             btnAutores.Size = new Size(119, 186);
             btnAutores.TabIndex = 8;
@@ -230,8 +239,9 @@
             // 
             // btnInfoEditorial
             // 
-            btnInfoEditorial.BackColor = Color.LavenderBlush;
-            btnInfoEditorial.FlatAppearance.BorderColor = Color.Snow;
+            btnInfoEditorial.BackColor = Color.WhiteSmoke;
+            btnInfoEditorial.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnInfoEditorial.FlatAppearance.BorderSize = 3;
             btnInfoEditorial.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnInfoEditorial.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnInfoEditorial.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -239,7 +249,7 @@
             btnInfoEditorial.Font = new Font("Tahoma", 9.75F);
             btnInfoEditorial.ForeColor = Color.Black;
             btnInfoEditorial.Image = Properties.Resources.icons8_open_book_60;
-            btnInfoEditorial.Location = new Point(593, 228);
+            btnInfoEditorial.Location = new Point(595, 271);
             btnInfoEditorial.Name = "btnInfoEditorial";
             btnInfoEditorial.Size = new Size(119, 186);
             btnInfoEditorial.TabIndex = 10;
@@ -251,8 +261,9 @@
             // 
             // btnAutoresLibros
             // 
-            btnAutoresLibros.BackColor = Color.LavenderBlush;
-            btnAutoresLibros.FlatAppearance.BorderColor = Color.Snow;
+            btnAutoresLibros.BackColor = Color.WhiteSmoke;
+            btnAutoresLibros.FlatAppearance.BorderColor = Color.Goldenrod;
+            btnAutoresLibros.FlatAppearance.BorderSize = 3;
             btnAutoresLibros.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
             btnAutoresLibros.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnAutoresLibros.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
@@ -260,7 +271,7 @@
             btnAutoresLibros.Font = new Font("Tahoma", 9.75F);
             btnAutoresLibros.ForeColor = Color.Black;
             btnAutoresLibros.Image = Properties.Resources.icons8_document_writer_50;
-            btnAutoresLibros.Location = new Point(458, 228);
+            btnAutoresLibros.Location = new Point(460, 271);
             btnAutoresLibros.Name = "btnAutoresLibros";
             btnAutoresLibros.Size = new Size(119, 186);
             btnAutoresLibros.TabIndex = 9;
@@ -274,8 +285,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = Properties.Resources.biblioteca;
-            ClientSize = new Size(737, 437);
+            ClientSize = new Size(737, 485);
             Controls.Add(btnInfoEditorial);
             Controls.Add(btnAutoresLibros);
             Controls.Add(btnAutores);
@@ -287,6 +297,7 @@
             Controls.Add(btnDescuentos);
             Controls.Add(btnEditoriales);
             Controls.Add(btnPuestos);
+            MaximizeBox = false;
             Name = "FormMenu";
             Text = "Bienvenido";
             ResumeLayout(false);

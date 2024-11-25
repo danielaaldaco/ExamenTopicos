@@ -12,7 +12,9 @@ namespace ExamenTopicos
         public FormLogin()
         {
             InitializeComponent();
-            this.AcceptButton = btnLogin; // Permitir "Enter" para iniciar sesión
+            this.AcceptButton = btnLogin;
+            this.BackgroundImage = Properties.Resources.libros; 
+            this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -94,6 +96,12 @@ namespace ExamenTopicos
             // Alternar entre mostrar y ocultar contraseña
             txtContrasena.UseSystemPasswordChar = !txtContrasena.UseSystemPasswordChar;
         }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
 

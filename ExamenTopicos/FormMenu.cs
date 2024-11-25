@@ -4,7 +4,7 @@ using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormMenu : Form
+    public partial class FormMenu : MetroForm
     {
         private Usuario user;
 
@@ -13,8 +13,13 @@ namespace ExamenTopicos
             InitializeComponent();
             this.user = user;
 
+            // Configuración de la imagen de fondo
+            this.BackgroundImage = Properties.Resources.libros; // Cambia por la ruta de tu imagen
             this.BackgroundImageLayout = ImageLayout.Stretch;
+
+            
         }
+
 
         private void MostrarMensajeAccesoDenegado(string mensaje)
         {
