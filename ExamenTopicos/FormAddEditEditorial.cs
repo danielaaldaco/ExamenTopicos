@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroFramework.Forms;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -7,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ExamenTopicos
 {
-    public partial class FormAddEditEditorial : Form
+    public partial class FormAddEditEditorial : MetroForm
     {
         private Datos datos = new Datos();
         private string editorialId;

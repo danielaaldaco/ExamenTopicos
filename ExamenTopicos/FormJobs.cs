@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroFramework.Forms;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -7,7 +8,7 @@ using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
-    public partial class FormJobs : Form
+    public partial class FormJobs : MetroForm
     {
         private DataSet ds;
         private UserRole userRole;
@@ -271,6 +272,11 @@ namespace ExamenTopicos
             {
                 MessageBox.Show($"Ocurrió un error al realizar la búsqueda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void FormJobs_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -48,27 +48,39 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(280, 251);
+            btnCancelar.BackColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Location = new Point(193, 315);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(98, 23);
             btnCancelar.TabIndex = 7;
             btnCancelar.Text = "Cerrar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click_1;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(162, 251);
+            btnAceptar.BackColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatStyle = FlatStyle.Flat;
+            btnAceptar.Location = new Point(75, 315);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(97, 23);
             btnAceptar.TabIndex = 6;
             btnAceptar.Text = "Aceptar";
-            btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.UseVisualStyleBackColor = false;
             btnAceptar.Click += btnAceptar_Click_1;
             // 
             // nudMin
             // 
-            nudMin.Location = new Point(123, 106);
+            nudMin.Location = new Point(130, 163);
             nudMin.Maximum = new decimal(new int[] { 200, 0, 0, 0 });
             nudMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudMin.Name = "nudMin";
@@ -78,7 +90,7 @@
             // 
             // nudMax
             // 
-            nudMax.Location = new Point(124, 148);
+            nudMax.Location = new Point(131, 205);
             nudMax.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
             nudMax.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudMax.Name = "nudMax";
@@ -89,7 +101,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(10, 156);
+            label5.Location = new Point(17, 213);
             label5.Name = "label5";
             label5.Size = new Size(101, 15);
             label5.TabIndex = 17;
@@ -98,7 +110,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(10, 108);
+            label4.Location = new Point(17, 165);
             label4.Name = "label4";
             label4.Size = new Size(99, 15);
             label4.TabIndex = 16;
@@ -107,7 +119,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 61);
+            label1.Location = new Point(15, 118);
             label1.Name = "label1";
             label1.Size = new Size(56, 15);
             label1.TabIndex = 19;
@@ -116,14 +128,14 @@
             // cmbIdTienda
             // 
             cmbIdTienda.FormattingEnabled = true;
-            cmbIdTienda.Location = new Point(123, 53);
+            cmbIdTienda.Location = new Point(130, 110);
             cmbIdTienda.Name = "cmbIdTienda";
             cmbIdTienda.Size = new Size(121, 23);
             cmbIdTienda.TabIndex = 2;
             // 
             // nudDescuento
             // 
-            nudDescuento.Location = new Point(124, 191);
+            nudDescuento.Location = new Point(131, 248);
             nudDescuento.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
             nudDescuento.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudDescuento.Name = "nudDescuento";
@@ -134,7 +146,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(8, 199);
+            label6.Location = new Point(15, 256);
             label6.Name = "label6";
             label6.Size = new Size(76, 15);
             label6.TabIndex = 21;
@@ -143,7 +155,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(10, 17);
+            label2.Location = new Point(17, 74);
             label2.Name = "label2";
             label2.Size = new Size(30, 15);
             label2.TabIndex = 11;
@@ -151,16 +163,16 @@
             // 
             // txtDescripcion
             // 
-            txtDescripcion.Location = new Point(124, 14);
+            txtDescripcion.Location = new Point(131, 71);
             txtDescripcion.Name = "txtDescripcion";
-            txtDescripcion.Size = new Size(255, 23);
+            txtDescripcion.Size = new Size(218, 23);
             txtDescripcion.TabIndex = 1;
             // 
             // FormAgregarDescuentos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(399, 298);
+            ClientSize = new Size(376, 364);
             Controls.Add(nudDescuento);
             Controls.Add(label6);
             Controls.Add(label1);
@@ -174,6 +186,7 @@
             Controls.Add(txtDescripcion);
             Controls.Add(label2);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "FormAgregarDescuentos";
             Text = "Agregar descuentos";
             ((System.ComponentModel.ISupportInitialize)nudMin).EndInit();

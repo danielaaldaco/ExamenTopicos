@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
@@ -11,6 +12,8 @@ namespace ExamenTopicos
         {
             InitializeComponent();
             this.user = user;
+
+            this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void MostrarMensajeAccesoDenegado(string mensaje)

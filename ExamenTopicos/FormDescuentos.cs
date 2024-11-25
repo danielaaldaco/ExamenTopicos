@@ -4,10 +4,11 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormDescuentos : Form
+    public partial class FormDescuentos : MetroForm
     {
         private DataSet ds;
         private UserRole userRole;

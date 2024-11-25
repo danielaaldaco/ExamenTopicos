@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroFramework.Forms;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,7 +10,7 @@ using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarJob : Form
+    public partial class FormAgregarJob : MetroForm
     {
         private Operacion operacion;  // Define si es agregar o editar
         private string jobId;         // ID del puesto para editar (opcional en agregar)
