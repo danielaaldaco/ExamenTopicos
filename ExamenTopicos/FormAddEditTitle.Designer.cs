@@ -125,9 +125,10 @@ namespace ExamenTopicos
             // lblPubId
             // 
             lblPubId.AutoSize = true;
+            lblPubId.Font = new Font("Gadugi", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPubId.Location = new Point(20, 140);
             lblPubId.Name = "lblPubId";
-            lblPubId.Size = new Size(50, 15);
+            lblPubId.Size = new Size(50, 16);
             lblPubId.TabIndex = 6;
             lblPubId.Text = "Editorial";
             // 
@@ -252,6 +253,7 @@ namespace ExamenTopicos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             ClientSize = new Size(400, 520);
             Controls.Add(btnGuardar);
             Controls.Add(dtpPubDate);

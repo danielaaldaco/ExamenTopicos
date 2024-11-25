@@ -4,10 +4,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarDescuentos : Form
+    public partial class FormAgregarDescuentos : MetroForm
     {
         private Operacion operacion;
         private string discountType; // ID del descuento

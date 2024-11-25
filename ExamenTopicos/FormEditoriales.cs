@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MetroFramework.Forms;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -7,7 +8,7 @@ using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
-    public partial class FormEditoriales : Form
+    public partial class FormEditoriales : MetroForm
     {
         private DataSet ds;
         private Datos datos = new Datos();

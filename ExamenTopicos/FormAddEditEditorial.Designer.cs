@@ -38,93 +38,107 @@
             // cboPais
             // 
             cboPais.FormattingEnabled = true;
-            cboPais.Location = new Point(150, 150);
+            cboPais.Location = new Point(156, 201);
             cboPais.Name = "cboPais";
-            cboPais.Size = new Size(200, 28);
+            cboPais.Size = new Size(200, 23);
             cboPais.TabIndex = 3;
             // 
             // cboEstado
             // 
             cboEstado.FormattingEnabled = true;
-            cboEstado.Location = new Point(150, 196);
+            cboEstado.Location = new Point(156, 247);
             cboEstado.Name = "cboEstado";
-            cboEstado.Size = new Size(200, 28);
+            cboEstado.Size = new Size(200, 23);
             cboEstado.TabIndex = 5;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(150, 67);
+            txtNombre.Location = new Point(156, 118);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(200, 27);
+            txtNombre.Size = new Size(200, 23);
             txtNombre.TabIndex = 1;
             // 
             // txtCiudad
             // 
-            txtCiudad.Location = new Point(150, 107);
+            txtCiudad.Location = new Point(156, 158);
             txtCiudad.Name = "txtCiudad";
-            txtCiudad.Size = new Size(200, 27);
+            txtCiudad.Size = new Size(200, 23);
             txtCiudad.TabIndex = 2;
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(30, 251);
+            btnAceptar.BackColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatStyle = FlatStyle.Flat;
+            btnAceptar.Location = new Point(36, 302);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(143, 37);
+            btnAceptar.Size = new Size(143, 27);
             btnAceptar.TabIndex = 5;
             btnAceptar.Text = "Aceptar";
+            btnAceptar.UseVisualStyleBackColor = false;
             btnAceptar.Click += btnAceptar_Click;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(207, 251);
+            btnCancelar.BackColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Location = new Point(213, 302);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(143, 37);
+            btnCancelar.Size = new Size(143, 27);
             btnCancelar.TabIndex = 6;
             btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // lblEditorialId
             // 
             lblEditorialId.AutoSize = true;
-            lblEditorialId.Location = new Point(30, 30);
+            lblEditorialId.Location = new Point(36, 81);
             lblEditorialId.Name = "lblEditorialId";
-            lblEditorialId.Size = new Size(87, 20);
+            lblEditorialId.Size = new Size(67, 15);
             lblEditorialId.TabIndex = 7;
             lblEditorialId.Text = "Editorial ID:";
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(30, 70);
+            lblNombre.Location = new Point(36, 121);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(67, 20);
+            lblNombre.Size = new Size(54, 15);
             lblNombre.TabIndex = 8;
             lblNombre.Text = "Nombre:";
             // 
             // lblCiudad
             // 
             lblCiudad.AutoSize = true;
-            lblCiudad.Location = new Point(30, 110);
+            lblCiudad.Location = new Point(36, 161);
             lblCiudad.Name = "lblCiudad";
-            lblCiudad.Size = new Size(59, 20);
+            lblCiudad.Size = new Size(48, 15);
             lblCiudad.TabIndex = 9;
             lblCiudad.Text = "Ciudad:";
             // 
             // lblEstado
             // 
             lblEstado.AutoSize = true;
-            lblEstado.Location = new Point(30, 200);
+            lblEstado.Location = new Point(36, 251);
             lblEstado.Name = "lblEstado";
-            lblEstado.Size = new Size(57, 20);
+            lblEstado.Size = new Size(45, 15);
             lblEstado.TabIndex = 10;
             lblEstado.Text = "Estado:";
             // 
             // lblPais
             // 
             lblPais.AutoSize = true;
-            lblPais.Location = new Point(30, 150);
+            lblPais.Location = new Point(36, 201);
             lblPais.Name = "lblPais";
-            lblPais.Size = new Size(37, 20);
+            lblPais.Size = new Size(31, 15);
             lblPais.TabIndex = 11;
             lblPais.Text = "País:";
             // 
@@ -135,15 +149,15 @@
             // lblID
             // 
             lblID.AutoSize = true;
-            lblID.Location = new Point(150, 30);
+            lblID.Location = new Point(156, 81);
             lblID.Name = "lblID";
-            lblID.Size = new Size(50, 20);
+            lblID.Size = new Size(38, 15);
             lblID.TabIndex = 12;
             lblID.Text = "label1";
             // 
             // FormAddEditEditorial
             // 
-            ClientSize = new Size(379, 315);
+            ClientSize = new Size(379, 361);
             Controls.Add(lblID);
             Controls.Add(cboPais);
             Controls.Add(cboEstado);
@@ -156,8 +170,8 @@
             Controls.Add(lblCiudad);
             Controls.Add(lblEstado);
             Controls.Add(lblPais);
+            MaximizeBox = false;
             Name = "FormAddEditEditorial";
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Agregar/Editar Editorial";
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
