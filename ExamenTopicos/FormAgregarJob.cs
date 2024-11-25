@@ -28,11 +28,10 @@ namespace ExamenTopicos
                 CargarDatosPuesto(jobId);
             }
 
-            // Validaciones en tiempo real
             txtDescripcion.KeyPress += txtDescripcion_KeyPress;
             txtDescripcion.Validating += txtDescripcion_Validating;
 
-            this.AcceptButton = btnAceptar; // Asocia Enter al botón Aceptar
+            this.AcceptButton = btnAceptar;
         }
 
         private void ConfigurarFormulario()
@@ -83,6 +82,7 @@ namespace ExamenTopicos
                     txtDescripcion.Text = row["job_desc"].ToString();
                     nudMin.Value = Convert.ToInt32(row["min_lvl"]);
                     nudMax.Value = Convert.ToInt32(row["max_lvl"]);
+                    this.txtDescripcion.Enabled = false;
                 }
                 else
                 {

@@ -154,7 +154,6 @@ namespace ExamenTopicos
         {
             try
             {
-                // Cargar los puestos
                 string queryPuestos = "SELECT job_id, job_desc FROM jobs";
                 DataSet dsPuestos = datos.consulta(queryPuestos);
                 if (dsPuestos != null && dsPuestos.Tables.Count > 0)
@@ -162,10 +161,9 @@ namespace ExamenTopicos
                     cmbPuesto.DataSource = dsPuestos.Tables[0];
                     cmbPuesto.DisplayMember = "job_desc";
                     cmbPuesto.ValueMember = "job_id";
-                    cmbPuesto.SelectedIndex = -1; // Sin selección inicial
+                    cmbPuesto.SelectedIndex = -1;
                 }
 
-                // Cargar las editoriales
                 string queryEditoriales = "SELECT pub_id, pub_name FROM publishers";
                 DataSet dsEditoriales = datos.consulta(queryEditoriales);
                 if (dsEditoriales != null && dsEditoriales.Tables.Count > 0)
@@ -173,8 +171,9 @@ namespace ExamenTopicos
                     cmbEditorial.DataSource = dsEditoriales.Tables[0];
                     cmbEditorial.DisplayMember = "pub_name";
                     cmbEditorial.ValueMember = "pub_id";
-                    cmbEditorial.SelectedIndex = -1; // Sin selección inicial
+                    cmbEditorial.SelectedIndex = -1;
                 }
+                
             }
             catch (Exception ex)
             {
