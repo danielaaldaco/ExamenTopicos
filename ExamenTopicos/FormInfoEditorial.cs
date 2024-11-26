@@ -3,11 +3,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 using static ExamenTopicos.Utils;
 
 namespace ExamenTopicos
 {
-    public partial class FormInfoEditorial : Form
+    public partial class FormInfoEditorial : MetroForm
     {
         private DataSet ds;
         private Datos datos = new Datos();

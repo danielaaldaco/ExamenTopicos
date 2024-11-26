@@ -1,13 +1,15 @@
 ﻿// FormAgregarRegalias.cs
+using MetroFramework.Forms;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using static ExamenTopicos.Utils;
 
+
 namespace ExamenTopicos
 {
-    public partial class FormAgregarRegalias : Form
+    public partial class FormAgregarRegalias : MetroForm
     {
         private Operacion operacion;
         private string autorId;
@@ -188,6 +190,11 @@ namespace ExamenTopicos
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -13,16 +13,42 @@ namespace ExamenTopicos
         {
             InitializeComponent();
             this.AcceptButton = btnLogin;
-            this.BackgroundImage = Properties.Resources.libros; 
+            this.BackgroundImage = Properties.Resources.libros;
             this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            
+        }
+
+        /// <summary>
+        /// Normaliza el nombre del rol para que coincida con los valores del enumerado.
+        /// </summary>
+        /// <param name="rol">Nombre del rol desde la base de datos.</param>
+        /// <returns>Nombre del rol normalizado.</returns>
+        private string NormalizarRol(string rol)
+        {
+            // Convertir el nombre del rol a un formato estándar
+            return rol.Replace(" ", "").Replace("-", "").Replace("_", "");
+        }
+
+        private void btnMostrarOcultar_Click(object sender, EventArgs e)
+        {
+            // Alternar entre mostrar y ocultar contraseña
+            txtContrasena.UseSystemPasswordChar = !txtContrasena.UseSystemPasswordChar;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLogin_Click_1(object sender, EventArgs e)
+        {
             string nombreUsuario = txtUsuario.Text.Trim();
             string contrasena = txtContrasena.Text.Trim();
 
-            // Validar campos vacíos
             if (string.IsNullOrEmpty(nombreUsuario) || string.IsNullOrEmpty(contrasena))
             {
                 MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -79,29 +105,6 @@ namespace ExamenTopicos
                 MessageBox.Show($"Ocurrió un error durante el inicio de sesión: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        /// <summary>
-        /// Normaliza el nombre del rol para que coincida con los valores del enumerado.
-        /// </summary>
-        /// <param name="rol">Nombre del rol desde la base de datos.</param>
-        /// <returns>Nombre del rol normalizado.</returns>
-        private string NormalizarRol(string rol)
-        {
-            // Convertir el nombre del rol a un formato estándar
-            return rol.Replace(" ", "").Replace("-", "").Replace("_", "");
-        }
-
-        private void btnMostrarOcultar_Click(object sender, EventArgs e)
-        {
-            // Alternar entre mostrar y ocultar contraseña
-            txtContrasena.UseSystemPasswordChar = !txtContrasena.UseSystemPasswordChar;
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }
 

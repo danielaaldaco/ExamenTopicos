@@ -12,12 +12,6 @@ namespace ExamenTopicos
         {
             InitializeComponent();
             this.user = user;
-<<<<<<< Updated upstream
-
-            // Configuración de la imagen de fondo
-            this.BackgroundImage = Properties.Resources.libros; // Cambia por la ruta de tu imagen
-=======
->>>>>>> Stashed changes
             this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
@@ -145,18 +139,13 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-<<<<<<< Updated upstream
             FormInfoEditorial form = new FormInfoEditorial();
             form.Show();
-=======
             if (user.Rol == UserRole.Cliente)
             {
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo Gerentes y Administradores tienen permiso para esta seccion");
                 return;
             }
-            FormInfoEditorial formPublisher = new FormInfoEditorial();
-            formPublisher.Show();
->>>>>>> Stashed changes
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)
