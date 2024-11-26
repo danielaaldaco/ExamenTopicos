@@ -58,11 +58,11 @@
             btnAgregar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnAgregar.FlatStyle = FlatStyle.Flat;
             btnAgregar.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnAgregar.Location = new Point(636, 66);
+            btnAgregar.Location = new Point(595, 66);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(143, 23);
+            btnAgregar.Size = new Size(184, 23);
             btnAgregar.TabIndex = 1;
-            btnAgregar.Text = "Agregar";
+            btnAgregar.Text = "Agregar venta";
             btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
@@ -72,7 +72,7 @@
             txtBuscar.ForeColor = Color.Gray;
             txtBuscar.Location = new Point(19, 66);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(611, 23);
+            txtBuscar.Size = new Size(570, 23);
             txtBuscar.TabIndex = 2;
             txtBuscar.Text = "Buscar por Tienda, Orden, Título...";
             txtBuscar.TextChanged += txtBuscar_TextChanged;

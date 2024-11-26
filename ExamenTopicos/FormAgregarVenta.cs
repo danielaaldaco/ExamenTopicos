@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using MetroFramework.Forms;
 
@@ -8,15 +9,16 @@ namespace ExamenTopicos
 {
     public partial class FormAgregarVenta : MetroForm
     {
+        public Action OnGridUpdate;
         private Datos datos = new Datos();
         private string ordNum;
+        private List<Dictionary<string, object>> carrito = new List<Dictionary<string, object>>();
 
         public FormAgregarVenta(string id = null)
         {
             InitializeComponent();
             this.ordNum = id;
             CargarDatosComboBox();
-            ConfigurarEventos();
             ConfigurarControles();
             this.Shown += FormAgregarVenta_Shown;
 
@@ -37,16 +39,9 @@ namespace ExamenTopicos
             }
         }
 
-        private void ConfigurarEventos()
-        {
-            txtCantidad.KeyPress += TxtCantidad_KeyPress;
-            txtCantidad.TextChanged += Utils.agregarEvento;
-        }
-
         private void ConfigurarControles()
         {
             cmbTienda.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbTitulo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPago.DropDownStyle = ComboBoxStyle.DropDownList;
             dtpFecha.Format = DateTimePickerFormat.Custom;
             dtpFecha.CustomFormat = "dd/MM/yyyy"; // Formato de fecha personalizado
@@ -56,6 +51,7 @@ namespace ExamenTopicos
         {
             try
             {
+                // Cargar Tiendas
                 string queryTiendas = "SELECT stor_id, stor_name FROM stores";
                 DataSet dsTiendas = datos.consulta(queryTiendas);
                 if (dsTiendas != null && dsTiendas.Tables.Count > 0)
@@ -65,15 +61,7 @@ namespace ExamenTopicos
                     cmbTienda.ValueMember = "stor_id";
                 }
 
-                string queryTitulos = "SELECT title_id, title FROM titles";
-                DataSet dsTitulos = datos.consulta(queryTitulos);
-                if (dsTitulos != null && dsTitulos.Tables.Count > 0)
-                {
-                    cmbTitulo.DataSource = dsTitulos.Tables[0];
-                    cmbTitulo.DisplayMember = "title";
-                    cmbTitulo.ValueMember = "title_id";
-                }
-
+                // Métodos de pago
                 cmbPago.Items.Add("Contado");
                 cmbPago.Items.Add("Crédito");
                 cmbPago.Items.Add("Net 30");
@@ -92,7 +80,7 @@ namespace ExamenTopicos
         {
             try
             {
-                string query = "SELECT ord_num, stor_id, title_id, qty, payterms, ord_date FROM sales WHERE ord_num = @ordNum";
+                string query = "SELECT ord_num, stor_id, payterms, ord_date FROM sales WHERE ord_num = @ordNum";
                 SqlParameter[] parametros = { new SqlParameter("@ordNum", id) };
                 DataSet ds = datos.consulta(query, parametros);
 
@@ -101,8 +89,6 @@ namespace ExamenTopicos
                     var row = ds.Tables[0].Rows[0];
                     txtOrden.Text = row["ord_num"].ToString();
                     cmbTienda.SelectedValue = row["stor_id"];
-                    cmbTitulo.SelectedValue = row["title_id"];
-                    txtCantidad.Text = row["qty"].ToString();
                     cmbPago.SelectedItem = row["payterms"];
                     dtpFecha.Value = Convert.ToDateTime(row["ord_date"]);
                 }
@@ -122,7 +108,6 @@ namespace ExamenTopicos
             txtOrden.ReadOnly = true;
             txtOrden.TabStop = false;
             cmbTienda.Enabled = false;
-            cmbTitulo.Enabled = false;
             dtpFecha.Enabled = false;
         }
 
@@ -131,21 +116,12 @@ namespace ExamenTopicos
             txtOrden.ReadOnly = true;
             txtOrden.TabStop = false;
             cmbTienda.Enabled = true;
-            cmbTitulo.Enabled = true;
             dtpFecha.Enabled = true;
         }
 
         private void GenerarIdAleatorio()
         {
             txtOrden.Text = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
-        }
-
-        private void TxtCantidad_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
-            {
-                e.Handled = true;
-            }
         }
 
         private bool ValidarCampos()
@@ -156,21 +132,15 @@ namespace ExamenTopicos
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtCantidad.Text) || !int.TryParse(txtCantidad.Text, out int cantidad) || cantidad <= 0)
-            {
-                MessageBox.Show("La 'Cantidad' debe ser un número mayor a 0.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
             if (cmbTienda.SelectedIndex == -1)
             {
-                MessageBox.Show("El campo 'ID Tienda' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor selecciona una tienda.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            if (cmbTitulo.SelectedIndex == -1)
+            if (cmbPago.SelectedIndex == -1)
             {
-                MessageBox.Show("El campo 'ID Título' es obligatorio.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor selecciona un método de pago.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -179,68 +149,83 @@ namespace ExamenTopicos
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (ValidarCampos())
+            if (!ValidarCampos())
+                return;
+
+            try
             {
-                try
+                string storeId = cmbTienda.SelectedValue.ToString();
+                string paymentTerms = cmbPago.SelectedItem.ToString();
+
+                // Crear lista de datos combinados
+                var datosVenta = new List<Dictionary<string, object>>();
+
+                // Agregar datos del carrito
+                foreach (var item in carrito)
                 {
-                    string query;
-                    SqlParameter[] parametros;
-
-                    if (string.IsNullOrEmpty(ordNum))
+                    datosVenta.Add(new Dictionary<string, object>
                     {
-                        query = @"
-                            INSERT INTO sales (ord_num, stor_id, title_id, qty, payterms, ord_date)
-                            VALUES (@ordNum, @storId, @titleId, @qty, @payterms, @ordDate)";
-                        parametros = new SqlParameter[]
-                        {
-                            new SqlParameter("@ordNum", txtOrden.Text),
-                            new SqlParameter("@storId", cmbTienda.SelectedValue),
-                            new SqlParameter("@titleId", cmbTitulo.SelectedValue),
-                            new SqlParameter("@qty", int.Parse(txtCantidad.Text)),
-                            new SqlParameter("@payterms", cmbPago.SelectedItem),
-                            new SqlParameter("@ordDate", dtpFecha.Value)
-                        };
-                    }
-                    else
-                    {
-                        query = @"
-                            UPDATE sales
-                            SET stor_id = @storId, title_id = @titleId, qty = @qty, payterms = @payterms, ord_date = @ordDate
-                            WHERE ord_num = @ordNum";
-                        parametros = new SqlParameter[]
-                        {
-                            new SqlParameter("@storId", cmbTienda.SelectedValue),
-                            new SqlParameter("@titleId", cmbTitulo.SelectedValue),
-                            new SqlParameter("@qty", int.Parse(txtCantidad.Text)),
-                            new SqlParameter("@payterms", cmbPago.SelectedItem),
-                            new SqlParameter("@ordDate", dtpFecha.Value),
-                            new SqlParameter("@ordNum", txtOrden.Text)
-                        };
-                    }
-
-                    bool resultado = datos.ejecutarABC(query, parametros);
-
-                    if (resultado)
-                    {
-                        MessageBox.Show($"Venta {(string.IsNullOrEmpty(ordNum) ? "agregada" : "actualizada")} correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("No se pudo guardar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        { "StoreID", storeId },
+                        { "OrderNumber", Guid.NewGuid().ToString() }, // Generar un número de orden único
+                        { "OrderDate", DateTime.Now },
+                        { "TitleID", item["ID Título"] },
+                        { "Quantity", item["Cantidad"] },
+                        { "PaymentTerms", paymentTerms }
+                    });
                 }
-                catch (Exception ex)
+
+                // Guardar en base de datos
+                GuardarDatosEnBaseDeDatos(datosVenta);
+
+                MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                OnGridUpdate?.Invoke();
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al registrar la venta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void GuardarDatosEnBaseDeDatos(List<Dictionary<string, object>> datosVenta)
+        {
+            foreach (var venta in datosVenta)
+            {
+                string query = @"
+                INSERT INTO sales (stor_id, ord_num, ord_date, qty, payterms, title_id)
+                VALUES (@stor_id, @ord_num, @ord_date, @qty, @payterms, @title_id)";
+
+                SqlParameter[] parametros = new SqlParameter[]
                 {
-                    MessageBox.Show($"Error al guardar la venta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    new SqlParameter("@stor_id", venta["StoreID"]),
+                    new SqlParameter("@ord_num", venta["OrderNumber"]),
+                    new SqlParameter("@ord_date", venta["OrderDate"]),
+                    new SqlParameter("@qty", venta["Quantity"]),
+                    new SqlParameter("@payterms", venta["PaymentTerms"]),
+                    new SqlParameter("@title_id", venta["TitleID"])
+                };
+
+                datos.ejecutarABC(query, parametros);
             }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnPedido_Click(object sender, EventArgs e)
+        {
+            using (var formCarrito = new FormCarrito())
+            {
+                if (formCarrito.ShowDialog() == DialogResult.OK)
+                {
+                    var carritoItems = formCarrito.ObtenerDatosCarrito();
+                    carrito.AddRange(carritoItems);
+                    MessageBox.Show("Artículos añadidos al pedido.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void FormAgregarVenta_Shown(object sender, EventArgs e)

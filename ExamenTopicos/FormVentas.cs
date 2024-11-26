@@ -203,10 +203,11 @@ namespace ExamenTopicos
         {
             using (var agregarForm = new FormAgregarVenta())
             {
+                agregarForm.OnGridUpdate = ActualizarGrid; // Pasar la referencia al método ActualizarGrid
+
                 if (agregarForm.ShowDialog() == DialogResult.OK)
                 {
-                    ActualizarGrid();
-                    AjustarAnchoVentana();
+                    ActualizarGrid(); // Refrescar la tabla después de agregar o modificar una venta
                 }
             }
         }

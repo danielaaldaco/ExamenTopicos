@@ -31,17 +31,15 @@
             btnCancelar = new Button();
             btnAceptar = new Button();
             label3 = new Label();
-            label4 = new Label();
-            label2 = new Label();
             label1 = new Label();
             label7 = new Label();
             label8 = new Label();
             txtOrden = new TextBox();
-            txtCantidad = new TextBox();
             cmbPago = new ComboBox();
             cmbTienda = new ComboBox();
-            cmbTitulo = new ComboBox();
             dtpFecha = new DateTimePicker();
+            btnPedido = new Button();
+            label2 = new Label();
             SuspendLayout();
             // 
             // btnCancelar
@@ -86,25 +84,6 @@
             label3.TabIndex = 25;
             label3.Text = "N. de Orden";
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(13, 213);
-            label4.Name = "label4";
-            label4.Size = new Size(55, 15);
-            label4.TabIndex = 24;
-            label4.Text = "Cantidad";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(15, 308);
-            label2.Name = "label2";
-            label2.RightToLeft = RightToLeft.Yes;
-            label2.Size = new Size(37, 15);
-            label2.TabIndex = 23;
-            label2.Text = "Título";
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -127,7 +106,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(14, 260);
+            label8.Location = new Point(14, 211);
             label8.Name = "label8";
             label8.Size = new Size(87, 15);
             label8.TabIndex = 33;
@@ -140,17 +119,10 @@
             txtOrden.Size = new Size(190, 23);
             txtOrden.TabIndex = 2;
             // 
-            // txtCantidad
-            // 
-            txtCantidad.Location = new Point(173, 207);
-            txtCantidad.Name = "txtCantidad";
-            txtCantidad.Size = new Size(190, 23);
-            txtCantidad.TabIndex = 3;
-            // 
             // cmbPago
             // 
             cmbPago.FormattingEnabled = true;
-            cmbPago.Location = new Point(173, 254);
+            cmbPago.Location = new Point(173, 205);
             cmbPago.Name = "cmbPago";
             cmbPago.Size = new Size(190, 23);
             cmbPago.TabIndex = 4;
@@ -163,14 +135,6 @@
             cmbTienda.Size = new Size(190, 23);
             cmbTienda.TabIndex = 1;
             // 
-            // cmbTitulo
-            // 
-            cmbTitulo.FormattingEnabled = true;
-            cmbTitulo.Location = new Point(173, 302);
-            cmbTitulo.Name = "cmbTitulo";
-            cmbTitulo.Size = new Size(190, 23);
-            cmbTitulo.TabIndex = 5;
-            // 
             // dtpFecha
             // 
             dtpFecha.Format = DateTimePickerFormat.Short;
@@ -179,24 +143,48 @@
             dtpFecha.Size = new Size(190, 23);
             dtpFecha.TabIndex = 2;
             // 
+            // btnPedido
+            // 
+            btnPedido.BackColor = SystemColors.ControlDark;
+            btnPedido.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnPedido.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnPedido.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnPedido.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnPedido.FlatStyle = FlatStyle.Flat;
+            btnPedido.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnPedido.Location = new Point(173, 248);
+            btnPedido.Name = "btnPedido";
+            btnPedido.Size = new Size(190, 23);
+            btnPedido.TabIndex = 34;
+            btnPedido.Text = "Agregar libros";
+            btnPedido.UseVisualStyleBackColor = false;
+            btnPedido.Click += btnPedido_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(14, 256);
+            label2.Name = "label2";
+            label2.Size = new Size(44, 15);
+            label2.TabIndex = 35;
+            label2.Text = "Pedido";
+            // 
             // FormAgregarVenta
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(371, 394);
+            ClientSize = new Size(371, 507);
+            Controls.Add(label2);
+            Controls.Add(btnPedido);
             Controls.Add(dtpFecha);
-            Controls.Add(cmbTitulo);
             Controls.Add(cmbTienda);
             Controls.Add(cmbPago);
-            Controls.Add(txtCantidad);
             Controls.Add(txtOrden);
             Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(label3);
-            Controls.Add(label4);
-            Controls.Add(label2);
             Controls.Add(label1);
             MaximizeBox = false;
             Name = "FormAgregarVenta";
@@ -211,8 +199,6 @@
         private Button btnCancelar;
         private Button btnAceptar;
         private Label label3;
-        private Label label4;
-        private Label label2;
         private Label label1;
         private NumericUpDown numericUpDown1;
         private ComboBox comboBox2;
@@ -221,10 +207,10 @@
         private Label label8;
         private NumericUpDown numericUpDown2;
         private TextBox txtOrden;
-        private TextBox txtCantidad;
         private ComboBox cmbPago;
         private ComboBox cmbTienda;
-        private ComboBox cmbTitulo;
         private DateTimePicker dtpFecha;
+        private Button btnPedido;
+        private Label label2;
     }
 }
