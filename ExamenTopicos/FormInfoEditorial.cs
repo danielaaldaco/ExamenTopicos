@@ -14,9 +14,10 @@ namespace ExamenTopicos
         private Datos datos = new Datos();
         private const int ActionColumnWidth = 30;
         private const string placeholder = "Buscar por ID Editorial, Nombre, Información...";
-
-        public FormInfoEditorial()
+        private UserRole userRole;
+        public FormInfoEditorial(UserRole rol)
         {
+            this.userRole = rol;
             InitializeComponent();
             ActualizarGrid();
             this.Resize += FormInfoEditorial_Resize;
@@ -77,7 +78,7 @@ namespace ExamenTopicos
 
         private void ConfigurarColumnas()
         {
-            if (!dgvInfoEdi.Columns.Contains("Editar"))
+            if (!dgvInfoEdi.Columns.Contains("Editar") && userRole == UserRole.Administrador || userRole == UserRole.Administrador)
             {
                 AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
             }

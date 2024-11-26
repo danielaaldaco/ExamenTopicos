@@ -139,14 +139,12 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
-            FormInfoEditorial form = new FormInfoEditorial();
-            form.Show();
             if (user.Rol == UserRole.Cliente)
             {
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo Gerentes y Administradores tienen permiso para esta seccion");
                 return;
             }
-            FormInfoEditorial formPublisher = new FormInfoEditorial();
+            FormInfoEditorial formPublisher = new FormInfoEditorial(user.Rol);
             formPublisher.Show();
         }
 
