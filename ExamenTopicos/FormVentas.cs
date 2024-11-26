@@ -203,11 +203,11 @@ namespace ExamenTopicos
         {
             using (var agregarForm = new FormAgregarVenta())
             {
-                agregarForm.OnGridUpdate = ActualizarGrid; // Pasar la referencia al método ActualizarGrid
+                agregarForm.OnGridUpdate = ActualizarGrid;
 
                 if (agregarForm.ShowDialog() == DialogResult.OK)
                 {
-                    ActualizarGrid(); // Refrescar la tabla después de agregar o modificar una venta
+                    ActualizarGrid();
                 }
             }
         }
@@ -301,14 +301,14 @@ namespace ExamenTopicos
                 if (columnName == "Eliminar")
                 {
                     var parametrosYValores = new Dictionary<string, object>
-                    {
-                        { "Número de Orden", ordNum },
-                        { "Nombre de la Tienda", storName },
-                        { "Título de Venta", title },
-                        { "Fecha de la Orden", ordDate },
-                        { "Cantidad", qty },
-                        { "Condiciones de Pago", payTerms }
-                    };
+            {
+                { "Número de Orden", ordNum },
+                { "Nombre de la Tienda", storName },
+                { "Título de Venta", title },
+                { "Fecha de la Orden", ordDate },
+                { "Cantidad", qty },
+                { "Condiciones de Pago", payTerms }
+            };
 
                     bool confirmado = confirmarEliminacion(parametrosYValores);
 
@@ -319,10 +319,48 @@ namespace ExamenTopicos
                 }
                 else if (columnName == "Editar")
                 {
-                    EditarVenta(ordNum);
+                    // Obtener storId a partir de ordNum
+                    string storId = ObtenerStorId(ordNum);
+
+                    if (!string.IsNullOrEmpty(storId))
+                    {
+                        EditarVenta(ordNum, storId);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo obtener el ID de la tienda.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
+
+        private string ObtenerStorId(string ordNum)
+        {
+            try
+            {
+                string query = "SELECT TOP 1 stor_id FROM sales WHERE ord_num = @ordNum";
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+            new SqlParameter("@ordNum", ordNum)
+                };
+
+                DataSet ds = datos.consulta(query, parameters);
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    return ds.Tables[0].Rows[0]["stor_id"].ToString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al obtener el ID de la tienda: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
 
         private void EliminarVenta(string ordNum)
         {
@@ -350,9 +388,9 @@ namespace ExamenTopicos
             }
         }
 
-        private void EditarVenta(string ordNum)
+        private void EditarVenta(string ordNum, string storeid)
         {
-            using (var editarForm = new FormAgregarVenta(ordNum))
+            using (var editarForm = new FormEditarV(ordNum, storeid))
             {
                 if (editarForm.ShowDialog() == DialogResult.OK)
                 {

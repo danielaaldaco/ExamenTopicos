@@ -44,14 +44,13 @@ namespace ExamenTopicos
             cmbTienda.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPago.DropDownStyle = ComboBoxStyle.DropDownList;
             dtpFecha.Format = DateTimePickerFormat.Custom;
-            dtpFecha.CustomFormat = "dd/MM/yyyy"; // Formato de fecha personalizado
+            dtpFecha.CustomFormat = "dd/MM/yyyy";
         }
 
         private void CargarDatosComboBox()
         {
             try
             {
-                // Cargar Tiendas
                 string queryTiendas = "SELECT stor_id, stor_name FROM stores";
                 DataSet dsTiendas = datos.consulta(queryTiendas);
                 if (dsTiendas != null && dsTiendas.Tables.Count > 0)
@@ -61,7 +60,6 @@ namespace ExamenTopicos
                     cmbTienda.ValueMember = "stor_id";
                 }
 
-                // Métodos de pago
                 cmbPago.Items.Add("Contado");
                 cmbPago.Items.Add("Crédito");
                 cmbPago.Items.Add("Net 30");
@@ -156,29 +154,37 @@ namespace ExamenTopicos
             {
                 string storeId = cmbTienda.SelectedValue.ToString();
                 string paymentTerms = cmbPago.SelectedItem.ToString();
+                string ordNum = txtOrden.Text;
 
-                // Crear lista de datos combinados
-                var datosVenta = new List<Dictionary<string, object>>();
-
-                foreach (var item in carrito)
+                if (string.IsNullOrEmpty(this.ordNum))
                 {
-                    datosVenta.Add(new Dictionary<string, object>
+                    var datosVenta = new List<Dictionary<string, object>>();
+
+                    foreach (var item in carrito)
                     {
-                        { "StoreID", storeId },
-                        { "OrderNumber", Guid.NewGuid().ToString() },
-                        { "OrderDate", DateTime.Now },
-                        { "TitleID", item["ID Título"] },
-                        { "Quantity", item["Cantidad"] },
-                        { "PaymentTerms", paymentTerms }
-                    });
+                        datosVenta.Add(new Dictionary<string, object>
+                        {
+                            { "StoreID", storeId },
+                            { "OrderNumber", ordNum },
+                            { "OrderDate", dtpFecha.Value },
+                            { "TitleID", item["ID Título"] },
+                            { "Quantity", item["Cantidad"] },
+                            { "PaymentTerms", paymentTerms }
+                        });
+                    }
+
+                    GuardarDatosEnBaseDeDatos(datosVenta);
+
+                    MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    OnGridUpdate?.Invoke();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
-
-                GuardarDatosEnBaseDeDatos(datosVenta);
-
-                MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                OnGridUpdate?.Invoke();
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                else
+                {
+                    // Código para editar la venta
+                    MessageBox.Show("Funcionalidad de edición no implementada.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
