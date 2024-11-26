@@ -1,11 +1,13 @@
-﻿using System;
+﻿using MetroFramework.Forms;
+using System;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+
 namespace ExamenTopicos
 {
-    public partial class FormAgregarAutores : BaseForm
+    public partial class FormAgregarAutores : MetroForm
     {
         private string operacion;
         private string autorId;
@@ -77,7 +79,7 @@ namespace ExamenTopicos
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private bool ValidarCampos()
@@ -200,6 +202,11 @@ namespace ExamenTopicos
             {
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+        }
+
+        private void FormAgregarAutores_Load(object sender, EventArgs e)
+        {
 
         }
     }

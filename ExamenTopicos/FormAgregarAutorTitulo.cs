@@ -4,10 +4,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace ExamenTopicos
 {
-    public partial class FormAgregarAutorTitulo : Form
+    public partial class FormAgregarAutorTitulo : MetroForm
     {
         Datos datos = new Datos();
 

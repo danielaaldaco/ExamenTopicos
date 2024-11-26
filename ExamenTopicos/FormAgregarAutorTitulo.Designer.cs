@@ -47,7 +47,7 @@
             // labelAutorId
             // 
             labelAutorId.AutoSize = true;
-            labelAutorId.Location = new Point(26, 30);
+            labelAutorId.Location = new Point(22, 75);
             labelAutorId.Name = "labelAutorId";
             labelAutorId.Size = new Size(73, 15);
             labelAutorId.TabIndex = 0;
@@ -56,7 +56,7 @@
             // labelTituloId
             // 
             labelTituloId.AutoSize = true;
-            labelTituloId.Location = new Point(26, 75);
+            labelTituloId.Location = new Point(22, 120);
             labelTituloId.Name = "labelTituloId";
             labelTituloId.Size = new Size(73, 15);
             labelTituloId.TabIndex = 1;
@@ -65,7 +65,7 @@
             // labelOrden
             // 
             labelOrden.AutoSize = true;
-            labelOrden.Location = new Point(26, 120);
+            labelOrden.Location = new Point(22, 165);
             labelOrden.Name = "labelOrden";
             labelOrden.Size = new Size(95, 15);
             labelOrden.TabIndex = 2;
@@ -74,7 +74,7 @@
             // labelRegalia
             // 
             labelRegalia.AutoSize = true;
-            labelRegalia.Location = new Point(26, 165);
+            labelRegalia.Location = new Point(22, 210);
             labelRegalia.Name = "labelRegalia";
             labelRegalia.Size = new Size(119, 15);
             labelRegalia.TabIndex = 3;
@@ -82,7 +82,7 @@
             // 
             // txtAutorId
             // 
-            txtAutorId.Location = new Point(149, 28);
+            txtAutorId.Location = new Point(145, 73);
             txtAutorId.Margin = new Padding(3, 2, 3, 2);
             txtAutorId.Name = "txtAutorId";
             txtAutorId.Size = new Size(219, 23);
@@ -90,7 +90,7 @@
             // 
             // txtTituloId
             // 
-            txtTituloId.Location = new Point(149, 73);
+            txtTituloId.Location = new Point(145, 118);
             txtTituloId.Margin = new Padding(3, 2, 3, 2);
             txtTituloId.Name = "txtTituloId";
             txtTituloId.Size = new Size(219, 23);
@@ -98,7 +98,7 @@
             // 
             // nudOrden
             // 
-            nudOrden.Location = new Point(149, 118);
+            nudOrden.Location = new Point(145, 163);
             nudOrden.Margin = new Padding(3, 2, 3, 2);
             nudOrden.Maximum = new decimal(new int[] { 50, 0, 0, 0 });
             nudOrden.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
@@ -109,7 +109,7 @@
             // 
             // nudRegalia
             // 
-            nudRegalia.Location = new Point(149, 163);
+            nudRegalia.Location = new Point(145, 208);
             nudRegalia.Margin = new Padding(3, 2, 3, 2);
             nudRegalia.Name = "nudRegalia";
             nudRegalia.Size = new Size(105, 23);
@@ -118,24 +118,36 @@
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(192, 210);
+            btnAceptar.BackColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnAceptar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnAceptar.FlatStyle = FlatStyle.Flat;
+            btnAceptar.Location = new Point(91, 269);
             btnAceptar.Margin = new Padding(3, 2, 3, 2);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(88, 22);
             btnAceptar.TabIndex = 8;
             btnAceptar.Text = "Aceptar";
-            btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.UseVisualStyleBackColor = false;
             btnAceptar.Click += btnAceptar_Click;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(298, 210);
+            btnCancelar.BackColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.BorderColor = SystemColors.ControlDark;
+            btnCancelar.FlatAppearance.CheckedBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.Location = new Point(197, 269);
             btnCancelar.Margin = new Padding(3, 2, 3, 2);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(88, 22);
             btnCancelar.TabIndex = 9;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // errorProvider
@@ -146,7 +158,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(438, 262);
+            ClientSize = new Size(390, 326);
             Controls.Add(btnCancelar);
             Controls.Add(btnAceptar);
             Controls.Add(nudRegalia);
@@ -159,6 +171,7 @@
             Controls.Add(labelAutorId);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
             Name = "FormAgregarAutorTitulo";
             Text = "Agregar Autor y Título";
             ((System.ComponentModel.ISupportInitialize)nudOrden).EndInit();
