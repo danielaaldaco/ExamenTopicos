@@ -154,7 +154,7 @@ namespace ExamenTopicos
 
         private void AgregarColumnasPersonalizadas()
         {
-            if (!dgvAutoresTitulos.Columns.Contains("Editar"))
+            if (!dgvAutoresTitulos.Columns.Contains("Editar") && userRole != UserRole.Cliente && userRole != UserRole.Empleado)
             {
                 var lapizColumn = new DataGridViewImageColumn
                 {
@@ -167,7 +167,7 @@ namespace ExamenTopicos
                 dgvAutoresTitulos.Columns.Insert(0, lapizColumn);
             }
 
-            if (!dgvAutoresTitulos.Columns.Contains("Eliminar"))
+            if (!dgvAutoresTitulos.Columns.Contains("Eliminar") && userRole == UserRole.Administrador)
             {
                 var eliminarColumn = new DataGridViewImageColumn
                 {
@@ -205,14 +205,22 @@ namespace ExamenTopicos
 
                 if (columnName == "Eliminar")
                 {
-                    var confirmResult = MessageBox.Show(
-                        $"¿Está seguro de eliminar este registro?\n\nID Autor: {auId}\nID Título: {titleId}",
-                        "Confirmar Eliminación",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
+                    var parametrosYValores = new Dictionary<string, object>
+                    {
+                        { "ID Autor", auId },
+                        { "ID Título", titleId },
+                        { "Nombre Autor", row.Cells["Nombre Autor"]?.Value?.ToString() },
+                        { "Título", row.Cells["Título"]?.Value?.ToString() },
+                        { "Orden", row.Cells["Orden"]?.Value?.ToString() },
+                        { "Regalía (%)", row.Cells["Regalía (%)"]?.Value?.ToString() }
+                    };
 
-                    if (confirmResult == DialogResult.Yes)
+                    bool confirmado = Utils.confirmarEliminacion(parametrosYValores);
+
+                    if (confirmado)
+                    {
                         EliminarRegistro(auId, titleId);
+                    }
                 }
                 else if (columnName == "Editar")
                 {
@@ -224,6 +232,7 @@ namespace ExamenTopicos
                 }
             }
         }
+
 
         private void EliminarRegistro(string auId, string titleId)
         {

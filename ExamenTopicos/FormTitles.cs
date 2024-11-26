@@ -46,24 +46,9 @@ namespace ExamenTopicos
 
         private void ConfigurarAccesoPorRol()
         {
-            btnAgregar.Visible = false;
-            dgvTitles.ReadOnly = true;
-
-            switch (userRole)
+            if (userRole == UserRole.Cliente)
             {
-                case UserRole.Empleado:
-                case UserRole.GerenteVentas:
-                case UserRole.Administrador:
-                    btnAgregar.Visible = true;
-                    if (userRole == UserRole.GerenteVentas || userRole == UserRole.Administrador)
-                    {
-                        dgvTitles.ReadOnly = false;
-                    }
-                    break;
-
-                default:
-                    this.Close();
-                    break;
+                btnAgregar.Visible = false;
             }
         }
 

@@ -115,8 +115,15 @@ namespace ExamenTopicos
 
         private void ConfigurarColumnas()
         {
-            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
-            AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvTiendas.Columns.Count);
+            if (userRole != UserRole.Empleado)
+            {
+                AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            }
+
+            if (userRole == UserRole.Administrador)
+            {
+                AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvTiendas.Columns.Count);
+            }
 
             foreach (DataGridViewColumn col in dgvTiendas.Columns)
             {

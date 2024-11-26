@@ -14,10 +14,16 @@ namespace ExamenTopicos
         private Datos datos = new Datos();
         private const int ActionColumnWidth = 30;
         private const string placeholder = "Buscar por ID, Apellido, Nombre...";
+        private UserRole userRole;
 
-        public FormAutores()
+        public FormAutores(UserRole userRole)
         {
+            this.userRole = userRole;
             InitializeComponent();
+            if (userRole == UserRole.Cliente)
+            {
+                this.btnAgregar.Visible = false;
+            }
             ActualizarGrid();
             AjustarAnchoVentana();
             this.Resize += FormAutores_Resize;
@@ -95,7 +101,10 @@ namespace ExamenTopicos
                 dgvAutores.Columns.Remove("Editar");
             }
 
-            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            if (userRole == UserRole.GerenteVentas || userRole == UserRole.Administrador)
+            {
+                AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            }
 
             foreach (DataGridViewColumn col in dgvAutores.Columns)
             {
@@ -103,6 +112,10 @@ namespace ExamenTopicos
                 {
                     col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     col.Width = ActionColumnWidth;
+                }
+                else if (col.Name.Trim() == "Contrato" && userRole == UserRole.Cliente)
+                {
+                    continue;
                 }
                 else
                 {
@@ -169,7 +182,7 @@ namespace ExamenTopicos
 
         private void dgvAutores_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            if ((userRole != UserRole.Cliente && userRole != UserRole.Empleado) && e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 string columnName = dgvAutores.Columns[e.ColumnIndex].Name;
                 var row = dgvAutores.Rows[e.RowIndex];
@@ -201,7 +214,11 @@ namespace ExamenTopicos
                     string city = row.Cells["Ciudad"]?.Value?.ToString();
                     string state = row.Cells["Estado"]?.Value?.ToString();
                     string zip = row.Cells["Código Postal"]?.Value?.ToString();
-                    bool contract = Convert.ToBoolean(row.Cells["Contrato"]?.Value);
+                    bool contract = false;
+                    if (row.Cells["Contrato"] != null && row.Cells["Contrato"].Value != DBNull.Value)
+                    {
+                        contract = Convert.ToBoolean(row.Cells["Contrato"].Value);
+                    }
 
                     using (var editarForm = new FormAgregarAutores("Editar", auId, auLname, auFname, phone, address, city, state, zip, contract))
                     {
@@ -271,7 +288,8 @@ namespace ExamenTopicos
                             "Ciudad",
                             "Estado",
                             "Código Postal",
-                            "Contrato");
+                            "Contrato"
+                        );
                         ConfigurarColumnas();
                     }
                 }
