@@ -123,7 +123,17 @@ namespace ExamenTopicos
         {
             string mensaje = GenerarMensajeConParametros(parametrosYValores);
 
-            using (var formConfirmacion = new FormConfirmacion(parametrosYValores))
+            var formConfirmacion = new FormConfirmacion(parametrosYValores, "¿Confirmar Eliminación?");
+            {
+                return formConfirmacion.ShowDialog() == DialogResult.OK;
+            }
+        }
+
+        public static bool confirmarPedido(Dictionary<string, object> parametrosYValores)
+        {
+            string mensaje = GenerarMensajeConParametros(parametrosYValores);
+
+            var formConfirmacion = new FormConfirmacion(parametrosYValores, "Resumen de compra");
             {
                 return formConfirmacion.ShowDialog() == DialogResult.OK;
             }

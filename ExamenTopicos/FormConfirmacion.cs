@@ -9,9 +9,9 @@ namespace ExamenTopicos
     {
         public bool Confirmacion { get; private set; }
 
-        public FormConfirmacion(Dictionary<string, object> parametrosYValores)
+        public FormConfirmacion(Dictionary<string, object> parametrosYValores, string tittle)
         {
-            InitializeComponent();
+            InitializeComponent(tittle);
             ConfigurarFormulario(parametrosYValores);
         }
 

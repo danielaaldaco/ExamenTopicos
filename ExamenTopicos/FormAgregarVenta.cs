@@ -160,13 +160,12 @@ namespace ExamenTopicos
                 // Crear lista de datos combinados
                 var datosVenta = new List<Dictionary<string, object>>();
 
-                // Agregar datos del carrito
                 foreach (var item in carrito)
                 {
                     datosVenta.Add(new Dictionary<string, object>
                     {
                         { "StoreID", storeId },
-                        { "OrderNumber", Guid.NewGuid().ToString() }, // Generar un número de orden único
+                        { "OrderNumber", Guid.NewGuid().ToString() },
                         { "OrderDate", DateTime.Now },
                         { "TitleID", item["ID Título"] },
                         { "Quantity", item["Cantidad"] },
@@ -174,7 +173,6 @@ namespace ExamenTopicos
                     });
                 }
 
-                // Guardar en base de datos
                 GuardarDatosEnBaseDeDatos(datosVenta);
 
                 MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -15,8 +15,8 @@ namespace ExamenTopicos
         public FormCarrito()
         {
             InitializeComponent();
-            ConfigurarTablaCarrito(); // Configurar la estructura del DataTable
-            CargarDatosComboBox();    // Cargar títulos en el ComboBox
+            ConfigurarTablaCarrito();
+            CargarDatosComboBox();
         }
 
         private void ConfigurarTablaCarrito()
@@ -71,15 +71,20 @@ namespace ExamenTopicos
            
         }
 
-        private string CrearResumenPedido()
+        private Dictionary<string, object> CrearResumenPedido()
         {
-            string resumen = "";
+            Dictionary<string, object> resumenPedido = new Dictionary<string, object>();
+            resumenPedido.Add("Articulo", "   Cantidad");
             foreach (DataRow row in carritoDataTable.Rows)
             {
-                resumen += $"{row["Título"]} - {row["Cantidad"]} unidades\n";
+                string titulo = row["Título"].ToString();
+                string cantidad = "   " + row["Cantidad"].ToString();
+                resumenPedido.Add(titulo, cantidad);
             }
-            return resumen.TrimEnd();
+
+            return resumenPedido;
         }
+
 
         private void LimpiarCampos()
         {
@@ -161,35 +166,28 @@ namespace ExamenTopicos
             }
 
 
-            private void btnTerminarCompra_Click_1(object sender, EventArgs e)
-        {
+            private void btnTerminarCompra_Click_1(object sender, EventArgs e) {
             if (carritoDataTable.Rows.Count == 0)
             {
                 MessageBox.Show("El carrito está vacío. Agrega al menos un artículo.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Crear un resumen de la compra
-            var parametrosYValores = new Dictionary<string, object>
-            {
-                { "Resumen del Pedido", CrearResumenPedido() }
-            };
+            var parametrosYValores =  CrearResumenPedido();
 
-            using (var formConfirmacion = new FormConfirmacion(parametrosYValores))
+            using (var formConfirmacion = new FormConfirmacion(parametrosYValores, "Resumen de compra"))
             {
                 if (formConfirmacion.ShowDialog() == DialogResult.OK)
                 {
-                    // Confirmación exitosa: cerrar el formulario
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
             }
-
         }
 
         private void btnCancelar_Click_1(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel; // Cancelar la operación
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
     }

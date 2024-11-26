@@ -50,9 +50,10 @@
             btnCancelar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnCancelar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnCancelar.FlatStyle = FlatStyle.Flat;
-            btnCancelar.Location = new Point(220, 360);
+            btnCancelar.Location = new Point(253, 424);
+            btnCancelar.Margin = new Padding(3, 4, 3, 4);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(96, 23);
+            btnCancelar.Size = new Size(110, 31);
             btnCancelar.TabIndex = 7;
             btnCancelar.Text = "Cerrar";
             btnCancelar.UseVisualStyleBackColor = false;
@@ -66,9 +67,10 @@
             btnAceptar.FlatAppearance.MouseDownBackColor = SystemColors.InactiveCaption;
             btnAceptar.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnAceptar.FlatStyle = FlatStyle.Flat;
-            btnAceptar.Location = new Point(62, 360);
+            btnAceptar.Location = new Point(73, 424);
+            btnAceptar.Margin = new Padding(3, 4, 3, 4);
             btnAceptar.Name = "btnAceptar";
-            btnAceptar.Size = new Size(96, 23);
+            btnAceptar.Size = new Size(110, 31);
             btnAceptar.TabIndex = 6;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = false;
@@ -77,70 +79,74 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 81);
+            label3.Location = new Point(14, 108);
             label3.Name = "label3";
             label3.RightToLeft = RightToLeft.Yes;
-            label3.Size = new Size(71, 15);
+            label3.Size = new Size(89, 20);
             label3.TabIndex = 25;
             label3.Text = "N. de Orden";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 123);
+            label1.Location = new Point(14, 164);
             label1.Name = "label1";
-            label1.Size = new Size(42, 15);
+            label1.Size = new Size(54, 20);
             label1.TabIndex = 21;
             label1.Text = "Tienda";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(13, 165);
+            label7.Location = new Point(15, 220);
             label7.Name = "label7";
             label7.RightToLeft = RightToLeft.Yes;
-            label7.Size = new Size(88, 15);
+            label7.Size = new Size(111, 20);
             label7.TabIndex = 30;
             label7.Text = "Fecha de orden";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(14, 211);
+            label8.Location = new Point(16, 281);
             label8.Name = "label8";
-            label8.Size = new Size(87, 15);
+            label8.Size = new Size(111, 20);
             label8.TabIndex = 33;
             label8.Text = "Forma de pago";
             // 
             // txtOrden
             // 
-            txtOrden.Location = new Point(173, 75);
+            txtOrden.Location = new Point(198, 100);
+            txtOrden.Margin = new Padding(3, 4, 3, 4);
             txtOrden.Name = "txtOrden";
-            txtOrden.Size = new Size(190, 23);
+            txtOrden.Size = new Size(217, 27);
             txtOrden.TabIndex = 2;
             // 
             // cmbPago
             // 
             cmbPago.FormattingEnabled = true;
-            cmbPago.Location = new Point(173, 205);
+            cmbPago.Location = new Point(198, 273);
+            cmbPago.Margin = new Padding(3, 4, 3, 4);
             cmbPago.Name = "cmbPago";
-            cmbPago.Size = new Size(190, 23);
+            cmbPago.Size = new Size(217, 28);
             cmbPago.TabIndex = 4;
             // 
             // cmbTienda
             // 
             cmbTienda.FormattingEnabled = true;
-            cmbTienda.Location = new Point(173, 117);
+            cmbTienda.Location = new Point(198, 156);
+            cmbTienda.Margin = new Padding(3, 4, 3, 4);
             cmbTienda.Name = "cmbTienda";
-            cmbTienda.Size = new Size(190, 23);
+            cmbTienda.Size = new Size(217, 28);
             cmbTienda.TabIndex = 1;
             // 
             // dtpFecha
             // 
             dtpFecha.Format = DateTimePickerFormat.Short;
-            dtpFecha.Location = new Point(173, 162);
+            dtpFecha.Location = new Point(198, 216);
+            dtpFecha.Margin = new Padding(3, 4, 3, 4);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(190, 23);
+            dtpFecha.Size = new Size(217, 27);
             dtpFecha.TabIndex = 2;
             // 
             // btnPedido
@@ -152,9 +158,10 @@
             btnPedido.FlatAppearance.MouseOverBackColor = SystemColors.InactiveCaption;
             btnPedido.FlatStyle = FlatStyle.Flat;
             btnPedido.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnPedido.Location = new Point(173, 248);
+            btnPedido.Location = new Point(198, 331);
+            btnPedido.Margin = new Padding(3, 4, 3, 4);
             btnPedido.Name = "btnPedido";
-            btnPedido.Size = new Size(190, 23);
+            btnPedido.Size = new Size(217, 31);
             btnPedido.TabIndex = 34;
             btnPedido.Text = "Agregar libros";
             btnPedido.UseVisualStyleBackColor = false;
@@ -163,17 +170,17 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(14, 256);
+            label2.Location = new Point(16, 341);
             label2.Name = "label2";
-            label2.Size = new Size(44, 15);
+            label2.Size = new Size(55, 20);
             label2.TabIndex = 35;
             label2.Text = "Pedido";
             // 
             // FormAgregarVenta
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(371, 507);
+            ClientSize = new Size(424, 494);
             Controls.Add(label2);
             Controls.Add(btnPedido);
             Controls.Add(dtpFecha);
@@ -186,9 +193,10 @@
             Controls.Add(btnAceptar);
             Controls.Add(label3);
             Controls.Add(label1);
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             Name = "FormAgregarVenta";
-            Padding = new Padding(18, 60, 18, 15);
+            Padding = new Padding(21, 80, 21, 20);
             Text = "FormAgregarVenta";
             ResumeLayout(false);
             PerformLayout();
