@@ -17,7 +17,7 @@
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
+        private void InitializeComponent(string tittle)
         {
             lblTitulo = new Label();
             tableLayoutPanel = new TableLayoutPanel();
@@ -32,7 +32,7 @@
             lblTitulo.Name = "lblTitulo";
             lblTitulo.Size = new Size(441, 50);
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "¿Confirmar Eliminación?";
+            lblTitulo.Text = tittle;
             lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel

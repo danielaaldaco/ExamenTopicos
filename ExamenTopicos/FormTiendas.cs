@@ -262,7 +262,7 @@ namespace ExamenTopicos
                         { "Nombre de la Tienda", storName }
                     };
 
-                    bool confirmado = confirmarEliminacion(parametrosYValores);
+                    bool confirmado = confirmarPedido(parametrosYValores);
 
                     if (confirmado)
                     {
