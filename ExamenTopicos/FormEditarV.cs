@@ -14,6 +14,7 @@ namespace ExamenTopicos
         private const int ActionColumnWidth = 30;
         private string ordNum;
         private string storId;
+        private string currentPayTerms; // Variable para almacenar el método de pago actual
 
         public FormEditarV(string ordNum, string storId)
         {
@@ -21,11 +22,16 @@ namespace ExamenTopicos
             this.ordNum = ordNum;
             this.storId = storId;
 
-            // Centrar la ventana en la pantalla
+            // Centrar el formulario en la pantalla
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Mostrar el número de orden en lblOrden
+            lblOrden.Text = "Orden: " + ordNum;
 
             ConfigurarTablaCarrito();
             ConfigurarDataGridView();
+            CargarDatosComboBox(); // Cargar formas de pago
+            CargarDatosOrden();    // Cargar el método de pago actual
             CargarDatosEnTabla();
         }
 
@@ -180,7 +186,8 @@ namespace ExamenTopicos
                     if (dataRow != null)
                     {
                         string currentCantidad = dataRow["Cantidad"].ToString();
-                        string input = PromptForInput("Ingrese la nueva cantidad:", "Editar Cantidad", currentCantidad);
+                        // Puedes pasar un mensaje más largo aquí sin preocuparte
+                        string input = PromptForInput("Ingrese la nueva cantidad para el título seleccionado:", "Editar Cantidad", currentCantidad);
                         if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int nuevaCantidad) && nuevaCantidad > 0)
                         {
                             dataRow["Cantidad"] = nuevaCantidad;
@@ -198,23 +205,69 @@ namespace ExamenTopicos
         {
             Form prompt = new Form()
             {
-                Width = 300,
-                Height = 150,
+                Width = 400,
+                Height = 250, // Aumentamos la altura para dar más espacio
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = caption,
                 StartPosition = FormStartPosition.CenterParent
             };
-            Label textLabel = new Label() { Left = 20, Top = 20, Text = text };
-            TextBox textBox = new TextBox() { Left = 20, Top = 50, Width = 240 };
-            textBox.Text = defaultValue;
-            Button confirmation = new Button() { Text = "OK", Left = 180, Width = 80, Top = 80, DialogResult = DialogResult.OK };
+
+            // Configuración del Label con ajuste automático y espaciado correcto
+            Label textLabel = new Label()
+            {
+                Left = 20,
+                Top = 20,
+                Text = text,
+                AutoSize = true,
+                MaximumSize = new Size(340, 0) // Ancho máximo y altura ajustable
+            };
+
+            // TextBox centrado y con espacio suficiente, colocado más abajo
+            TextBox textBox = new TextBox()
+            {
+                Left = 20,
+                Top = textLabel.Bottom + 30, // Espaciamos más debajo del Label
+                Width = 340,
+                Text = defaultValue
+            };
+
+            // Botón de confirmación estilizado y posicionado correctamente, más abajo
+            Button confirmation = new Button()
+            {
+                Text = "OK",
+                Left = 280,
+                Width = 80,
+                Top = textBox.Bottom + 30, // Más espacio debajo del TextBox
+                DialogResult = DialogResult.OK
+            };
+
+            // Botón de cancelación, alineado al lado izquierdo del botón de OK
+            Button cancelButton = new Button()
+            {
+                Text = "Cancelar",
+                Left = 180,
+                Width = 80,
+                Top = textBox.Bottom + 30, // Igual que el botón de OK
+                DialogResult = DialogResult.Cancel
+            };
+
+            // Agregar controles al formulario
             prompt.Controls.Add(textLabel);
             prompt.Controls.Add(textBox);
             prompt.Controls.Add(confirmation);
-            prompt.AcceptButton = confirmation;
+            prompt.Controls.Add(cancelButton);
 
+            // Configurar propiedades para aceptar o cancelar con teclado
+            prompt.AcceptButton = confirmation;
+            prompt.CancelButton = cancelButton;
+
+            // Ajustar el tamaño del formulario dinámicamente según el contenido
+            prompt.ClientSize = new Size(380, confirmation.Bottom + 20); // Más espacio dinámico al final
+
+            // Mostrar el formulario y devolver el texto ingresado
             return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : null;
         }
+
 
         private void btnTerminarCompra_Click(object sender, EventArgs e)
         {
@@ -223,7 +276,7 @@ namespace ExamenTopicos
                 // Obtenemos los cambios realizados en el DataTable
                 DataTable cambios = carritoDataTable.GetChanges();
 
-                if (cambios == null)
+                if (cambios == null && cmbPago.SelectedItem.ToString() == currentPayTerms)
                 {
                     MessageBox.Show("No se realizaron cambios.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -278,6 +331,22 @@ namespace ExamenTopicos
                     }
                 }
 
+                // Actualizar el método de pago en la base de datos si ha cambiado
+                string newPayTerms = cmbPago.SelectedItem.ToString();
+
+                if (newPayTerms != currentPayTerms)
+                {
+                    string updatePayTermsQuery = @"UPDATE sales SET payterms = @payterms WHERE ord_num = @ordNum AND stor_id = @storId";
+                    SqlParameter[] payTermsParameters = new SqlParameter[]
+                    {
+                        new SqlParameter("@payterms", newPayTerms),
+                        new SqlParameter("@ordNum", ordNum),
+                        new SqlParameter("@storId", storId)
+                    };
+
+                    datos.ejecutarABC(updatePayTermsQuery, payTermsParameters);
+                }
+
                 // Aceptamos los cambios en el DataTable
                 carritoDataTable.AcceptChanges();
 
@@ -317,6 +386,68 @@ namespace ExamenTopicos
             {
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
+            }
+        }
+
+        private void CargarDatosComboBox()
+        {
+            try
+            {
+                // Agregar las formas de pago al ComboBox
+                cmbPago.Items.Add("Contado");
+                cmbPago.Items.Add("Crédito");
+                cmbPago.Items.Add("Net 30");
+                cmbPago.Items.Add("Net 60");
+                cmbPago.Items.Add("SPEI");
+                cmbPago.Items.Add("Tarjeta");
+
+                // La selección actual se establecerá después de obtener el método de pago actual
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las formas de pago: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CargarDatosOrden()
+        {
+            try
+            {
+                // Obtener el método de pago actual de la orden
+                string query = @"SELECT TOP 1 payterms FROM sales WHERE ord_num = @ordNum AND stor_id = @storId";
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@ordNum", ordNum),
+                    new SqlParameter("@storId", storId)
+                };
+
+                DataSet ds = datos.consulta(query, parameters);
+
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    currentPayTerms = ds.Tables[0].Rows[0]["payterms"].ToString();
+
+                    // Establecer el método de pago actual en el ComboBox
+                    if (cmbPago.Items.Contains(currentPayTerms))
+                    {
+                        cmbPago.SelectedItem = currentPayTerms;
+                    }
+                    else
+                    {
+                        // Si el método de pago no está en la lista, agregarlo y seleccionarlo
+                        cmbPago.Items.Add(currentPayTerms);
+                        cmbPago.SelectedItem = currentPayTerms;
+                    }
+                }
+                else
+                {
+                    // Si no se encuentra el método de pago, seleccionar el primer elemento
+                    cmbPago.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los datos de la orden: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
