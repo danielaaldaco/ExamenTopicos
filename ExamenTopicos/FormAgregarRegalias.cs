@@ -121,13 +121,11 @@ namespace ExamenTopicos
         {
             try
             {
-                // Obtener los IDs directamente desde los ComboBox
                 string tituloIdSeleccionado = cmbTitulo.SelectedValue?.ToString();
                 string autorIdSeleccionado = cmbAutor.SelectedValue?.ToString();
 
                 if (operacion == Operacion.Agregar)
                 {
-                    // Validar que ambos ComboBox tengan una selección
                     if (string.IsNullOrWhiteSpace(tituloIdSeleccionado) || string.IsNullOrWhiteSpace(autorIdSeleccionado))
                     {
                         MessageBox.Show("Por favor, selecciona un autor y un título válidos.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);

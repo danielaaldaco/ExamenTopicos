@@ -12,12 +12,13 @@ namespace ExamenTopicos
         {
             InitializeComponent();
             this.user = user;
+<<<<<<< Updated upstream
 
             // Configuración de la imagen de fondo
             this.BackgroundImage = Properties.Resources.libros; // Cambia por la ruta de tu imagen
+=======
+>>>>>>> Stashed changes
             this.BackgroundImageLayout = ImageLayout.Stretch;
-
-            
         }
 
 
@@ -71,6 +72,11 @@ namespace ExamenTopicos
 
         private void btnEditoriales_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormEditoriales formEditoriales = new FormEditoriales(user.Rol);
             formEditoriales.Show();
         }
@@ -89,7 +95,7 @@ namespace ExamenTopicos
 
         private void btnVentas_Click(object sender, EventArgs e)
         {
-            if (user.Rol == UserRole.Empleado || user.Rol == UserRole.Cliente)
+            if (user.Rol == UserRole.Cliente)
             {
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
                 return;
@@ -117,20 +123,40 @@ namespace ExamenTopicos
 
         private void btnDescuentos_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormDescuentos formDescuentos = new FormDescuentos(user.Rol);
             formDescuentos.Show();
         }
 
         private void btnTiendas_Click(object sender, EventArgs e)
         {
+            if (user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo gerentes y administradores tienen permiso para esta sección.");
+                return;
+            }
             FormTiendas formTiendas = new FormTiendas(user.Rol);
             formTiendas.Show();
         }
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
+<<<<<<< Updated upstream
             FormInfoEditorial form = new FormInfoEditorial();
             form.Show();
+=======
+            if (user.Rol == UserRole.Cliente)
+            {
+                MostrarMensajeAccesoDenegado("Acceso denegado. Solo Gerentes y Administradores tienen permiso para esta seccion");
+                return;
+            }
+            FormInfoEditorial formPublisher = new FormInfoEditorial();
+            formPublisher.Show();
+>>>>>>> Stashed changes
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)
@@ -141,7 +167,7 @@ namespace ExamenTopicos
 
         private void btnAutores_Click(object sender, EventArgs e)
         {
-            FormAutores formAutores = new FormAutores();
+            FormAutores formAutores = new FormAutores(user.Rol);
             formAutores.Show();
         }
     }

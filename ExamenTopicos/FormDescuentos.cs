@@ -59,7 +59,7 @@ namespace ExamenTopicos
 
                 case UserRole.Empleado:
                     dgvDescuentos.ReadOnly = true;
-                    btnAgregar.Visible = true;
+                    btnAgregar.Visible = false;
                     break;
 
                 case UserRole.GerenteVentas:
@@ -128,8 +128,15 @@ namespace ExamenTopicos
                 dgvDescuentos.Columns.Remove("Eliminar");
             }
 
-            AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
-            AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvDescuentos.Columns.Count);
+            if (userRole != UserRole.Empleado)
+            {
+                AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+            }
+            
+            if (userRole == UserRole.Administrador)
+            {
+                AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvDescuentos.Columns.Count);
+            }
 
             foreach (DataGridViewColumn col in dgvDescuentos.Columns)
             {

@@ -32,7 +32,6 @@ namespace ExamenTopicos
         private void ConfigurarEventos()
         {
             this.Resize += FormRegalias_Resize;
-            this.dgvRegalias.CellContentClick += dgvRegalias_CellContentClick;
             this.btnAgregar.Click += btnAgregar_Click;
             this.txtBuscar.TextChanged += txtBuscar_TextChanged;
         }
@@ -134,6 +133,7 @@ namespace ExamenTopicos
                     if (!columnsConfigured)
                     {
                         AgregarColumnaIcono("Editar", Properties.Resources.lapiz, ActionColumnWidth, 0);
+                        if (userRole == UserRole.Administrador)
                         AgregarColumnaIcono("Eliminar", Properties.Resources.mdi__garbage, ActionColumnWidth, dgvRegalias.Columns.Count);
                         columnsConfigured = true;
                     }
@@ -232,16 +232,26 @@ namespace ExamenTopicos
 
                 string auId = row.Cells["ID Autor"]?.Value?.ToString();
                 string titleId = row.Cells["ID Título"]?.Value?.ToString();
+                string nombreAutor = row.Cells["Nombre Autor"]?.Value?.ToString();
+                string titulo = row.Cells["Título"]?.Value?.ToString();
+                string orden = row.Cells["Orden"]?.Value?.ToString();
+                string regalía = row.Cells["Regalía (%)"]?.Value?.ToString();
 
                 if (columnName == "Eliminar")
                 {
-                    var confirmResult = MessageBox.Show(
-                        $"¿Está seguro de eliminar la regalía para:\nAutor ID: {auId}\nTítulo ID: {titleId}?",
-                        "Confirmar Eliminación",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
+                    var parametrosYValores = new Dictionary<string, object>
+                    {
+                        { "ID Autor", auId },
+                        { "ID Título", titleId },
+                        { "Nombre Autor", nombreAutor },
+                        { "Título", titulo },
+                        { "Orden", orden },
+                        { "Regalía (%)", regalía }
+                    };
 
-                    if (confirmResult == DialogResult.Yes)
+                    bool confirmado = Utils.confirmarEliminacion(parametrosYValores);
+
+                    if (confirmado)
                     {
                         EliminarRegalia(auId, titleId);
                     }
@@ -252,6 +262,7 @@ namespace ExamenTopicos
                 }
             }
         }
+
 
         private void EliminarRegalia(string auId, string titleId)
         {
