@@ -139,13 +139,23 @@ namespace ExamenTopicos
 
         private void btnInfoEditorial_Click(object sender, EventArgs e)
         {
+<<<<<<<<< Temporary merge branch 1
+            FormInfoEditorial formPublisher = new FormInfoEditorial();
+            formPublisher.Show();
+=========
+<<<<<<< Updated upstream
             FormInfoEditorial form = new FormInfoEditorial();
             form.Show();
+=======
             if (user.Rol == UserRole.Cliente)
             {
                 MostrarMensajeAccesoDenegado("Acceso denegado. Solo Gerentes y Administradores tienen permiso para esta seccion");
                 return;
             }
+            FormInfoEditorial formPublisher = new FormInfoEditorial();
+            formPublisher.Show();
+>>>>>>> Stashed changes
+>>>>>>>>> Temporary merge branch 2
         }
 
         private void btnAutoresLibros_Click(object sender, EventArgs e)
